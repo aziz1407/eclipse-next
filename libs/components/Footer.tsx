@@ -1,137 +1,187 @@
-import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TelegramIcon from '@mui/icons-material/Telegram';
+import React from 'react';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import YoutubeIcon from '@mui/icons-material/Youtube';
+import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../hooks/useDeviceDetect';
-import { Stack, Box } from '@mui/material';
 import moment from 'moment';
+import { useRouter } from 'next/navigation';
 
-const Footer = () => {
+const Footer: React.FC = () => {
 	const device = useDeviceDetect();
 
-	if (device == 'mobile') {
+	const router = useRouter();
+
+	const handleLinkClick = () => {
+		router.push('/cs');
+	};
+
+	if (device === 'mobile') {
 		return (
 			<Stack className={'footer-container'}>
 				<Stack className={'main'}>
 					<Stack className={'left'}>
 						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logoWhite.svg" alt="" className={'logo'} />
+							<h3 className={'brand-name'}>Éclipse</h3>
 						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<span>total free customer care</span>
-							<p>+82 10 4867 2909</p>
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<span>nee live</span>
-							<p>+82 10 4867 2909</p>
-							<span>Support?</span>
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
-							<div className={'media-box'}>
-								<FacebookOutlinedIcon />
-								<TelegramIcon />
-								<InstagramIcon />
-								<TwitterIcon />
-							</div>
+						<Box component={'div'} className={'footer-box social-icons'}>
+							<TwitterIcon />
+							<FacebookOutlinedIcon />
+							<YoutubeIcon />
+							<TelegramIcon />
 						</Box>
 					</Stack>
 					<Stack className={'right'}>
 						<Box component={'div'} className={'bottom'}>
-							<div>
-								<strong>Popular Search</strong>
-								<span>Property for Rent</span>
-								<span>Property Low to hide</span>
+							<div className="info-column">
+								<strong>INFO</strong>
+								<span onClick={handleLinkClick}>Shipping & Delivery</span>
+								<span onClick={handleLinkClick}>Returns & Exchanges</span>
+								<span onClick={handleLinkClick}>Order Tracking</span>
+								<span onClick={handleLinkClick}>Payment Methods</span>
+								<span onClick={handleLinkClick}>Size Guide</span>
+								<span onClick={handleLinkClick}>Product Care</span>
 							</div>
-							<div>
-								<strong>Quick Links</strong>
-								<span>Terms of Use</span>
-								<span>Privacy Policy</span>
-								<span>Pricing Plans</span>
-								<span>Our Services</span>
-								<span>Contact Support</span>
-								<span>FAQs</span>
-							</div>
-							<div>
-								<strong>Discover</strong>
-								<span>Seoul</span>
-								<span>Gyeongido</span>
-								<span>Busan</span>
-								<span>Jejudo</span>
+
+							<div className="services-column">
+								<strong>SERVICES</strong>
+								<span onClick={handleLinkClick}>Customer Support</span>
+								<span onClick={handleLinkClick}>Live Chat</span>
+								<span onClick={handleLinkClick}>Account Help</span>
+								<span onClick={handleLinkClick}>Warranty Info</span>
+								<span onClick={handleLinkClick}>How to Order</span>
+								<span onClick={handleLinkClick}>FAQs</span>
 							</div>
 						</Box>
 					</Stack>
 				</Stack>
 				<Stack className={'second'}>
-					<span>© Nestar - All rights reserved. Nestar {moment().year()}</span>
+					<span>© Copyright 2024 | Éclipse By Aiden. Powered by Shopify.</span>
 				</Stack>
 			</Stack>
 		);
 	} else {
 		return (
-			<Stack className={'footer-container'}>
-				<Stack className={'main'}>
-					<Stack className={'left'}>
-						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logoWhite.svg" alt="" className={'logo'} />
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<span>total free customer care</span>
-							<p>+82 10 4867 2909</p>
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<span>nee live</span>
-							<p>+82 10 4867 2909</p>
-							<span>Support?</span>
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
-							<div className={'media-box'}>
-								<FacebookOutlinedIcon />
-								<TelegramIcon />
-								<InstagramIcon />
-								<TwitterIcon />
+			<div id="footer">
+				<Stack className={'footer-container'}>
+					<Stack className={'main'}>
+						<Stack className={'left'}>
+							<Box component={'div'} className={'footer-box'}>
+								<h3 className={'brand-name'}>Éclipse</h3>
+							</Box>
+							<Box component={'div'} className={'footer-box social-icons'}>
+								<a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+									<TwitterIcon />
+								</a>
+								<a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+									<FacebookOutlinedIcon />
+								</a>
+								<a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+									<YoutubeIcon />
+								</a>
+								<a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer">
+									<TelegramIcon />
+								</a>
+							</Box>
+						</Stack>
+						<Stack className={'middle'}>
+							<div className="info-column">
+								<strong>DETAILS</strong>
+								<span onClick={handleLinkClick}>Shipping & Delivery</span>
+								<span onClick={handleLinkClick}>Returns & Exchanges</span>
+								<span onClick={handleLinkClick}>Order Tracking</span>
+								<span onClick={handleLinkClick}>Payment Methods</span>
+								<span onClick={handleLinkClick}>Size Guide</span>
+								<span onClick={handleLinkClick}>Product Care</span>
 							</div>
-						</Box>
+
+							<div className="services-column">
+								<strong>SERVICES</strong>
+								<span onClick={handleLinkClick}>Customer Support</span>
+								<span onClick={handleLinkClick}>Live Chat</span>
+								<span onClick={handleLinkClick}>Account Help</span>
+								<span onClick={handleLinkClick}>Warranty Info</span>
+								<span onClick={handleLinkClick}>How to Order</span>
+								<span onClick={handleLinkClick}>FAQs</span>
+							</div>
+						</Stack>
+						<Stack className={'right'}>
+							<Box component={'div'} className={'instagram-container'}>
+								<h3>INSTAGRAM</h3>
+								<div className="instagram-grid">
+									<div className="instagram-image">
+										<a
+											href="https://www.instagram.com/abdulaziz__ibrokhimov/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<img src="/img/watches/watch1.jpg" alt="Luxury watch" />
+										</a>
+									</div>
+									<div className="instagram-image">
+										<a
+											href="https://www.instagram.com/abdulaziz__ibrokhimov/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<img src="/img/watches/watch2.jpg" alt="Luxury watch" />
+										</a>
+									</div>
+									<div className="instagram-image">
+										<a
+											href="https://www.instagram.com/abdulaziz__ibrokhimov/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<img src="/img/watches/watch3.jpg" alt="Luxury watch" />
+										</a>
+									</div>
+									<div className="instagram-image">
+										<a
+											href="https://www.instagram.com/abdulaziz__ibrokhimov/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<img src="/img/watches/watch4.jpg" alt="Luxury watch" />
+										</a>
+									</div>
+									<div className="instagram-image">
+										<a
+											href="https://www.instagram.com/abdulaziz__ibrokhimov/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<img src="/img/watches/watch5.jpg" alt="Luxury watch" />
+										</a>
+									</div>
+									<div className="instagram-image">
+										<a
+											href="https://www.instagram.com/abdulaziz__ibrokhimov/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<img src="/img/watches/watch6.jpg" alt="Luxury watch" />
+										</a>
+									</div>
+								</div>
+							</Box>
+						</Stack>
 					</Stack>
-					<Stack className={'right'}>
-						<Box component={'div'} className={'top'}>
-							<strong>keep yourself up to date</strong>
-							<div>
-								<input type="text" placeholder={'Your Email'} />
-								<span>Subscribe</span>
-							</div>
-						</Box>
-						<Box component={'div'} className={'bottom'}>
-							<div>
-								<strong>Popular Search</strong>
-								<span>Property for Rent</span>
-								<span>Property Low to hide</span>
-							</div>
-							<div>
-								<strong>Quick Links</strong>
-								<span>Terms of Use</span>
-								<span>Privacy Policy</span>
-								<span>Pricing Plans</span>
-								<span>Our Services</span>
-								<span>Contact Support</span>
-								<span>FAQs</span>
-							</div>
-							<div>
-								<strong>Discover</strong>
-								<span>Seoul</span>
-								<span>Gyeongido</span>
-								<span>Busan</span>
-								<span>Jejudo</span>
-							</div>
-						</Box>
+					<Stack className={'second'}>
+						<span>© Copyright 2025 | Éclipse By Aiden. Powered by Devex.</span>
+						<div className={'payment-methods'}>
+							<img src="/img/payment/visa.jpg" alt="Visa" />
+							<img src="/img/payment/mastercard.jpg" alt="Mastercard" />
+							<img src="/img/payment/paypal.png" alt="PayPal" />
+							<img src="/img/payment/amex.png" alt="American Express" />
+						</div>
+						<a href="https://t.me/Ibrokhimov_1407" target="_blank" rel="noopener noreferrer">
+							<span>Contact Developer</span>
+						</a>
 					</Stack>
 				</Stack>
-				<Stack className={'second'}>
-					<span>© Nestar - All rights reserved. Nestar {moment().year()}</span>
-					<span>Privacy · Terms · Sitemap</span>
-				</Stack>
-			</Stack>
+			</div>
 		);
 	}
 };

@@ -5,14 +5,14 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Member } from '../../types/member/member';
 
 interface TopAgentProps {
-	agent: Member;
+	dealer: Member;
 }
 const TopAgentCard = (props: TopAgentProps) => {
-	const { agent } = props;
+	const { dealer: dealer } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const agentImage = agent?.memberImage
-		? `${process.env.REACT_APP_API_URL}/${agent?.memberImage}`
+	const dealerImage = dealer?.memberImage
+		? `${process.env.REACT_APP_API_URL}/${dealer?.memberImage}`
 		: '/img/profile/defaultUser.svg';
 
 	/** HANDLERS **/
@@ -20,19 +20,19 @@ const TopAgentCard = (props: TopAgentProps) => {
 	if (device === 'mobile') {
 		return (
 			<Stack className="top-agent-card">
-				<img src={agentImage} alt="" />
+				<img src={dealerImage} alt="" />
 
-				<strong>{agent?.memberNick}</strong>
-				<span>{agent?.memberType}</span>
+				<strong>{dealer?.memberNick}</strong>
+				<span>{dealer?.memberType}</span>
 			</Stack>
 		);
 	} else {
 		return (
 			<Stack className="top-agent-card">
-				<img src={agentImage} alt="" />
+				<img src={dealerImage} alt="" />
 
-				<strong>{agent?.memberNick}</strong>
-				<span>{agent?.memberType}</span>
+				<strong>{dealer?.memberNick}</strong>
+				<span>{dealer?.memberType}</span>
 			</Stack>
 		);
 	}

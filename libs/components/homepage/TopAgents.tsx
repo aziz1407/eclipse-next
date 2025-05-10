@@ -24,16 +24,16 @@ const TopAgents = (props: TopAgentsProps) => {
 
 	/** APOLLO REQUESTS **/
 		const {
-			loading: getPropertiesLoading,
-			data: getAgentsData,
-			error: getAgentsError,
-			refetch: getAgemtsRefetch,
+			loading: getDealersLoading,
+			data: getDealersData,
+			error: getDealersError,
+			refetch: getDealersRefetch,
 		} = useQuery(GET_AGENTS, {
 			fetchPolicy: "cache-and-network",
 			variables: {input: initialInput},
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
-				setTopAgents(data?.getAgents?.list)
+				setTopAgents(data?.getDealers?.list)
 			}
 		});
 	/** HANDLERS **/
@@ -56,7 +56,7 @@ const TopAgents = (props: TopAgentsProps) => {
 							{topAgents.map((agent: Member) => {
 								return (
 									<SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-										<TopAgentCard agent={agent} key={agent?.memberNick} />
+										<TopAgentCard dealer={agent} key={agent?.memberNick} />
 									</SwiperSlide>
 								);
 							})}
@@ -96,13 +96,14 @@ const TopAgents = (props: TopAgentsProps) => {
 									prevEl: '.swiper-agents-prev',
 								}}
 							>
-								{topAgents.map((agent: Member) => {
-									return (
-										<SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-											<TopAgentCard agent={agent} key={agent?.memberNick} />
-										</SwiperSlide>
-									);
-								})}
+								{(topAgents || []).map((agent: Member) => {
+  return (
+    <SwiperSlide className={'top-agents-slide'} key={agent?._id}>
+      <TopAgentCard dealer={agent} key={agent?.memberNick} />
+    </SwiperSlide>
+  );
+})}
+
 							</Swiper>
 						</Box>
 						<Box component={'div'} className={'switch-btn swiper-agents-next'}>

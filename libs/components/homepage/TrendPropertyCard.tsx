@@ -111,7 +111,7 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 						>
 							<RemoveRedEyeIcon fontSize="small" />
 						</IconButton>
-						<Typography className="view-cnt">{property?.propertyViews || 0}</Typography>
+						<Typography className="view-cnt">{property?.propertyViews||0}</Typography>
 						<IconButton
 							color={'default'}
 							size="small"
