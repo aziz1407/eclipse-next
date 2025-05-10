@@ -371,50 +371,61 @@ export const GET_VISITED = gql`
  *      BOARD-ARTICLE     *
  *************************/
 
-export const GET_BOARD_ARTICLE = gql`
-	query GetBoardArticle($input: String!) {
-		getBoardArticle(articleId: $input) {
-			_id
-			articleCategory
-			articleStatus
-			articleTitle
-			articleContent
-			articleImage
-			articleViews
-			articleLikes
-			articleComments
-			memberId
-			createdAt
-			updatedAt
-			memberData {
-				_id
-				memberType
-				memberStatus
-				memberAuthType
-				memberPhone
-				memberNick
-				memberFullName
-				memberImage
-				memberAddress
-				memberDesc
-				memberWarnings
-				memberBlocks
-				memberProperties
-				memberRank
-				memberPoints
-				memberLikes
-				memberViews
-				deletedAt
-				createdAt
-				updatedAt
-			}
-			meLiked {
-				memberId
-				likeRefId
-				myFavorite
-			}
-		}
-	}
+export const GET_BLOGS = gql`
+query GetBlogs($input: BlogsInquiry!) {
+    getBlogs(input: $input) {
+        list {
+            _id
+            blogCategory
+            blogStatus
+            blogTitle
+            blogContent
+            blogImage
+            blogViews
+            blogLikes
+            blogComments
+            memberId
+            createdAt
+            updatedAt
+            meLiked {
+                memberId
+                likeRefId
+                myFavorite
+            }
+            memberData {
+                _id
+                memberType
+                memberStatus
+                memberAuthType
+                memberPhone
+                memberEmail
+                memberNick
+                memberFullName
+                memberImage
+                memberAddress
+                memberDesc
+                memberProperties
+                memberBlogs
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                deletedAt
+                createdAt
+                updatedAt
+                accessToken
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
 export const GET_BOARD_ARTICLES = gql`

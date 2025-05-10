@@ -11,7 +11,7 @@ import TablePagination from '@mui/material/TablePagination';
 import CommunityArticleList from '../../../libs/components/admin/community/CommunityArticleList';
 import { AllBoardArticlesInquiry } from '../../../libs/types/board-article/board-article.input';
 import { BoardArticle } from '../../../libs/types/board-article/board-article';
-import { BoardArticleCategory, BoardArticleStatus } from '../../../libs/enums/board-article.enum';
+import { BoardArticleCategory, BoardArticleStatus } from '../../../libs/enums/blog.enum';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
 import { BoardArticleUpdate } from '../../../libs/types/board-article/board-article.update';
 import { REMOVE_BOARD_ARTICLE_BY_ADMIN, UPDATE_BOARD_ARTICLE_BY_ADMIN } from '../../../apollo/admin/mutation';

@@ -41,17 +41,17 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 
 	const {
-		loading: getPropertiesLoading,
-		data: getAgentsData,
-		error: getAgentsError,
-		refetch: getAgentsRefetch,
+		loading: getDealersLoading,
+		data: getDealersData,
+		error: getDealersError,
+		refetch: getDealersRefetch,
 	} = useQuery(GET_AGENTS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchFilter },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setAgents(data?.getAgents?.list);
-			setTotal(data?.getAgents?.metaCounter[0]?.total);
+			setAgents(data?.getDealers?.list);
+			setTotal(data?.getDealers?.metaCounter[0]?.total);
 		},
 	});
 
@@ -117,7 +117,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 					input: id,
 				},
 			});
-			await getAgentsRefetch({ input: searchFilter });
+			await getDealersRefetch({ input: searchFilter });
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
 			console.log('ERROR, likePropertyHandler:', err.message);

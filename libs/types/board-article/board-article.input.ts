@@ -1,16 +1,16 @@
-import { BoardArticleCategory, BoardArticleStatus } from '../../enums/board-article.enum';
+import { BlogCategory, BlogStatus } from '../../enums/blog.enum';
 import { Direction } from '../../enums/common.enum';
 
 export interface BoardArticleInput {
-	articleCategory: BoardArticleCategory;
-	articleTitle: string;
-	articleContent: string;
-	articleImage: string;
+	blogCategory: BlogCategory;
+	blogTitle: string;
+	blogContent: string;
+	blogImage: string;
 	memberId?: string;
 }
 
 interface BAISearch {
-	articleCategory: BoardArticleCategory;
+	blogCategory: BlogCategory;
 	text?: string;
 }
 
@@ -23,8 +23,8 @@ export interface BoardArticlesInquiry {
 }
 
 interface ABAISearch {
-	articleStatus?: BoardArticleStatus;
-	articleCategory?: BoardArticleCategory;
+	blogStatus?: BlogStatus;
+	articleCategory?: BlogCategory;
 }
 
 export interface AllBoardArticlesInquiry {
