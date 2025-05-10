@@ -1,15 +1,17 @@
-import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
 import { Direction } from '../../enums/common.enum';
+import { WatchBrand, WatchCondition, WatchCountry, WatchGender, WatchMaterial, WatchMovement, WatchStatus } from '../../enums/property.enum';
 
 export interface PropertyInput {
-	propertyType: PropertyType;
-	propertyLocation: PropertyLocation;
+	propertyBrand: WatchBrand;
+	propertyCountry: WatchCountry;
 	propertyAddress: string;
-	propertyTitle: string;
+	propertyModel: string;
 	propertyPrice: number;
-	propertySquare: number;
-	propertyBeds: number;
-	propertyRooms: number;
+	propertyYear: number,
+	propertyCategory: WatchGender;
+	propertyMaterial: WatchMaterial;
+	propertyCondition: WatchCondition;
+	propertyMovement: WatchMovement;
 	propertyImages: string[];
 	propertyDesc?: string;
 	propertyBarter?: boolean;
@@ -20,14 +22,12 @@ export interface PropertyInput {
 
 interface PISearch {
 	memberId?: string;
-	locationList?: PropertyLocation[];
-	typeList?: PropertyType[];
-	roomsList?: Number[];
+	locationList?: WatchCountry[];
+	typeList?: WatchBrand [];
+	propertyCategory?: WatchGender[];
 	options?: string[];
-	bedsList?: Number[];
+	propertyMaterial?: WatchMaterial[];
 	pricesRange?: Range;
-	periodsRange?: PeriodsRange;
-	squaresRange?: Range;
 	text?: string;
 }
 
@@ -40,7 +40,7 @@ export interface PropertiesInquiry {
 }
 
 interface APISearch {
-	propertyStatus?: PropertyStatus;
+	propertyStatus?: WatchStatus;
 }
 
 export interface AgentPropertiesInquiry {
@@ -52,8 +52,8 @@ export interface AgentPropertiesInquiry {
 }
 
 interface ALPISearch {
-	propertyStatus?: PropertyStatus;
-	propertyLocationList?: PropertyLocation[];
+	propertyStatus?: WatchStatus;
+	propertyLocationList?: WatchCountry[];
 }
 
 export interface AllPropertiesInquiry {

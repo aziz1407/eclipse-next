@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import WestIcon from '@mui/icons-material/West';
@@ -40,6 +40,38 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 			setTrendProperties(data?.getProperties?.list);
 		},
 	});
+
+	const CountdownTimer = ({ endDate }: { endDate: string }) => {
+		const [timeLeft, setTimeLeft] = useState('');
+
+		useEffect(() => {
+			const updateTimer = () => {
+				const now = new Date().getTime();
+				const end = new Date(endDate).getTime();
+				const diff = end - now;
+
+				if (diff <= 0) {
+					setTimeLeft('Discount ended!');
+					return;
+				}
+
+				const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+				const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+				const minutes = Math.floor((diff / (1000 * 60)) % 60);
+				const seconds = Math.floor((diff / 1000) % 60);
+
+				setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+			};
+
+			updateTimer();
+			const interval = setInterval(updateTimer, 1000);
+
+			return () => clearInterval(interval);
+		}, [endDate]);
+
+		return <p style={{ color: '#cecccc', fontWeight: 500, marginTop: '5px' }}>{timeLeft}</p>;
+	};
+
 	/** HANDLERS **/
 
 	const likePropertyHandler = async (user: T, id: string) => {
@@ -50,7 +82,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 			await likeTargetProperty({ variables: { input: id } });
 
 			//execute getPropertiesRefetch
-			await getPropertiesRefetch({input: initialInput})
+			await getPropertiesRefetch({ input: initialInput });
 
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
@@ -84,7 +116,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 								{trendProperties.map((property: Property) => {
 									return (
 										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} likePropertyHandler={likePropertyHandler}/>
+											<TrendPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
 										</SwiperSlide>
 									);
 								})}
@@ -100,8 +132,8 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Trend Properties</span>
-							<p>Trend is based on likes</p>
+							<span style={{ color: '#ffffff' }}>Special Offers</span>
+							<CountdownTimer endDate="2025-05-31T23:59:59Z" />
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'pagination-box'}>
@@ -120,7 +152,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 							<Swiper
 								className={'trend-property-swiper'}
 								slidesPerView={'auto'}
-								spaceBetween={15}
+								spaceBetween={14}
 								modules={[Autoplay, Navigation, Pagination]}
 								navigation={{
 									nextEl: '.swiper-trend-next',
@@ -150,8 +182,8 @@ TrendProperties.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 8,
-		sort: 'propertyLikes',
-		direction: 'DESC',
+		sort: 'propertyPrice',
+		direction: 'ASC',
 		search: {},
 	},
 };

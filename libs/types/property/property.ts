@@ -1,4 +1,4 @@
-import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
+import { WatchBrand, WatchCondition, WatchCountry, WatchGender, WatchMaterial, WatchMovement, WatchStatus } from '../../enums/property.enum';
 import { Member } from '../member/member';
 
 export interface MeLiked {
@@ -13,19 +13,20 @@ export interface TotalCounter {
 
 export interface Property {
 	_id: string;
-	propertyType: PropertyType;
-	propertyStatus: PropertyStatus;
-	propertyLocation: PropertyLocation;
+	propertyBrand: WatchBrand;
+	propertyStatus: WatchStatus;
+	propertyLocation: WatchCountry;
 	propertyAddress: string;
-	propertyTitle: string;
+	propertyModel: string;
 	propertyPrice: number;
-	propertySquare: number;
-	propertyBeds: number;
-	propertyRooms: number;
+	propertyYear: number;
+	propertyCategory: WatchGender;
+	propertyMaterial: WatchMaterial;
+	propertyCondition: WatchCondition;
+	propertyMovement: WatchMovement;
 	propertyViews: number;
 	propertyLikes: number;
 	propertyComments: number;
-	propertyRank: number;
 	propertyImages: string[];
 	propertyDesc?: string;
 	propertyBarter: boolean;

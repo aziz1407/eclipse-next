@@ -86,15 +86,17 @@ export const GET_PROPERTY = gql`
 	query GetProperty($input: String!) {
 		getProperty(propertyId: $input) {
 			_id
-			propertyType
+			propertyBrand
 			propertyStatus
-			propertyLocation
+			propertyCountry
 			propertyAddress
-			propertyTitle
+			propertyModel
 			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
+			propertyYear
+			propertyCategory
+			propertyMaterial
+			propertyCondition
+			propertyMovement
 			propertyViews
 			propertyLikes
 			propertyImages
@@ -119,7 +121,6 @@ export const GET_PROPERTY = gql`
 				memberAddress
 				memberDesc
 				memberWarnings
-				memberBlocks
 				memberPoints
 				memberLikes
 				memberViews
@@ -142,28 +143,29 @@ export const GET_PROPERTIES = gql`
 		getProperties(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
-				soldAt
-				deletedAt
-				constructedAt
-				createdAt
-				updatedAt
+				propertyBrand
+			propertyStatus
+			propertyCountry
+			propertyAddress
+			propertyModel
+			propertyPrice
+			propertyYear
+			propertyCategory
+			propertyMaterial
+			propertyCondition
+			propertyMovement
+			propertyViews
+			propertyLikes
+			propertyImages
+			propertyDesc
+			propertyBarter
+			propertyRent
+			memberId
+			soldAt
+			deletedAt
+			constructedAt
+			createdAt
+			updatedAt
 				memberData {
 					_id
 					memberType
@@ -176,7 +178,6 @@ export const GET_PROPERTIES = gql`
 					memberAddress
 					memberDesc
 					memberWarnings
-					memberBlocks
 					memberProperties
 					memberRank
 					memberPoints
@@ -282,7 +283,6 @@ export const GET_FAVORITES = gql`
 					memberFollowers
 					memberRank
 					memberWarnings
-					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
@@ -345,7 +345,6 @@ export const GET_VISITED = gql`
 					memberFollowers
 					memberRank
 					memberWarnings
-					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
@@ -442,7 +441,6 @@ export const GET_BOARD_ARTICLES = gql`
 					memberAddress
 					memberDesc
 					memberWarnings
-					memberBlocks
 					memberProperties
 					memberRank
 					memberPoints
@@ -550,7 +548,6 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberFollowers
 					memberRank
 					memberWarnings
-					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
@@ -593,7 +590,6 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberFollowers
 					memberRank
 					memberWarnings
-					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt

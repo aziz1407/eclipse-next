@@ -18,10 +18,9 @@ export const SIGN_UP = gql`
 			memberAddress
 			memberDesc
 			memberWarnings
-			memberBlocks
 			memberProperties
 			memberRank
-			memberArticles
+			memberBlogs
 			memberPoints
 			memberLikes
 			memberViews
@@ -47,9 +46,9 @@ export const LOGIN = gql`
 			memberAddress
 			memberDesc
 			memberWarnings
-			memberBlocks
 			memberProperties
 			memberRank
+			memberBlogs
 			memberPoints
 			memberLikes
 			memberViews
@@ -183,28 +182,28 @@ export const UPDATE_PROPERTY = gql`
 export const LIKE_TARGET_PROPERTY = gql`
 	mutation LikeTargetProperty($input: String!) {
 		likeTargetProperty(propertyId: $input) {
-			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
-			soldAt
-			deletedAt
-			constructedAt
-			createdAt
-			updatedAt
+		 _id
+        propertyBrand
+        propertyStatus
+        propertyCountry
+        propertyAddress
+        propertyModel
+        propertyCondition
+        propertyCategory
+        propertyMaterial
+        propertyPrice
+        propertyViews
+        propertyLikes
+        propertyImages
+        propertyDesc
+        propertyBarter
+        propertyRent
+        memberId
+        soldAt
+        deletedAt
+        constructedAt
+        createdAt
+        updatedAt
 		}
 	}
 `;

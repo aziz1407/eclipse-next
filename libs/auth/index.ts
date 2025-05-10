@@ -144,12 +144,11 @@ export const updateUserInfo = (jwtToken: any) => {
 		memberDesc: claims.memberDesc ?? '',
 		memberProperties: claims.memberProperties,
 		memberRank: claims.memberRank,
-		memberArticles: claims.memberArticles,
+		memberBlogs: claims.memberBlogs,
 		memberPoints: claims.memberPoints,
 		memberLikes: claims.memberLikes,
 		memberViews: claims.memberViews,
 		memberWarnings: claims.memberWarnings,
-		memberBlocks: claims.memberBlocks,
 	});
 };
 
@@ -178,11 +177,10 @@ const deleteUserInfo = () => {
 		memberDesc: '',
 		memberProperties: 0,
 		memberRank: 0,
-		memberArticles: 0,
+		memberBlogs: 0,
 		memberPoints: 0,
 		memberLikes: 0,
 		memberViews: 0,
 		memberWarnings: 0,
-		memberBlocks: 0,
 	});
 };

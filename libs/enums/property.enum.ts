@@ -1,23 +1,46 @@
-export enum PropertyType {
-	APARTMENT = 'APARTMENT',
-	VILLA = 'VILLA',
-	HOUSE = 'HOUSE',
-}
+export enum WatchBrand {
+	ROLEX = 'ROLEX',
+	OMEGA = 'OMEGA',
+	IWC = 'IWC',
+	LONGINES = 'LONGINES',
+	PANERAI = "PANERAI"
+  }
 
-export enum PropertyStatus {
-	ACTIVE = 'ACTIVE',
+  export enum WatchStatus {
+	AVAILABLE = 'AVAILABLE',
+	RESERVED = 'RESERVED',
 	SOLD = 'SOLD',
-	DELETE = 'DELETE',
-}
+	DELETED = 'DELETED',
+  }
 
-export enum PropertyLocation {
-	SEOUL = 'SEOUL',
-	BUSAN = 'BUSAN',
-	INCHEON = 'INCHEON',
-	DAEGU = 'DAEGU',
-	GYEONGJU = 'GYEONGJU',
-	GWANGJU = 'GWANGJU',
-	CHONJU = 'CHONJU',
-	DAEJON = 'DAEJON',
-	JEJU = 'JEJU',
-}
+  export enum WatchGender {
+	MALE = 'MALE',
+	FEMALE = 'FEMALE',
+	// UNISEX = "UNISEX"
+  }
+
+  export enum WatchCountry {
+	UAE="UAE",
+	SWITZERLAND = 'SWITZERLAND',
+	JAPAN = 'JAPAN',
+	GERMANY = 'GERMANY',
+  }
+
+  export enum WatchMaterial {
+	LEATHER = 'LEATHER',
+	STEEL = 'STEEL',
+	GOLD = 'GOLD',
+	SILVER = 'SILVER',
+  }
+
+  export enum WatchCondition {
+	NEW = 'NEW',
+	SECONDHAND = 'SECONDHAND',
+	REFURBISHED = 'REFURBISHED',
+  }
+
+  export enum WatchMovement {
+	QUARTZ = 'QUARTZ',
+	AUTOMATIC  = 'AUTOMATIC',
+	MECHANICAL = 'MECHANICAL',
+  }
