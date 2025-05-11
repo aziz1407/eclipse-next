@@ -7,7 +7,7 @@ import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Property } from '../../types/property/property';
 import { AgentPropertiesInquiry } from '../../types/property/property.input';
 import { T } from '../../types/common';
-import { PropertyStatus } from '../../enums/property.enum';
+import { WatchStatus } from '../../enums/property.enum';
 import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
 import { UPDATE_PROPERTY } from '../../../apollo/user/mutation';
@@ -45,7 +45,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 		setSearchFilter({ ...searchFilter, page: value });
 	};
 
-	const changeStatusHandler = (value: PropertyStatus) => {
+	const changeStatusHandler = (value: WatchStatus) => {
 		setSearchFilter({ ...searchFilter, search: { propertyStatus: value } });
 	};
 
@@ -85,7 +85,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 		}
 	};
 
-	if (user?.memberType !== 'AGENT') {
+	if (user?.memberType !== 'DEALER') {
 		router.back();
 	}
 
@@ -103,13 +103,13 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 				<Stack className="property-list-box">
 					<Stack className="tab-name-box">
 						<Typography
-							onClick={() => changeStatusHandler(PropertyStatus.ACTIVE)}
-							className={searchFilter.search.propertyStatus === 'ACTIVE' ? 'active-tab-name' : 'tab-name'}
+							onClick={() => changeStatusHandler(WatchStatus.AVAILABLE)}
+							className={searchFilter.search.propertyStatus === 'AVAILABLE' ? 'active-tab-name' : 'tab-name'}
 						>
 							On Sale
 						</Typography>
 						<Typography
-							onClick={() => changeStatusHandler(PropertyStatus.SOLD)}
+							onClick={() => changeStatusHandler(WatchStatus.SOLD)}
 							className={searchFilter.search.propertyStatus === 'SOLD' ? 'active-tab-name' : 'tab-name'}
 						>
 							On Sold
@@ -121,7 +121,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 							<Typography className="title-text">Date Published</Typography>
 							<Typography className="title-text">Status</Typography>
 							<Typography className="title-text">View</Typography>
-							{searchFilter.search.propertyStatus === 'ACTIVE' && <Typography className="title-text">Action</Typography> }
+							{searchFilter.search.propertyStatus === 'AVAILABLE' && <Typography className="title-text">Action</Typography> }
 						</Stack>
 
 						{agentProperties?.length === 0 ? (
@@ -170,7 +170,7 @@ MyProperties.defaultProps = {
 		limit: 5,
 		sort: 'createdAt',
 		search: {
-			propertyStatus: 'ACTIVE',
+			propertyStatus: 'AVAILABLE',
 		},
 	},
 };

@@ -19,7 +19,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import OpenInBrowserRoundedIcon from '@mui/icons-material/OpenInBrowserRounded';
 import Moment from 'react-moment';
-import { BoardArticle } from '../../../types/board-article/board-article';
+import { Blog } from '../../../types/board-article/blog';
 import { REACT_APP_API_URL } from '../../../config';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
@@ -120,7 +120,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface CommunityArticleListProps {
-	articles: BoardArticle[];
+	articles: Blog[];
 	anchorEl: any;
 	menuIconClickHandler: any;
 	menuIconCloseHandler: any;
@@ -148,7 +148,7 @@ const CommunityArticleList = (props: CommunityArticleListProps) => {
 						)}
 
 						{articles.length !== 0 &&
-							articles.map((article: BoardArticle, index: number) => (
+							articles.map((article: Blog, index: number) => (
 								<TableRow hover key={article._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 									<TableCell align="left">{article._id}</TableCell>
 									<TableCell align="left">

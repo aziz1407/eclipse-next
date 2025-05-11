@@ -9,11 +9,11 @@ import Select from '@mui/material/Select';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
 import CommunityArticleList from '../../../libs/components/admin/community/CommunityArticleList';
-import { AllBoardArticlesInquiry } from '../../../libs/types/board-article/board-article.input';
-import { BoardArticle } from '../../../libs/types/board-article/board-article';
+import { AllBoardArticlesInquiry } from '../../../libs/types/board-article/blog.input';
+import { Blog } from '../../../libs/types/board-article/blog';
 import { BoardArticleCategory, BoardArticleStatus } from '../../../libs/enums/blog.enum';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
-import { BoardArticleUpdate } from '../../../libs/types/board-article/board-article.update';
+import { BoardArticleUpdate } from '../../../libs/types/board-article/blog.update';
 import { REMOVE_BOARD_ARTICLE_BY_ADMIN, UPDATE_BOARD_ARTICLE_BY_ADMIN } from '../../../apollo/admin/mutation';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_BOARD_ARTICLES_BY_ADMIN } from '../../../apollo/admin/query';
@@ -22,7 +22,7 @@ import { T } from '../../../libs/types/common';
 const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [anchorEl, setAnchorEl] = useState<any>([]);
 	const [communityInquiry, setCommunityInquiry] = useState<AllBoardArticlesInquiry>(initialInquiry);
-	const [articles, setArticles] = useState<BoardArticle[]>([]);
+	const [articles, setArticles] = useState<Blog[]>([]);
 	const [articleTotal, setArticleTotal] = useState<number>(0);
 	const [value, setValue] = useState(
 		communityInquiry?.search?.articleStatus ? communityInquiry?.search?.articleStatus : 'ALL',

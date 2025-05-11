@@ -15,7 +15,7 @@ export interface Property {
 	_id: string;
 	propertyBrand: WatchBrand;
 	propertyStatus: WatchStatus;
-	propertyLocation: WatchCountry;
+	propertyCountry: WatchCountry;
 	propertyAddress: string;
 	propertyModel: string;
 	propertyPrice: number;

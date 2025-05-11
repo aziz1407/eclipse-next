@@ -3,19 +3,19 @@ import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Box } from '@mui/material';
 import Moment from 'react-moment';
-import { BoardArticle } from '../../types/board-article/board-article';
+import { Blog } from '../../types/board-article/blog';
 
 interface CommunityCardProps {
 	vertical: boolean;
-	article: BoardArticle;
+	blog: Blog;
 	index: number;
 }
 
 const CommunityCard = (props: CommunityCardProps) => {
-	const { vertical, article, index } = props;
+	const { vertical, blog, index } = props;
 	const device = useDeviceDetect();
-	const blogImage = article?.blogImage
-		? `${process.env.REACT_APP_API_URL}/${article?.blogImage}`
+	const blogImage = blog?.blogImage
+		? `${process.env.REACT_APP_API_URL}/${blog?.blogImage}`
 		: '/img/event.svg';
 
 	if (device === 'mobile') {
@@ -23,12 +23,12 @@ const CommunityCard = (props: CommunityCardProps) => {
 	} else {
 		if (vertical) {
 			return (
-				<Link href={`/community/detail?articleCategory=${article?.articleCategory}&id=${article?._id}`}>
+				<Link href={`/community/detail?articleCategory=${blog?.blogCategory}&id=${blog?._id}`}>
 					<Box component={'div'} className={'vertical-card'}>
 						<div className={'community-img'} style={{ backgroundImage: `url(${blogImage})` }}>
 							<div>{index + 1}</div>
 						</div>
-						<strong>{article?.articleTitle}</strong>
+						<strong>{blog?.blogTitle}</strong>
 						<span>Free Board</span>
 					</Box>
 				</Link>
@@ -36,13 +36,13 @@ const CommunityCard = (props: CommunityCardProps) => {
 		} else {
 			return (
 				<>
-					<Link href={`/community/detail?articleCategory=${article?.blogCategory}&id=${article?._id}`}>
+					<Link href={`/community/detail?articleCategory=${blog?.blogCategory}&id=${blog?._id}`}>
 						<Box component={'div'} className="horizontal-card">
 							<img src={blogImage} alt="" />
 							<div>
-								<strong>{article.articleTitle}</strong>
+								<strong>{blog.blogTitle}</strong>
 								<span>
-									<Moment format="DD.MM.YY">{article?.createdAt}</Moment>
+									<Moment format="DD.MM.YY">{blog?.createdAt}</Moment>
 								</span>
 							</div>
 						</Box>

@@ -152,7 +152,7 @@ const Top = () => {
         <Link href={'/agent'}>
           <div> {t('Agents')} </div>
         </Link>
-        <Link href={'/community?articleCategory=FREE'}>
+        <Link href={'/community?blogCategory=GENERAL'}>
           <div> {t('Community')} </div>
         </Link>
         <Link href={'/cs'}>
@@ -197,7 +197,7 @@ const Top = () => {
 
             {/* Right navigation links */}
             <Box component={'div'} className={'right-links'}>
-              <Link href={'/community?articleCategory=FREE'}>
+              <Link href={'/community?blogCategory=GENERAL'}>
                 <div>BLOGS</div>
               </Link>
               <Link href={'/mypage'}>

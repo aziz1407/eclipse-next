@@ -60,7 +60,7 @@ const MyMenu = () => {
 							MANAGE LISTINGS
 						</Typography>
 						<List className={'sub-section'}>
-							{user.memberType === 'AGENT' && (
+							{user.memberType === 'DEALER' && (
 								<>
 									<ListItem className={pathname === 'addProperty' ? 'focus' : ''}>
 										<Link
@@ -252,7 +252,7 @@ const MyMenu = () => {
 					<Stack className={'section'} sx={{ marginTop: '10px' }}>
 						<div>
 							<Typography className="title" variant={'h5'}>
-								Community
+								{/* Community */}
 							</Typography>
 							<List className={'sub-section'}>
 								<ListItem className={pathname === 'myArticles' ? 'focus' : ''}>

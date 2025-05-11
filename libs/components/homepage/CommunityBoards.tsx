@@ -3,7 +3,7 @@ import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Stack, Typography } from '@mui/material';
 import CommunityCard from './CommunityCard';
-import { BoardArticle } from '../../types/board-article/board-article';
+import { Blog } from '../../types/board-article/blog';
 import { GET_BLOGS } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { BlogCategory } from '../../enums/blog.enum';
@@ -16,8 +16,8 @@ const CommunityBoards = () => {
 		sort: 'blogViews',
 		direction: 'DESC',
 	});
-	const [newsArticles, setNewsArticles] = useState<BoardArticle[]>([]);
-	const [freeArticles, setFreeArticles] = useState<BoardArticle[]>([]);
+	const [newsArticles, setNewsArticles] = useState<Blog[]>([]);
+	const [freeArticles, setFreeArticles] = useState<Blog[]>([]);
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -27,7 +27,7 @@ const CommunityBoards = () => {
 		refetch: getGeneralBlogsRefetch,
 	} = useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
-		variables: { input: { ...searchCommunity, limit: 6, search: { blogCategory: BlogCategory.GENERAL } } },
+		variables: { input: { ...searchCommunity, limit: 6, search: { blogCategory: BlogCategory.INSTRUCTIVE } } },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			setNewsArticles(data?.getBlogs?.list);
@@ -60,27 +60,27 @@ const CommunityBoards = () => {
 					<Stack className="community-main">
 						<Stack className={'community-left'}>
 							<Stack className={'content-top'}>
-								<Link href={'/community?articleCategory=GENERAL'}>
+								<Link href={'/community?blogCategory=GENERAL'}>
 									<span>General</span>
 								</Link>
 								<img src="/img/icons/arrowBig.svg" alt="" />
 							</Stack>
 							<Stack className={'card-wrap'}>
 								{newsArticles.map((blog, index) => {
-									return <CommunityCard vertical={true} article={blog} index={index} key={blog?._id} />;
+									return <CommunityCard vertical={true} blog={blog} index={index} key={blog?._id} />;
 								})}
 							</Stack>
 						</Stack>
 						<Stack className={'community-right'}>
 							<Stack className={'content-top'}>
-								<Link href={'/community?articleCategory=LIFESTYLE'}>
+								<Link href={'/community?blogCategory=LIFESTYLE'}>
 									<span>LifeStyle</span>
 								</Link>
 								<img src="/img/icons/arrowBig.svg" alt="" />
 							</Stack>
 							<Stack className={'card-wrap vertical'}>
 								{freeArticles.map((blog, index) => {
-									return <CommunityCard vertical={false} article={blog} index={index} key={blog?._id} />;
+									return <CommunityCard vertical={false} blog={blog} index={index} key={blog?._id} />;
 								})}
 							</Stack>
 						</Stack>

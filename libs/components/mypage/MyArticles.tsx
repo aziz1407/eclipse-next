@@ -6,7 +6,7 @@ import CommunityCard from '../common/CommunityCard';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { T } from '../../types/common';
-import { BoardArticle } from '../../types/board-article/board-article';
+import { Blog } from '../../types/board-article/blog';
 import { LIKE_TARGET_BOARD_ARTICLE } from '../../../apollo/user/mutation';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
 import { Messages } from '../../config';
@@ -19,7 +19,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 		...initialInput,
 		search: { memberId: user._id },
 	});
-	const [boardArticles, setBoardArticles] = useState<BoardArticle[]>([]);
+	const [boardArticles, setBoardArticles] = useState<Blog[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
 	/** APOLLO REQUESTS **/
@@ -80,7 +80,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 				</Stack>
 				<Stack className="article-list-box">
 					{boardArticles?.length > 0 ? (
-						boardArticles?.map((boardArticle: BoardArticle) => {
+						boardArticles?.map((boardArticle: Blog) => {
 							return (
 								<CommunityCard
 									boardArticle={boardArticle}

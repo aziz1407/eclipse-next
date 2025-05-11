@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
-import { Stack } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import MyProperties from '../../libs/components/mypage/MyProperties';
@@ -27,11 +26,22 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
+type CategoryType = 
+	| 'myProfile' 
+	| 'myProperties' 
+	| 'myFavorites' 
+	| 'recentlyVisited' 
+	| 'myBlogs' 
+	| 'addProperty' 
+	| 'writeArticle' 
+	| 'followers' 
+	| 'followings';
+
 const MyPage: NextPage = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
-	const category: any = router.query?.category ?? 'myProfile';
+	const category = (router.query?.category as CategoryType) ?? 'myProfile';
 
 	/** APOLLO REQUESTS **/
 	const [subscribe] = useMutation(SUBSCRIBE);
@@ -78,6 +88,7 @@ const MyPage: NextPage = () => {
 			sweetErrorHandling(err).then();
 		}
 	};
+
 	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
 		try {
 			if (!id) return;
@@ -105,19 +116,24 @@ const MyPage: NextPage = () => {
 		}
 	};
 
+	/** RENDERERS **/
 	if (device === 'mobile') {
 		return <div>MY PAGE</div>;
 	} else {
 		return (
-			<div id="my-page" style={{ position: 'relative' }}>
+			<div id="my-page">
 				<div className="container">
-					<Stack className={'my-page'}>
-						<Stack className={'back-frame'}>
-							<Stack className={'left-config'}>
+					<div className="my-page">
+						<div className="back-frame">
+							{/* Left sidebar navigation */}
+							<div className="left-config">
 								<MyMenu />
-							</Stack>
-							<Stack className="main-config" mb={'76px'}>
-								<Stack className={'list-config'}>
+							</div>
+							
+							{/* Main content area */}
+							<div className="main-config">
+								<div className="list-config">
+									{/* Content based on selected category */}
 									{category === 'addProperty' && <AddProperty />}
 									{category === 'myProperties' && <MyProperties />}
 									{category === 'myFavorites' && <MyFavorites />}
@@ -141,10 +157,10 @@ const MyPage: NextPage = () => {
 											redirectToMemberPageHandler={redirectToMemberPageHandler}
 										/>
 									)}
-								</Stack>
-							</Stack>
-						</Stack>
-					</Stack>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		);

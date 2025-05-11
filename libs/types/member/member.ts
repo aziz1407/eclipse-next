@@ -16,7 +16,7 @@ export interface Member {
 	memberDesc?: string;
 	memberProperties: number;
 	memberRank: number;
-	memberArticles: number;
+	memberBlogs: number;
 	memberPoints: number;
 	memberLikes: number;
 	memberFollowers?: number;
@@ -24,7 +24,6 @@ export interface Member {
 	memberViews: number;
 	memberComments: number;
 	memberWarnings: number;
-	memberBlocks: number;
 	deletedAt?: Date;
 	createdAt: Date;
 	updatedAt: Date;

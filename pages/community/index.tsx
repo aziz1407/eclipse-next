@@ -6,12 +6,12 @@ import { Stack, Tab, Typography, Button, Pagination } from '@mui/material';
 import CommunityCard from '../../libs/components/common/CommunityCard';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import { BoardArticle } from '../../libs/types/board-article/board-article';
+import { Blog } from '../../libs/types/board-article/blog';
 import { T } from '../../libs/types/common';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { BoardArticlesInquiry } from '../../libs/types/board-article/board-article.input';
-import { BoardArticleCategory } from '../../libs/enums/blog.enum';
-import { GET_BOARD_ARTICLES } from '../../apollo/user/query';
+import { BlogsInquiry } from '../../libs/types/board-article/blog.input';
+import { BlogCategory } from '../../libs/enums/blog.enum';
+import { GET_BLOGS } from '../../apollo/user/query';
 import { useMutation, useQuery } from '@apollo/client';
 import { LIKE_TARGET_BOARD_ARTICLE } from '../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
@@ -27,11 +27,11 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const { query } = router;
-	const articleCategory = query?.articleCategory as string;
-	const [searchCommunity, setSearchCommunity] = useState<BoardArticlesInquiry>(initialInput);
-	const [boardArticles, setBoardArticles] = useState<BoardArticle[]>([]);
+	const blogCategory = query?.blogCategory as string;
+	const [searchCommunity, setSearchCommunity] = useState<BlogsInquiry>(initialInput);
+	const [blogs, setBlogs] = useState<Blog[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
-	if (articleCategory) initialInput.search.articleCategory = articleCategory;
+	if (blogCategory) initialInput.search.blogCategory = blogCategory;
 
 	/** APOLLO REQUESTS **/
 
@@ -41,24 +41,24 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 		loading: boardArticlesLoading,
 		data: boardArticlesData,
 		error: boardArticlesError,
-		refetch: boardArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
+		refetch: getBlogsRefetch,
+	} = useQuery(GET_BLOGS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { input: searchCommunity },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setBoardArticles(data?.getBoardArticles?.list);
-			setTotalCount(data?.getBoardArticles?.metaCounter[0]?.total);
+			setBlogs(data?.getBlogs?.list);
+			setTotalCount(data?.getBlogs?.metaCounter[0]?.total);
 		},
 	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (!query?.articleCategory)
+		if (!query?.blogCategory)
 			router.push(
 				{
 					pathname: router.pathname,
-					query: { articleCategory: 'FREE' },
+					query: { blogCategory: 'GENERAL' },
 				},
 				router.pathname,
 				{ shallow: true },
@@ -69,11 +69,11 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	const tabChangeHandler = async (e: T, value: string) => {
 		console.log(value);
 
-		setSearchCommunity({ ...searchCommunity, page: 1, search: { articleCategory: value as BoardArticleCategory } });
+		setSearchCommunity({ ...searchCommunity, page: 1, search: { blogCategory: value as BlogCategory } });
 		await router.push(
 			{
 				pathname: '/community',
-				query: { articleCategory: value },
+				query: { blogCategory: value },
 			},
 			router.pathname,
 			{ shallow: true },
@@ -96,7 +96,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 				},
 			});
 
-			await boardArticlesRefetch({ input: searchCommunity });
+			await getBlogsRefetch({ input: searchCommunity });
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
 			console.log('Error, likePropertyHandler', err.message);
@@ -110,7 +110,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 		return (
 			<div id="community-list-page">
 				<div className="container">
-					<TabContext value={searchCommunity.search.articleCategory}>
+					<TabContext value={searchCommunity.search.blogCategory}>
 						<Stack className="main-box">
 							<Stack className="left-config">
 								<Stack className={'image-info'}>
@@ -131,30 +131,30 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 									<Tab
 										value={'FREE'}
 										label={'Free Board'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'FREE' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.blogCategory == 'GENERAL' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'RECOMMEND'}
 										label={'Recommendation'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'RECOMMEND' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.blogCategory == 'LIFESTYLE' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'NEWS'}
 										label={'News'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'NEWS' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.blogCategory == 'INSTRUCTIVE' ? 'active' : ''}`}
 									/>
-									<Tab
+									{/* <Tab
 										value={'HUMOR'}
 										label={'Humor'}
 										className={`tab-button ${searchCommunity.search.articleCategory == 'HUMOR' ? 'active' : ''}`}
-									/>
+									/> */}
 								</TabList>
 							</Stack>
 							<Stack className="right-config">
 								<Stack className="panel-config">
 									<Stack className="title-box">
 										<Stack className="left">
-											<Typography className="title">{searchCommunity.search.articleCategory} BOARD</Typography>
+											<Typography className="title">{searchCommunity.search.blogCategory} BOARD</Typography>
 											<Typography className="sub-title">
 												Express your opinions freely here without content restrictions
 											</Typography>
@@ -174,10 +174,70 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										</Button>
 									</Stack>
 
-									<TabPanel value="FREE">
+									<TabPanel value="GENERAL">
 										<Stack className="list-box">
 											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
+												blogs?.map((blog: Blog) => {
+													return (
+														<CommunityCard
+															blog={blog}
+															key={blog?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
+												})
+											) : (
+												<Stack className={'no-data'}>
+													<img src="/img/icons/icoAlert.svg" alt="" />
+													<p>No Article found!</p>
+												</Stack>
+											)}
+										</Stack>
+									</TabPanel>
+									<TabPanel value="LIFESTYLE">
+										<Stack className="list-box">
+											{totalCount ? (
+												blogs?.map((blog: Blog) => {
+													return (
+														<CommunityCard
+															blog={blog}
+															key={blog?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
+												})
+											) : (
+												<Stack className={'no-data'}>
+													<img src="/img/icons/icoAlert.svg" alt="" />
+													<p>No Article found!</p>
+												</Stack>
+											)}
+										</Stack>
+									</TabPanel>
+									<TabPanel value="INSTRUCTIVE">
+										<Stack className="list-box">
+											{totalCount ? (
+												blogs?.map((blog: Blog) => {
+													return (
+														<CommunityCard
+															blog={blog}
+															key={blog?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
+												})
+											) : (
+												<Stack className={'no-data'}>
+													<img src="/img/icons/icoAlert.svg" alt="" />
+													<p>No Article found!</p>
+												</Stack>
+											)}
+										</Stack>
+									</TabPanel>
+									{/* <TabPanel value="HUMOR">
+										<Stack className="list-box">
+											{totalCount ? (
+												boardArticles?.map((boardArticle: Blog) => {
 													return (
 														<CommunityCard
 															boardArticle={boardArticle}
@@ -193,67 +253,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 												</Stack>
 											)}
 										</Stack>
-									</TabPanel>
-									<TabPanel value="RECOMMEND">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
-									</TabPanel>
-									<TabPanel value="NEWS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
-									</TabPanel>
-									<TabPanel value="HUMOR">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
-									</TabPanel>
+									</TabPanel> */}
 								</Stack>
 							</Stack>
 						</Stack>

@@ -43,7 +43,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			setMemberFollowings(data?.getMemberFollowings?.list);
-			setTotal(data?.getMemberFollowings7.metaCounter[0]?.total);
+			setTotal(data?.getMemberFollowings.metaCounter[0]?.total);
 		},
 	});
 

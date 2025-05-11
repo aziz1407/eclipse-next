@@ -13,12 +13,17 @@ import {
 	IconButton,
 } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyLocation, PropertyType } from '../../enums/property.enum';
+import { WatchBrand, WatchCountry, WatchCondition, WatchMovement, WatchGender, WatchMaterial } from '../../enums/property.enum';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { propertySquare } from '../../config';
 import RefreshIcon from '@mui/icons-material/Refresh';
+
+interface Range {
+  start: number;
+  end: number;
+}
 
 const MenuProps = {
 	PaperProps: {
@@ -38,8 +43,8 @@ const Filter = (props: FilterType) => {
 	const { searchFilter, setSearchFilter, initialInput } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [propertyLocation, setPropertyLocation] = useState<PropertyLocation[]>(Object.values(PropertyLocation));
-	const [propertyType, setPropertyType] = useState<PropertyType[]>(Object.values(PropertyType));
+	const [watchCountries, setWatchCountries] = useState<WatchCountry[]>(Object.values(WatchCountry));
+	const [watchBrands, setWatchBrands] = useState<WatchBrand[]>(Object.values(WatchBrand));
 	const [searchText, setSearchText] = useState<string>('');
 	const [showMore, setShowMore] = useState<boolean>(false);
 
@@ -55,20 +60,22 @@ const Filter = (props: FilterType) => {
 		if (searchFilter?.search?.locationList?.length == 0) {
 			delete searchFilter.search.locationList;
 			setShowMore(false);
+			
+			// Reset to initial input for locationList if it becomes empty
+			const updatedFilter = {
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+					locationList: initialInput.search?.locationList || undefined
+				}
+			};
+			
+			setSearchFilter(updatedFilter);
+			
 			router
 				.push(
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
+					`/property?input=${JSON.stringify(updatedFilter)}`,
+					`/property?input=${JSON.stringify(updatedFilter)}`,
 					{ scroll: false },
 				)
 				.then();
@@ -95,8 +102,8 @@ const Filter = (props: FilterType) => {
 				.then();
 		}
 
-		if (searchFilter?.search?.roomsList?.length == 0) {
-			delete searchFilter.search.roomsList;
+		if (searchFilter?.search?.propertyCategory?.length == 0) {
+			delete searchFilter.search.propertyCategory;
 			router
 				.push(
 					`/property?input=${JSON.stringify({
@@ -137,8 +144,8 @@ const Filter = (props: FilterType) => {
 				.then();
 		}
 
-		if (searchFilter?.search?.bedsList?.length == 0) {
-			delete searchFilter.search.bedsList;
+		if (searchFilter?.search?.propertyMaterial?.length == 0) {
+			delete searchFilter.search.propertyMaterial;
 			router
 				.push(
 					`/property?input=${JSON.stringify({
@@ -162,11 +169,12 @@ const Filter = (props: FilterType) => {
 	}, [searchFilter]);
 
 	/** HANDLERS **/
-	const propertyLocationSelectHandler = useCallback(
+	const watchCountrySelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
+				
 				if (isChecked) {
 					await router.push(
 						`/property?input=${JSON.stringify({
@@ -180,38 +188,69 @@ const Filter = (props: FilterType) => {
 						{ scroll: false },
 					);
 				} else if (searchFilter?.search?.locationList?.includes(value)) {
-					await router.push(
-						`/property?input=${JSON.stringify({
+					// Check if this is the last selected item in locationList
+					if (searchFilter?.search?.locationList?.length === 1) {
+						// Reset to initial input state for the locationList
+						setSearchFilter({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
+								locationList: initialInput.search?.locationList || []
+							}
+						});
+						
+						await router.push(
+							`/property?input=${JSON.stringify({
+								...searchFilter,
+								search: {
+									...searchFilter.search,
+									locationList: initialInput.search?.locationList || []
+								},
+							})}`,
+							`/property?input=${JSON.stringify({
+								...searchFilter,
+								search: {
+									...searchFilter.search,
+									locationList: initialInput.search?.locationList || []
+								},
+							})}`,
+							{ scroll: false },
+						);
+					} else {
+						// Just remove the one item as before
+						await router.push(
+							`/property?input=${JSON.stringify({
+								...searchFilter,
+								search: {
+									...searchFilter.search,
+									locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
+								},
+							})}`,
+							`/property?input=${JSON.stringify({
+								...searchFilter,
+								search: {
+									...searchFilter.search,
+									locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
+								},
+							})}`,
+							{ scroll: false },
+						);
+					}
 				}
 
 				if (searchFilter?.search?.typeList?.length == 0) {
-					alert('error');
+					console.log('No watch brand selected');
 				}
 
-				console.log('propertyLocationSelectHandler:', e.target.value);
+				console.log('watchCountrySelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyLocationSelectHandler:', err);
+				console.log('ERROR, watchCountrySelectHandler:', err);
 			}
 		},
-		[searchFilter],
+		[searchFilter, initialInput, setSearchFilter],
 	);
 
-	const propertyTypeSelectHandler = useCallback(
+	const watchBrandSelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
@@ -249,81 +288,61 @@ const Filter = (props: FilterType) => {
 				}
 
 				if (searchFilter?.search?.typeList?.length == 0) {
-					alert('error');
+					console.log('No watch brand selected');
 				}
 
-				console.log('propertyTypeSelectHandler:', e.target.value);
+				console.log('watchBrandSelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyTypeSelectHandler:', err);
+				console.log('ERROR, watchBrandSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertyRoomSelectHandler = useCallback(
-		async (number: Number) => {
+	const watchGenderSelectHandler = useCallback(
+		async (gender: WatchGender) => {
 			try {
-				if (number != 0) {
-					if (searchFilter?.search?.roomsList?.includes(number)) {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									roomsList: searchFilter?.search?.roomsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									roomsList: searchFilter?.search?.roomsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							{ scroll: false },
-						);
-					} else {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, roomsList: [...(searchFilter?.search?.roomsList || []), number] },
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, roomsList: [...(searchFilter?.search?.roomsList || []), number] },
-							})}`,
-							{ scroll: false },
-						);
-					}
-				} else {
-					delete searchFilter?.search.roomsList;
-					setSearchFilter({ ...searchFilter });
+				if (searchFilter?.search?.propertyCategory?.includes(gender)) {
 					await router.push(
 						`/property?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
+								propertyCategory: searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender),
 							},
 						})}`,
 						`/property?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
+								propertyCategory: searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender),
 							},
+						})}`,
+						{ scroll: false },
+					);
+				} else {
+					await router.push(
+						`/property?input=${JSON.stringify({
+							...searchFilter,
+							search: { ...searchFilter.search, propertyCategory: [...(searchFilter?.search?.propertyCategory || []), gender] },
+						})}`,
+						`/property?input=${JSON.stringify({
+							...searchFilter,
+							search: { ...searchFilter.search, propertyCategory: [...(searchFilter?.search?.propertyCategory || []), gender] },
 						})}`,
 						{ scroll: false },
 					);
 				}
 
-				console.log('propertyRoomSelectHandler:', number);
+				console.log('watchGenderSelectHandler:', gender);
 			} catch (err: any) {
-				console.log('ERROR, propertyRoomSelectHandler:', err);
+				console.log('ERROR, watchGenderSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertyOptionSelectHandler = useCallback(
+	const watchOptionSelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
@@ -360,123 +379,116 @@ const Filter = (props: FilterType) => {
 					);
 				}
 
-				console.log('propertyOptionSelectHandler:', e.target.value);
+				console.log('watchOptionSelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyOptionSelectHandler:', err);
+				console.log('ERROR, watchOptionSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertyBedSelectHandler = useCallback(
-		async (number: Number) => {
+	const watchMaterialSelectHandler = useCallback(
+		async (e: any) => {
 			try {
-				if (number != 0) {
-					if (searchFilter?.search?.bedsList?.includes(number)) {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									bedsList: searchFilter?.search?.bedsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									bedsList: searchFilter?.search?.bedsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							{ scroll: false },
-						);
-					} else {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, bedsList: [...(searchFilter?.search?.bedsList || []), number] },
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, bedsList: [...(searchFilter?.search?.bedsList || []), number] },
-							})}`,
-							{ scroll: false },
-						);
-					}
-				} else {
-					delete searchFilter?.search.bedsList;
-					setSearchFilter({ ...searchFilter });
+				const isChecked = e.target.checked;
+				const value = e.target.value;
+				if (isChecked) {
+					await router.push(
+						`/property?input=${JSON.stringify({
+							...searchFilter,
+							search: { ...searchFilter.search, propertyMaterial: [...(searchFilter?.search?.propertyMaterial || []), value] },
+						})}`,
+						`/property?input=${JSON.stringify({
+							...searchFilter,
+							search: { ...searchFilter.search, propertyMaterial: [...(searchFilter?.search?.propertyMaterial || []), value] },
+						})}`,
+						{ scroll: false },
+					);
+				} else if (searchFilter?.search?.propertyMaterial?.includes(value)) {
 					await router.push(
 						`/property?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
+								propertyMaterial: searchFilter?.search?.propertyMaterial?.filter((item: string) => item !== value),
 							},
 						})}`,
 						`/property?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
+								propertyMaterial: searchFilter?.search?.propertyMaterial?.filter((item: string) => item !== value),
 							},
 						})}`,
 						{ scroll: false },
 					);
 				}
 
-				console.log('propertyBedSelectHandler:', number);
+				console.log('watchMaterialSelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyBedSelectHandler:', err);
+				console.log('ERROR, watchMaterialSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertySquareHandler = useCallback(
-		async (e: any, type: string) => {
-			const value = e.target.value;
-
-			if (type == 'start') {
+	const watchConditionHandler = useCallback(
+		async (e: any) => {
+			try {
+				const value = e.target.value;
 				await router.push(
 					`/property?input=${JSON.stringify({
 						...searchFilter,
 						search: {
 							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, start: value },
+							propertyCondition: value,
 						},
 					})}`,
 					`/property?input=${JSON.stringify({
 						...searchFilter,
 						search: {
 							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, start: value },
+							propertyCondition: value,
 						},
 					})}`,
 					{ scroll: false },
 				);
-			} else {
-				await router.push(
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, end: value },
-						},
-					})}`,
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, end: value },
-						},
-					})}`,
-					{ scroll: false },
-				);
+			} catch (err: any) {
+				console.log('ERROR, watchConditionHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertyPriceHandler = useCallback(
+	const watchMovementHandler = useCallback(
+		async (e: any) => {
+			try {
+				const value = e.target.value;
+				await router.push(
+					`/property?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							propertyMovement: value,
+						},
+					})}`,
+					`/property?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							propertyMovement: value,
+						},
+					})}`,
+					{ scroll: false },
+				);
+			} catch (err: any) {
+				console.log('ERROR, watchMovementHandler:', err);
+			}
+		},
+		[searchFilter],
+	);
+
+	const watchPriceHandler = useCallback(
 		async (value: number, type: string) => {
 			if (type == 'start') {
 				await router.push(
@@ -533,12 +545,12 @@ const Filter = (props: FilterType) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>PROPERTIES FILTER</div>;
+		return <div>WATCHES FILTER</div>;
 	} else {
 		return (
 			<Stack className={'filter-main'}>
 				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Home</Typography>
+					<Typography className={'title-main'}>Find Your Watch</Typography>
 					<Stack className={'input-box'}>
 						<OutlinedInput
 							value={searchText}
@@ -578,7 +590,7 @@ const Filter = (props: FilterType) => {
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<p className={'title'} style={{ textShadow: '0px 3px 4px #b9b9b9' }}>
-						Location
+						Country of Origin
 					</p>
 					<Stack
 						className={`property-location`}
@@ -590,20 +602,20 @@ const Filter = (props: FilterType) => {
 							}
 						}}
 					>
-						{propertyLocation.map((location: string) => {
+						{watchCountries.map((country: string) => {
 							return (
-								<Stack className={'input-box'} key={location}>
+								<Stack className={'input-box'} key={country}>
 									<Checkbox
-										id={location}
+										id={country}
 										className="property-checkbox"
 										color="default"
 										size="small"
-										value={location}
-										checked={(searchFilter?.search?.locationList || []).includes(location as PropertyLocation)}
-										onChange={propertyLocationSelectHandler}
+										value={country}
+										checked={(searchFilter?.search?.locationList || []).includes(country as WatchCountry)}
+										onChange={watchCountrySelectHandler}
 									/>
-									<label htmlFor={location} style={{ cursor: 'pointer' }}>
-										<Typography className="property-type">{location}</Typography>
+									<label htmlFor={country} style={{ cursor: 'pointer' }}>
+										<Typography className="property-type">{country}</Typography>
 									</label>
 								</Stack>
 							);
@@ -611,230 +623,144 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Property Type</Typography>
-					{propertyType.map((type: string) => (
-						<Stack className={'input-box'} key={type}>
+					<Typography className={'title'}>Watch Brand</Typography>
+					{watchBrands.map((brand: string) => (
+						<Stack className={'input-box'} key={brand}>
 							<Checkbox
-								id={type}
+								id={brand}
 								className="property-checkbox"
 								color="default"
 								size="small"
-								value={type}
-								onChange={propertyTypeSelectHandler}
-								checked={(searchFilter?.search?.typeList || []).includes(type as PropertyType)}
+								value={brand}
+								onChange={watchBrandSelectHandler}
+								checked={(searchFilter?.search?.typeList || []).includes(brand as WatchBrand)}
 							/>
 							<label style={{ cursor: 'pointer' }}>
-								<Typography className="property_type">{type}</Typography>
+								<Typography className="property_type">{brand}</Typography>
 							</label>
 						</Stack>
 					))}
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Rooms</Typography>
+					<Typography className={'title'}>Gender</Typography>
 					<Stack className="button-group">
 						<Button
 							sx={{
 								borderRadius: '12px 0 0 12px',
-								border: !searchFilter?.search?.roomsList ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.MALE) ? '2px solid #181A20' : '1px solid #b9b9b9',
 							}}
-							onClick={() => propertyRoomSelectHandler(0)}
+							onClick={() => watchGenderSelectHandler(WatchGender.MALE)}
 						>
-							Any
+							Men's
 						</Button>
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(1) ? undefined : 'none',
+								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE) ? undefined : 'none',
 							}}
-							onClick={() => propertyRoomSelectHandler(1)}
+							onClick={() => watchGenderSelectHandler(WatchGender.FEMALE)}
 						>
-							1
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(2) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(2)}
-						>
-							2
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(3) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(3) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(3)}
-						>
-							3
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(4) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(4) ? undefined : 'none',
-								borderRight: searchFilter?.search?.roomsList?.includes(4) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(4)}
-						>
-							4
+							Women's
 						</Button>
 						<Button
 							sx={{
 								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.roomsList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX) ? undefined : 'none',
 							}}
-							onClick={() => propertyRoomSelectHandler(5)}
+							onClick={() => watchGenderSelectHandler(WatchGender.UNISEX)}
 						>
-							5+
+							Unisex
 						</Button>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Bedrooms</Typography>
-					<Stack className="button-group">
-						<Button
-							sx={{
-								borderRadius: '12px 0 0 12px',
-								border: !searchFilter?.search?.bedsList ? '2px solid #181A20' : '1px solid #b9b9b9',
-							}}
-							onClick={() => propertyBedSelectHandler(0)}
+					<Typography className={'title'}>Watch Condition</Typography>
+					<FormControl fullWidth>
+						<InputLabel id="condition-select-label">Condition</InputLabel>
+						<Select
+							labelId="condition-select-label"
+							id="condition-select"
+							value={searchFilter?.search?.propertyCondition || ''}
+							label="Condition"
+							onChange={watchConditionHandler}
 						>
-							Any
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(1) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(1)}
+							{Object.values(WatchCondition).map((condition: string) => (
+								<MenuItem value={condition} key={condition}>
+									{condition}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</Stack>
+				<Stack className={'find-your-home'} mb={'30px'}>
+					<Typography className={'title'}>Watch Movement</Typography>
+					<FormControl fullWidth>
+						<InputLabel id="movement-select-label">Movement</InputLabel>
+						<Select
+							labelId="movement-select-label"
+							id="movement-select"
+							value={searchFilter?.search?.propertyMovement || ''}
+							label="Movement"
+							onChange={watchMovementHandler}
 						>
-							1
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(2) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(2)}
-						>
-							2
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(3) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(3) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(3)}
-						>
-							3
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(4) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(4) ? undefined : 'none',
-								// borderRight: false ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(4)}
-						>
-							4
-						</Button>
-						<Button
-							sx={{
-								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.bedsList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(5) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(5)}
-						>
-							5+
-						</Button>
-					</Stack>
+							{Object.values(WatchMovement).map((movement: string) => (
+								<MenuItem value={movement} key={movement}>
+									{movement}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</Stack>
+				<Stack className={'find-your-home'} mb={'30px'}>
+					<Typography className={'title'}>Watch Material</Typography>
+					{Object.values(WatchMaterial).map((material: string) => (
+						<Stack className={'input-box'} key={material}>
+							<Checkbox
+								id={material}
+								className="property-checkbox"
+								color="default"
+								size="small"
+								value={material}
+								onChange={watchMaterialSelectHandler}
+								checked={(searchFilter?.search?.propertyMaterial || []).includes(material as WatchMaterial)}
+							/>
+							<label style={{ cursor: 'pointer' }}>
+								<Typography className="property_type">{material}</Typography>
+							</label>
+						</Stack>
+					))}
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Options</Typography>
 					<Stack className={'input-box'}>
 						<Checkbox
-							id={'Barter'}
+							id={'forSale'}
 							className="property-checkbox"
 							color="default"
 							size="small"
-							value={'propertyBarter'}
-							checked={(searchFilter?.search?.options || []).includes('propertyBarter')}
-							onChange={propertyOptionSelectHandler}
+							value={'forSale'}
+							checked={(searchFilter?.search?.options || []).includes('forSale')}
+							onChange={watchOptionSelectHandler}
 						/>
-						<label htmlFor={'Barter'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Barter</Typography>
+						<label htmlFor={'forSale'} style={{ cursor: 'pointer' }}>
+							<Typography className="propert-type">For Sale</Typography>
 						</label>
 					</Stack>
 					<Stack className={'input-box'}>
 						<Checkbox
-							id={'Rent'}
+							id={'auction'}
 							className="property-checkbox"
 							color="default"
 							size="small"
-							value={'propertyRent'}
-							checked={(searchFilter?.search?.options || []).includes('propertyRent')}
-							onChange={propertyOptionSelectHandler}
+							value={'auction'}
+							checked={(searchFilter?.search?.options || []).includes('auction')}
+							onChange={watchOptionSelectHandler}
 						/>
-						<label htmlFor={'Rent'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Rent</Typography>
+						<label htmlFor={'auction'} style={{ cursor: 'pointer' }}>
+							<Typography className="propert-type">Auction</Typography>
 						</label>
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Square meter</Typography>
-					<Stack className="square-year-input">
-						<FormControl>
-							<InputLabel id="demo-simple-select-label">Min</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={searchFilter?.search?.squaresRange?.start ?? 0}
-								label="Min"
-								onChange={(e: any) => propertySquareHandler(e, 'start')}
-								MenuProps={MenuProps}
-							>
-								{propertySquare.map((square: number) => (
-									<MenuItem
-										value={square}
-										disabled={(searchFilter?.search?.squaresRange?.end || 0) < square}
-										key={square}
-									>
-										{square}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<div className="central-divider"></div>
-						<FormControl>
-							<InputLabel id="demo-simple-select-label">Max</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={searchFilter?.search?.squaresRange?.end ?? 500}
-								label="Max"
-								onChange={(e: any) => propertySquareHandler(e, 'end')}
-								MenuProps={MenuProps}
-							>
-								{propertySquare.map((square: number) => (
-									<MenuItem
-										value={square}
-										disabled={(searchFilter?.search?.squaresRange?.start || 0) > square}
-										key={square}
-									>
-										{square}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'}>
@@ -847,7 +773,7 @@ const Filter = (props: FilterType) => {
 							value={searchFilter?.search?.pricesRange?.start ?? 0}
 							onChange={(e: any) => {
 								if (e.target.value >= 0) {
-									propertyPriceHandler(e.target.value, 'start');
+									watchPriceHandler(e.target.value, 'start');
 								}
 							}}
 						/>
@@ -858,7 +784,7 @@ const Filter = (props: FilterType) => {
 							value={searchFilter?.search?.pricesRange?.end ?? 0}
 							onChange={(e: any) => {
 								if (e.target.value >= 0) {
-									propertyPriceHandler(e.target.value, 'end');
+									watchPriceHandler(e.target.value, 'end');
 								}
 							}}
 						/>

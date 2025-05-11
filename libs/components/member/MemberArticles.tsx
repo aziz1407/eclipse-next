@@ -5,8 +5,8 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
 import CommunityCard from '../common/CommunityCard';
 import { T } from '../../types/common';
-import { BoardArticle } from '../../types/board-article/board-article';
-import { BoardArticlesInquiry } from '../../types/board-article/board-article.input';
+import { Blog } from '../../types/board-article/blog';
+import { BlogsInquiry } from '../../types/board-article/blog.input';
 import { useMutation, useQuery } from '@apollo/client';
 import { LIKE_TARGET_BOARD_ARTICLE } from '../../../apollo/user/mutation';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
@@ -18,8 +18,8 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 	const router = useRouter();
 	const [total, setTotal] = useState<number>(0);
 	const { memberId } = router.query;
-	const [searchFilter, setSearchFilter] = useState<BoardArticlesInquiry>(initialInput);
-	const [memberBoArticles, setMemberBoArticles] = useState<BoardArticle[]>([]);
+	const [searchFilter, setSearchFilter] = useState<BlogsInquiry>(initialInput);
+	const [memberBoArticles, setMemberBoArticles] = useState<Blog[]>([]);
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
@@ -91,7 +91,7 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 							<p>No Articles found!</p>
 						</div>
 					)}
-					{memberBoArticles?.map((boardArticle: BoardArticle) => {
+					{memberBoArticles?.map((boardArticle: Blog) => {
 						return (
 							<CommunityCard
 								boardArticle={boardArticle}

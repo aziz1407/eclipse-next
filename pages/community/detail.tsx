@@ -20,7 +20,7 @@ import { CommentGroup, CommentStatus } from '../../libs/enums/comment.enum';
 import { T } from '../../libs/types/common';
 import EditIcon from '@mui/icons-material/Edit';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { BoardArticle } from '../../libs/types/board-article/board-article';
+import { Blog } from '../../libs/types/board-article/blog';
 import { CREATE_COMMENT, LIKE_TARGET_BOARD_ARTICLE, UPDATE_COMMENT } from '../../apollo/user/mutation';
 import { GET_BLOG, GET_COMMENTS } from '../../apollo/user/query';
 import { Messages } from '../../libs/config';
@@ -44,8 +44,8 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const router = useRouter();
 	const { query } = router;
 
-	const articleId = query?.id as string;
-	const articleCategory = query?.articleCategory as string;
+	const blogId = query?.id as string;
+	const blogCategory = query?.blogCategory as string;
 
 	const [comment, setComment] = useState<string>('');
 	const [wordsCnt, setWordsCnt] = useState<number>(0);
@@ -64,7 +64,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const [updatedComment, setUpdatedComment] = useState<string>('');
 	const [updatedCommentId, setUpdatedCommentId] = useState<string>('');
 	const [likeLoading, setLikeLoading] = useState<boolean>(false);
-	const [boardArticle, setBoardArticle] = useState<BoardArticle>();
+	const [blog, setBlog] = useState<Blog>();
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
@@ -79,13 +79,13 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	} = useQuery(GET_BLOG, {
 		fetchPolicy: 'network-only',
 		variables: {
-			input: articleId,
+			input: blogId,
 		},
 		notifyOnNetworkStatusChange: true,
 		onCompleted(data: any) {
-			setBoardArticle(data?.getBoardArticle);
-			if (data?.getBoardArticle.memberData.memberImage) {
-				setMemberImage(`${process.env.REACT_APP_API_URL}/${data?.getBoardArticle?.memberData?.memberImage}`);
+			setBlog(data?.getBlog);
+			if (data?.getBlog.memberData.memberImage) {
+				setMemberImage(`${process.env.REACT_APP_API_URL}/${data?.getBlog?.memberData?.memberImage}`);
 			}
 		},
 	});
@@ -108,15 +108,15 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	});
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (articleId) setSearchFilter({ ...searchFilter, search: { commentRefId: articleId } });
-	}, [articleId]);
+		if (blogId) setSearchFilter({ ...searchFilter, search: { commentRefId: blogId } });
+	}, [blogId]);
 
 	/** HANDLERS **/
 	const tabChangeHandler = (event: React.SyntheticEvent, value: string) => {
 		router.replace(
 			{
 				pathname: '/community',
-				query: { articleCategory: value },
+				query: { blogCategory: value },
 			},
 			'/community',
 			{ shallow: true },
@@ -136,7 +136,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 					input: id,
 				},
 			});
-			await boardArticleRefetch({ input: articleId });
+			await boardArticleRefetch({ input: blogId });
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
 			console.log('ERROR, likeBoArticleHandler:', err.message);
@@ -151,8 +151,8 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 		try {
 			if (!user?._id) throw new Error(Messages.error2);
 			const commentInput: CommentInput = {
-				commentGroup: CommentGroup.ARTICLE,
-				commentRefId: articleId,
+				commentGroup: CommentGroup.BLOG,
+				commentRefId: blogId,
 				commentContent: comment,
 			};
 			await createComment({
@@ -161,7 +161,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 				},
 			});
 			await getCommentsRefetch({ input: searchFilter });
-			await boardArticleRefetch({ input: articleId });
+			await boardArticleRefetch({ input: blogId });
 			setComment('');
 			await sweetMixinSuccessAlert('Successfully commented!');
 		} catch (error: any) {
@@ -261,34 +261,30 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 									style: { display: 'none' },
 								}}
 								onChange={tabChangeHandler}
-								value={articleCategory}
+								value={blogCategory}
 							>
 								<Tab
-									value={'FREE'}
+									value={'GENERAL'}
 									label={'Free Board'}
-									className={`tab-button ${articleCategory === 'FREE' ? 'active' : ''}`}
+									className={`tab-button ${blogCategory === 'GENERAL' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'RECOMMEND'}
+									value={'LIFESTYLE'}
 									label={'Recommendation'}
-									className={`tab-button ${articleCategory === 'RECOMMEND' ? 'active' : ''}`}
+									className={`tab-button ${blogCategory === 'LIFESTYLE' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'NEWS'}
+									value={'INSTRUCTIVE'}
 									label={'News'}
-									className={`tab-button ${articleCategory === 'NEWS' ? 'active' : ''}`}
+									className={`tab-button ${blogCategory === 'INSTRUCTIVE' ? 'active' : ''}`}
 								/>
-								<Tab
-									value={'HUMOR'}
-									label={'Humor'}
-									className={`tab-button ${articleCategory === 'HUMOR' ? 'active' : ''}`}
-								/>
-							</Tabs>
+								
+							</Tabs> 
 						</Stack>
 						<div className="community-detail-config">
 							<Stack className="title-box">
 								<Stack className="left">
-									<Typography className="title">{articleCategory} BOARD</Typography>
+									<Typography className="title">{blogCategory} BOARD</Typography>
 									<Typography className="sub-title">
 										Express your opinions freely here without content restrictions
 									</Typography>
@@ -311,57 +307,57 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 								<Stack className="first-box-config">
 									<Stack className="content-and-info">
 										<Stack className="content">
-											<Typography className="content-data">{boardArticle?.articleTitle}</Typography>
+											<Typography className="content-data">{blog?.blogTitle}</Typography>
 											<Stack className="member-info">
 												<img
 													src={memberImage}
 													alt=""
 													className="member-img"
-													onClick={() => goMemberPage(boardArticle?.memberData?._id)}
+													onClick={() => goMemberPage(blog?.memberData?._id)}
 												/>
-												<Typography className="member-nick" onClick={() => goMemberPage(boardArticle?.memberData?._id)}>
-													{boardArticle?.memberData?.memberNick}
+												<Typography className="member-nick" onClick={() => goMemberPage(blog?.memberData?._id)}>
+													{blog?.memberData?.memberNick}
 												</Typography>
 												<Stack className="divider"></Stack>
 												<Moment className={'time-added'} format={'DD.MM.YY HH:mm'}>
-													{boardArticle?.createdAt}
+													{blog?.createdAt}
 												</Moment>
 											</Stack>
 										</Stack>
 										<Stack className="info">
 											<Stack className="icon-info">
-												{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
-													<ThumbUpAltIcon onClick={() => likeBoArticleHandler(user, boardArticle?._id)} />
+												{blog?.meLiked && blog?.meLiked[0]?.myFavorite ? (
+													<ThumbUpAltIcon onClick={() => likeBoArticleHandler(user, blog?._id)} />
 												) : (
-													<ThumbUpOffAltIcon onClick={() => likeBoArticleHandler(user, boardArticle!._id)} />
+													<ThumbUpOffAltIcon onClick={() => likeBoArticleHandler(user, blog!._id)} />
 												)}
-												<Typography className="text">{boardArticle?.articleLikes}</Typography>
+												<Typography className="text">{blog?.blogLikes}</Typography>
 											</Stack>
 											<Stack className="divider"></Stack>
 											<Stack className="icon-info">
 												<VisibilityIcon />
-												<Typography className="text">{boardArticle?.articleViews}</Typography>
+												<Typography className="text">{blog?.blogViews}</Typography>
 											</Stack>
 											<Stack className="divider"></Stack>
 											<Stack className="icon-info">
 												{total > 0 ? <ChatIcon /> : <ChatBubbleOutlineRoundedIcon />}
 
-												<Typography className="text">{boardArticle?.articleComments}</Typography>
+												<Typography className="text">{blog?.blogComments}</Typography>
 											</Stack>
 										</Stack>
 									</Stack>
 									<Stack>
-										<ToastViewerComponent markdown={boardArticle?.articleContent} className={'ytb_play'} />
+										<ToastViewerComponent markdown={blog?.blogContent} className={'ytb_play'} />
 									</Stack>
 									<Stack className="like-and-dislike">
 										<Stack className="top">
 											<Button>
-												{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
-													<ThumbUpAltIcon onClick={() => likeBoArticleHandler(user, boardArticle?._id)} />
+												{blog?.meLiked && blog?.meLiked[0]?.myFavorite ? (
+													<ThumbUpAltIcon onClick={() => likeBoArticleHandler(user, blog?._id)} />
 												) : (
-													<ThumbUpOffAltIcon onClick={() => likeBoArticleHandler(user, boardArticle!._id)} />
+													<ThumbUpOffAltIcon onClick={() => likeBoArticleHandler(user, blog!._id)} />
 												)}
-												<Typography className="text">{boardArticle?.articleLikes}</Typography>
+												<Typography className="text">{blog?.blogLikes}</Typography>
 											</Button>
 										</Stack>
 									</Stack>
