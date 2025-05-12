@@ -116,7 +116,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch1.jpg" alt="Luxury watch" />
+											<img src="/img/watches/all.jpg" alt="Luxury watch" />
 										</a>
 									</div>
 									<div className="instagram-image">
@@ -143,7 +143,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch4.jpg" alt="Luxury watch" />
+											<img src="/img/watches/watch1.jpg" alt="Luxury watch" />
 										</a>
 									</div>
 									<div className="instagram-image">
