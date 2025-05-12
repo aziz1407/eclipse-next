@@ -770,12 +770,19 @@
 				}
 			}
 		}
+		.category-frame {
+			width: 100%;
+			background-color: #111; 
+			display: flex;
+			justify-content: center;
+			padding: 60px 0; 
+		  }
 		.product-category {
 			display: flex;
 			width: 95%;
 			height: 600px;
 			gap: 16px;
-			margin: 40px auto; 
+			margin: 0px auto; 
 			overflow: hidden;
 		  }
 		  

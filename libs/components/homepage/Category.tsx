@@ -1,13 +1,15 @@
 
+import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-const ProductCategory = () => {
+const Category = () => {
   const router = useRouter();
 
   const navigate = () => router.push('/property');
 
   return (
+    <Stack className={"category-frame"}>
     <section className="product-category">
       <div className="left" onClick={navigate}>
         <Image
@@ -38,7 +40,7 @@ const ProductCategory = () => {
 
         <div className="bottom" onClick={navigate}>
           <Image
-            src="/img/watches/unisexx.jpg"
+            src="/img/watches/unisex.jpg"
             alt="watch"
             fill
             className="image"
@@ -50,7 +52,8 @@ const ProductCategory = () => {
         </div>
       </div>
     </section>
+    </Stack>
   );
 };
 
-export default ProductCategory;
+export default Category;
