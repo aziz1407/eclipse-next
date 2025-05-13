@@ -36,8 +36,8 @@ const CommunityBoards = () => {
 
 	const {
 		loading: getLifeStyleBlogsLoading,
-		data: etLifeStyleBlogsData,
-		error: etLifeStyleBlogsError,
+		data: getLifeStyleBlogsData,
+		error: getLifeStyleBlogsError,
 		refetch: getLifeStyleBlogsRefetch,
 	} = useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',

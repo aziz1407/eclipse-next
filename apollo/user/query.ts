@@ -450,58 +450,54 @@ export const GET_BLOG = gql`
 
 export const GET_BLOGS = gql`
 	query GetBlogs($input: BlogsInquiry!) {
-		getBlogs(input: $input) {
-			list {
-				_id
-				blogCategory
-				blogStatus
-				blogTitle
-				blogContent
-				blogImage
-				blogViews
-				blogLikes
-				blogComments
-				memberId
-				createdAt
-				updatedAt
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberPhone
-					memberEmail
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
-					memberProperties
-					memberBlogs
-					memberFollowers
-					memberFollowings
-					memberPoints
-					memberLikes
-					memberViews
-					memberComments
-					memberRank
-					memberWarnings
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
-				}
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+    getBlogs(input: $input) {
+        list {
+            _id
+            blogCategory
+            blogStatus
+            blogTitle
+            blogContent
+            blogImage
+            blogViews
+            blogLikes
+            blogComments
+            memberId
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberType
+                memberStatus
+                memberAuthType
+                memberPhone
+                memberEmail
+                memberNick
+                memberFullName
+                memberImage
+                memberAddress
+                memberDesc
+                memberProperties
+                memberBlogs
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                deletedAt
+                createdAt
+                updatedAt
+                accessToken
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
 /**************************
@@ -510,45 +506,50 @@ export const GET_BLOGS = gql`
 
 export const GET_COMMENTS = gql`
 	query GetComments($input: CommentsInquiry!) {
-		getComments(input: $input) {
-			list {
-				_id
-				commentStatus
-				commentGroup
-				commentContent
-				commentRefId
-				memberId
-				createdAt
-				updatedAt
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberPhone
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
-					memberPoints
-					memberLikes
-					memberViews
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
-				}
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+    getComments(input: $input) {
+        list {
+            _id
+            commentStatus
+            commentGroup
+            commentContent
+            commentRefId
+            memberId
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberType
+                memberStatus
+                memberAuthType
+                memberPhone
+                memberEmail
+                memberNick
+                memberFullName
+                memberImage
+                memberAddress
+                memberDesc
+                memberProperties
+                memberBlogs
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                deletedAt
+                createdAt
+                updatedAt
+                accessToken
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
 /**************************

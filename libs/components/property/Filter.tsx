@@ -11,18 +11,54 @@ import {
 	MenuItem,
 	Tooltip,
 	IconButton,
+	styled,
+	Slider,
+	FormGroup,
+	FormControlLabel,
+	Box,
+	SelectChangeEvent,
 } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { WatchBrand, WatchCountry, WatchCondition, WatchMovement, WatchGender, WatchMaterial } from '../../enums/property.enum';
+import {
+	WatchBrand,
+	WatchCountry,
+	WatchCondition,
+	WatchMovement,
+	WatchGender,
+	WatchMaterial,
+} from '../../enums/property.enum';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { propertySquare } from '../../config';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+const TagButton = styled(Button)({
+	borderRadius: '16px',
+	border: '1px solid #e0e0e0',
+	color: '#333',
+	padding: '4px 12px',
+	margin: '4px',
+	textTransform: 'none',
+	fontSize: '0.8rem',
+	minWidth: 'auto',
+	'&.active': {
+		backgroundColor: '#333',
+		color: '#fff',
+		borderColor: '#333',
+	},
+});
+
+const PriceContainer = styled(Stack)({
+	border: '1px solid #e0e0e0',
+	borderRadius: '8px',
+	padding: '16px',
+	marginBottom: '30px',
+});
+
 interface Range {
-  start: number;
-  end: number;
+	start: number;
+	end: number;
 }
 
 const MenuProps = {
@@ -60,24 +96,22 @@ const Filter = (props: FilterType) => {
 		if (searchFilter?.search?.locationList?.length == 0) {
 			delete searchFilter.search.locationList;
 			setShowMore(false);
-			
+
 			// Reset to initial input for locationList if it becomes empty
 			const updatedFilter = {
 				...searchFilter,
 				search: {
 					...searchFilter.search,
-					locationList: initialInput.search?.locationList || undefined
-				}
+					locationList: initialInput.search?.locationList || undefined,
+				},
 			};
-			
+
 			setSearchFilter(updatedFilter);
-			
+
 			router
-				.push(
-					`/property?input=${JSON.stringify(updatedFilter)}`,
-					`/property?input=${JSON.stringify(updatedFilter)}`,
-					{ scroll: false },
-				)
+				.push(`/property?input=${JSON.stringify(updatedFilter)}`, `/property?input=${JSON.stringify(updatedFilter)}`, {
+					scroll: false,
+				})
 				.then();
 		}
 
@@ -174,7 +208,7 @@ const Filter = (props: FilterType) => {
 			try {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
-				
+
 				if (isChecked) {
 					await router.push(
 						`/property?input=${JSON.stringify({
@@ -195,23 +229,23 @@ const Filter = (props: FilterType) => {
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								locationList: initialInput.search?.locationList || []
-							}
+								locationList: initialInput.search?.locationList || [],
+							},
 						});
-						
+
 						await router.push(
 							`/property?input=${JSON.stringify({
 								...searchFilter,
 								search: {
 									...searchFilter.search,
-									locationList: initialInput.search?.locationList || []
+									locationList: initialInput.search?.locationList || [],
 								},
 							})}`,
 							`/property?input=${JSON.stringify({
 								...searchFilter,
 								search: {
 									...searchFilter.search,
-									locationList: initialInput.search?.locationList || []
+									locationList: initialInput.search?.locationList || [],
 								},
 							})}`,
 							{ scroll: false },
@@ -249,46 +283,53 @@ const Filter = (props: FilterType) => {
 		},
 		[searchFilter, initialInput, setSearchFilter],
 	);
-
 	const watchBrandSelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
+				const previousSearchFilter = { ...searchFilter };
+				let updatedFilter = { ...searchFilter };
+
 				if (isChecked) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.typeList || []), value] },
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.typeList || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.typeList?.includes(value)) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								typeList: searchFilter?.search?.typeList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								typeList: searchFilter?.search?.typeList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
+					updatedFilter = {
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							typeList: [...(searchFilter?.search?.typeList || []), value],
+						},
+					};
+				} else {
+					updatedFilter = {
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							typeList: searchFilter?.search?.typeList?.filter((item: string) => item !== value),
+						},
+					};
+
+					if (updatedFilter.search?.typeList?.length === 0) {
+						delete updatedFilter.search.typeList;
+					}
 				}
 
-				if (searchFilter?.search?.typeList?.length == 0) {
-					console.log('No watch brand selected');
+				if (updatedFilter?.search?.locationList?.length === 0) {
+					delete updatedFilter.search.locationList;
+				}
+
+				await router.push(
+					`/property?input=${JSON.stringify(updatedFilter)}`,
+					`/property?input=${JSON.stringify(updatedFilter)}`,
+					{ scroll: false },
+				);
+
+				if (updatedFilter?.search?.locationList?.length === 0) {
+					updatedFilter = { ...previousSearchFilter };
+					await router.push(
+						`/property?input=${JSON.stringify(updatedFilter)}`,
+						`/property?input=${JSON.stringify(updatedFilter)}`,
+						{ scroll: false },
+					);
 				}
 
 				console.log('watchBrandSelectHandler:', e.target.value);
@@ -301,21 +342,66 @@ const Filter = (props: FilterType) => {
 
 	const watchGenderSelectHandler = useCallback(
 		async (gender: WatchGender) => {
+		  try {
+			let updatedPropertyCategory: WatchGender[] = [];
+		
+			// If the gender is already selected, remove it from the propertyCategory
+			if (searchFilter?.search?.propertyCategory?.includes(gender)) {
+			  updatedPropertyCategory = searchFilter?.search?.propertyCategory?.filter(
+				(item: WatchGender) => item !== gender
+			  ) || [];
+			} else {
+			  updatedPropertyCategory = [
+				...(searchFilter?.search?.propertyCategory || []),
+				gender,
+			  ];
+			}
+		
+			// Create a new search filter with just the updated propertyCategory
+			const updatedSearchFilter = {
+			  ...searchFilter,
+			  search: {
+				...searchFilter.search,
+				propertyCategory: updatedPropertyCategory,
+			  },
+			};
+		
+			// Update the URL with the new search filter
+			await router.push(
+			  `/property?input=${JSON.stringify(updatedSearchFilter)}`,
+			  `/property?input=${JSON.stringify(updatedSearchFilter)}`,
+			  { scroll: false }
+			);
+		
+			console.log('watchGenderSelectHandler:', gender);
+		  } catch (err: any) {
+			console.log('ERROR, watchGenderSelectHandler:', err);
+		  }
+		},
+		[searchFilter, router]
+	  );
+
+	const watchConditionSelectHandler = useCallback(
+		async (condition: WatchCondition) => {
 			try {
-				if (searchFilter?.search?.propertyCategory?.includes(gender)) {
+				if (searchFilter?.search?.propertyCondition?.includes(condition)) {
 					await router.push(
 						`/property?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								propertyCategory: searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender),
+								propertyCondition: searchFilter?.search?.propertyCondition?.filter(
+									(item: WatchCondition) => item !== condition,
+								),
 							},
 						})}`,
 						`/property?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								propertyCategory: searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender),
+								propertyCondition: searchFilter?.search?.propertyCondition?.filter(
+									(item: WatchCondition) => item !== condition,
+								),
 							},
 						})}`,
 						{ scroll: false },
@@ -324,109 +410,57 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/property?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, propertyCategory: [...(searchFilter?.search?.propertyCategory || []), gender] },
+							search: {
+								...searchFilter.search,
+								propertyCondition: [...(searchFilter?.search?.propertyCondition || []), condition],
+							},
 						})}`,
 						`/property?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, propertyCategory: [...(searchFilter?.search?.propertyCategory || []), gender] },
+							search: {
+								...searchFilter.search,
+								propertyCondition: [...(searchFilter?.search?.propertyCondition || []), condition],
+							},
 						})}`,
 						{ scroll: false },
 					);
 				}
 
-				console.log('watchGenderSelectHandler:', gender);
+				console.log('watchConditionSelectHandler:', condition);
 			} catch (err: any) {
-				console.log('ERROR, watchGenderSelectHandler:', err);
+				console.log('ERROR, watchConditionSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const watchOptionSelectHandler = useCallback(
-		async (e: any) => {
+	const watchMaterialHandler = useCallback(
+		async (e: SelectChangeEvent<string>) => {
 			try {
-				const isChecked = e.target.checked;
 				const value = e.target.value;
-				if (isChecked) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.options?.includes(value)) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
+
+				const updatedSearch = {
+					...searchFilter.search,
+					propertyMaterial: value === 'clear' ? undefined : value,
+				};
+
+				// Clean up undefined key if cleared
+				if (value === 'Select Material') {
+					delete updatedSearch.propertyMaterial;
 				}
 
-				console.log('watchOptionSelectHandler:', e.target.value);
-			} catch (err: any) {
-				console.log('ERROR, watchOptionSelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
+				const updatedFilter = {
+					...searchFilter,
+					search: updatedSearch,
+				};
 
-	const watchMaterialSelectHandler = useCallback(
-		async (e: any) => {
-			try {
-				const isChecked = e.target.checked;
-				const value = e.target.value;
-				if (isChecked) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, propertyMaterial: [...(searchFilter?.search?.propertyMaterial || []), value] },
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, propertyMaterial: [...(searchFilter?.search?.propertyMaterial || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.propertyMaterial?.includes(value)) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								propertyMaterial: searchFilter?.search?.propertyMaterial?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								propertyMaterial: searchFilter?.search?.propertyMaterial?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
-
-				console.log('watchMaterialSelectHandler:', e.target.value);
+				await router.push(
+					`/property?input=${JSON.stringify(updatedFilter)}`,
+					`/property?input=${JSON.stringify(updatedFilter)}`,
+					{ scroll: false },
+				);
 			} catch (err: any) {
-				console.log('ERROR, watchMaterialSelectHandler:', err);
+				console.log('ERROR, watchMovementHandler:', err);
 			}
 		},
 		[searchFilter],
@@ -461,24 +495,28 @@ const Filter = (props: FilterType) => {
 	);
 
 	const watchMovementHandler = useCallback(
-		async (e: any) => {
+		async (e: SelectChangeEvent<string>) => {
 			try {
 				const value = e.target.value;
+
+				const updatedSearch = {
+					...searchFilter.search,
+					propertyMovement: value === 'clear' ? undefined : value,
+				};
+
+				// Clean up undefined key if cleared
+				if (value === 'Select Movement') {
+					delete updatedSearch.propertyMovement;
+				}
+
+				const updatedFilter = {
+					...searchFilter,
+					search: updatedSearch,
+				};
+
 				await router.push(
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							propertyMovement: value,
-						},
-					})}`,
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							propertyMovement: value,
-						},
-					})}`,
+					`/property?input=${JSON.stringify(updatedFilter)}`,
+					`/property?input=${JSON.stringify(updatedFilter)}`,
 					{ scroll: false },
 				);
 			} catch (err: any) {
@@ -549,124 +587,411 @@ const Filter = (props: FilterType) => {
 	} else {
 		return (
 			<Stack className={'filter-main'}>
-				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Watch</Typography>
-					<Stack className={'input-box'}>
+				<Stack className="find-your-home" mb="32px">
+					<Typography
+						className="title-main"
+						sx={{
+							fontWeight: 700,
+							fontSize: '22px',
+							color: '#0d0d0d',
+							mb: 1.5,
+							fontFamily: 'Playfair Display, serif',
+							letterSpacing: '1px',
+							position: 'relative',
+							'&:after': {
+								content: '""',
+								position: 'absolute',
+								bottom: -8,
+								left: 0,
+								width: '40px',
+								height: '2px',
+								backgroundColor: '#d4af37',
+							},
+						}}
+					>
+						Find Your Watch
+					</Typography>
+
+					<Stack
+						direction="row"
+						alignItems="center"
+						spacing={0.5}
+						sx={{
+							backgroundColor: '#fff',
+							borderRadius: '12px',
+							px: 2.5,
+							py: 0.5,
+							boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+							border: '1px solid #e8e8e8',
+							transition: 'all 0.3s ease',
+							height: '48px',
+							'&:hover': {
+								boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
+								borderColor: '#d4af37',
+							},
+							'&:focus-within': {
+								borderColor: '#d4af37',
+								boxShadow: '0 6px 24px rgba(212, 175, 55, 0.2)',
+							},
+						}}
+					>
+						<img
+							src="/img/icons/search_icon.png"
+							alt="Search"
+							style={{
+								width: '16px',
+								height: '16px',
+								opacity: 0.7,
+								transition: 'all 0.3s ease',
+							}}
+							className="search-icon"
+						/>
+
 						<OutlinedInput
 							value={searchText}
-							type={'text'}
-							className={'search-input'}
-							placeholder={'What are you looking for?'}
+							type="text"
+							placeholder="Search luxury watches..."
 							onChange={(e: any) => setSearchText(e.target.value)}
 							onKeyDown={(event: any) => {
-								if (event.key == 'Enter') {
+								if (event.key === 'Enter') {
 									setSearchFilter({
 										...searchFilter,
 										search: { ...searchFilter.search, text: searchText },
 									});
 								}
 							}}
+							sx={{
+								flex: 1,
+								fontSize: '14px',
+								background: 'transparent',
+								border: 'none',
+								'& fieldset': { border: 'none' },
+								'& input': {
+									padding: '8px 12px',
+									fontWeight: 500,
+									color: '#1a1a1a',
+									'&::placeholder': {
+										color: '#999',
+									},
+								},
+								'&.Mui-focused': {
+									'& + .search-icon': {
+										opacity: 1,
+										transform: 'scale(1.1)',
+									},
+								},
+							}}
 							endAdornment={
-								<>
-									<CancelRoundedIcon
-										onClick={() => {
-											setSearchText('');
-											setSearchFilter({
-												...searchFilter,
-												search: { ...searchFilter.search, text: '' },
-											});
-										}}
-									/>
-								</>
+								<Stack direction="row" alignItems="center" spacing={0.5}>
+									{searchText && (
+										<Tooltip title="Clear">
+											<IconButton
+												onClick={() => {
+													setSearchText('');
+													setSearchFilter({
+														...searchFilter,
+														search: { ...searchFilter.search, text: '' },
+													});
+												}}
+												sx={{
+													p: 0.5,
+													color: '#888',
+													transition: 'all 0.3s',
+													'&:hover': {
+														color: '#d4af37',
+														transform: 'scale(1.1)',
+													},
+												}}
+											>
+												<CancelRoundedIcon sx={{ fontSize: 18 }} />
+											</IconButton>
+										</Tooltip>
+									)}
+
+									<Tooltip title="Reset filters">
+										<IconButton
+											onClick={refreshHandler}
+											sx={{
+												p: 0.5,
+												color: '#888',
+												transition: 'all 0.3s',
+												'&:hover': {
+													color: '#d4af37',
+													transform: 'rotate(90deg)',
+												},
+											}}
+										>
+											<RefreshIcon sx={{ fontSize: 18 }} />
+										</IconButton>
+									</Tooltip>
+								</Stack>
 							}
 						/>
-						<img src={'/img/icons/search_icon.png'} alt={''} />
-						<Tooltip title="Reset">
-							<IconButton onClick={refreshHandler}>
-								<RefreshIcon />
-							</IconButton>
-						</Tooltip>
 					</Stack>
+
+					{searchText && (
+						<Typography
+							variant="caption"
+							sx={{
+								mt: 1,
+								color: '#d4af37',
+								fontSize: '12px',
+								display: 'flex',
+								alignItems: 'center',
+								'&:before': {
+									content: '"↳"',
+									mr: 0.5,
+								},
+							}}
+						>
+							Searching for: {searchText}
+						</Typography>
+					)}
 				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<p className={'title'} style={{ textShadow: '0px 3px 4px #b9b9b9' }}>
-						Country of Origin
-					</p>
-					<Stack
-						className={`property-location`}
-						style={{ height: showMore ? '253px' : '115px' }}
-						onMouseEnter={() => setShowMore(true)}
-						onMouseLeave={() => {
-							if (!searchFilter?.search?.locationList) {
-								setShowMore(false);
-							}
+
+				<Typography
+					sx={{
+						fontWeight: 700,
+						fontSize: '18px',
+						color: '#0d0d0d',
+						mb: 2.5,
+						fontFamily: 'sans-serif',
+						letterSpacing: '1px',
+						position: 'relative',
+						'&:after': {
+							content: '""',
+							position: 'absolute',
+							bottom: -8,
+							left: 0,
+							width: '40px',
+							height: '2px',
+							backgroundColor: '#d4af37',
+						},
+					}}
+				>
+					Origin
+				</Typography>
+
+				<Stack
+					onMouseEnter={() => {
+						setTimeout(() => setShowMore(true), 500); // slow hover trigger
+					}}
+					onMouseLeave={() => {
+						if (!searchFilter?.search?.locationList) {
+							setShowMore(false);
+						}
+					}}
+					sx={{
+						backgroundColor: '#fff',
+						borderRadius: '12px',
+						px: 2,
+						py: 1.5,
+						boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+						border: '1px solid #e8e8e8',
+						transition: 'all 0.3s ease',
+						mb: '24px',
+						'&:hover': {
+							boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
+							borderColor: '#d4af37',
+						},
+					}}
+				>
+					<FormGroup>
+						{(showMore ? watchCountries : watchCountries.slice(0, 4)).map((country: any) => (
+							<FormControlLabel
+								key={country}
+								control={
+									<Checkbox
+										checked={searchFilter?.search?.locationList?.includes(country) || false}
+										onChange={(e) => {
+											const checked = e.target.checked;
+											const currentList = searchFilter?.search?.locationList || [];
+
+											const updatedList = checked
+												? [...currentList, country]
+												: currentList.filter((item) => item !== country);
+
+											setSearchFilter({
+												...searchFilter,
+												search: {
+													...searchFilter.search,
+													locationList: updatedList.length > 0 ? updatedList : null,
+												},
+											});
+										}}
+										icon={
+											<Box
+												sx={{
+													width: 16,
+													height: 16,
+													borderRadius: '3px',
+													border: '1.5px solid #999',
+													backgroundColor: '#fff',
+													transition: 'all 0.2s',
+												}}
+											/>
+										}
+										checkedIcon={
+											<Box
+												sx={{
+													width: 16,
+													height: 16,
+													borderRadius: '3px',
+													backgroundColor: '#1a1a1a',
+													border: '1.5px solid #1a1a1a',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													'&::after': {
+														content: '""',
+														width: 8,
+														height: 8,
+														borderRadius: '1px',
+														backgroundColor: '#fff',
+													},
+												}}
+											/>
+										}
+										sx={{
+											p: 0.5,
+											mr: 1,
+											'&:hover': {
+												backgroundColor: 'transparent',
+											},
+										}}
+									/>
+								}
+								label={
+									<Typography
+										sx={{
+											fontSize: '14px',
+											color: '#1a1a1a',
+											fontWeight: 500,
+											fontFamily: 'inherit',
+										}}
+									>
+										{country}
+									</Typography>
+								}
+								sx={{
+									mb: 0.5,
+									alignItems: 'center',
+								}}
+							/>
+						))}
+					</FormGroup>
+				</Stack>
+
+				<Stack className="find-your-home" mb="30px">
+					<Typography
+						sx={{
+							fontWeight: 700,
+							fontSize: '18px',
+							color: '#0d0d0d',
+							mb: 2.5,
+							fontFamily: 'sans-serif',
+							letterSpacing: '1px',
+							position: 'relative',
+							'&:after': {
+								content: '""',
+								position: 'absolute',
+								bottom: -8,
+								left: 0,
+								width: '40px',
+								height: '2px',
+								backgroundColor: '#d4af37',
+							},
 						}}
 					>
-						{watchCountries.map((country: string) => {
-							return (
-								<Stack className={'input-box'} key={country}>
-									<Checkbox
-										id={country}
-										className="property-checkbox"
-										color="default"
-										size="small"
-										value={country}
-										checked={(searchFilter?.search?.locationList || []).includes(country as WatchCountry)}
-										onChange={watchCountrySelectHandler}
-									/>
-									<label htmlFor={country} style={{ cursor: 'pointer' }}>
-										<Typography className="property-type">{country}</Typography>
-									</label>
-								</Stack>
-							);
-						})}
+						Brand
+					</Typography>
+
+					<Stack
+						sx={{
+							backgroundColor: '#fff',
+							borderRadius: '12px',
+							px: 2,
+							py: 1.5,
+							boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+							border: '1px solid #e8e8e8',
+							transition: 'all 0.3s ease',
+							'&:hover': {
+								boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
+								borderColor: '#d4af37',
+							},
+						}}
+					>
+						{watchBrands.map((brand: string) => (
+							<Stack className="input-box" key={brand} sx={{ mb: 1 }}>
+								<Checkbox
+									id={brand}
+									className="property-checkbox"
+									color="default"
+									size="small"
+									value={brand}
+									onChange={watchBrandSelectHandler}
+									checked={(searchFilter?.search?.typeList || []).includes(brand as WatchBrand)}
+									sx={{
+										p: 0.5,
+										'& .MuiIconButton-root': {
+											padding: 0.5,
+										},
+									}}
+								/>
+								<label style={{ cursor: 'pointer' }}>
+									<Typography
+										className="property_type"
+										sx={{
+											fontSize: '14px',
+											color: '#1a1a1a',
+											fontWeight: 500,
+											fontFamily: 'inherit',
+											'&:hover': {
+												color: '#d4af37',
+											},
+										}}
+									>
+										{brand}
+									</Typography>
+								</label>
+							</Stack>
+						))}
 					</Stack>
 				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Watch Brand</Typography>
-					{watchBrands.map((brand: string) => (
-						<Stack className={'input-box'} key={brand}>
-							<Checkbox
-								id={brand}
-								className="property-checkbox"
-								color="default"
-								size="small"
-								value={brand}
-								onChange={watchBrandSelectHandler}
-								checked={(searchFilter?.search?.typeList || []).includes(brand as WatchBrand)}
-							/>
-							<label style={{ cursor: 'pointer' }}>
-								<Typography className="property_type">{brand}</Typography>
-							</label>
-						</Stack>
-					))}
-				</Stack>
+
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Gender</Typography>
 					<Stack className="button-group">
+						
 						<Button
 							sx={{
 								borderRadius: '12px 0 0 12px',
-								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.MALE) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.MALE)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.MALE)}
 						>
-							Men's
+							Men
 						</Button>
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
 								borderLeft: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE) ? undefined : 'none',
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.FEMALE)}
 						>
-							Women's
+							Women
 						</Button>
 						<Button
 							sx={{
 								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
 								borderLeft: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX) ? undefined : 'none',
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.UNISEX)}
@@ -676,120 +1001,263 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Watch Condition</Typography>
-					<FormControl fullWidth>
-						<InputLabel id="condition-select-label">Condition</InputLabel>
-						<Select
-							labelId="condition-select-label"
-							id="condition-select"
-							value={searchFilter?.search?.propertyCondition || ''}
-							label="Condition"
-							onChange={watchConditionHandler}
-						>
-							{Object.values(WatchCondition).map((condition: string) => (
-								<MenuItem value={condition} key={condition}>
-									{condition}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Watch Movement</Typography>
-					<FormControl fullWidth>
-						<InputLabel id="movement-select-label">Movement</InputLabel>
-						<Select
-							labelId="movement-select-label"
-							id="movement-select"
-							value={searchFilter?.search?.propertyMovement || ''}
-							label="Movement"
-							onChange={watchMovementHandler}
-						>
-							{Object.values(WatchMovement).map((movement: string) => (
-								<MenuItem value={movement} key={movement}>
-									{movement}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Watch Material</Typography>
-					{Object.values(WatchMaterial).map((material: string) => (
-						<Stack className={'input-box'} key={material}>
-							<Checkbox
-								id={material}
-								className="property-checkbox"
-								color="default"
-								size="small"
-								value={material}
-								onChange={watchMaterialSelectHandler}
-								checked={(searchFilter?.search?.propertyMaterial || []).includes(material as WatchMaterial)}
-							/>
-							<label style={{ cursor: 'pointer' }}>
-								<Typography className="property_type">{material}</Typography>
-							</label>
-						</Stack>
-					))}
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Options</Typography>
-					<Stack className={'input-box'}>
-						<Checkbox
-							id={'forSale'}
-							className="property-checkbox"
-							color="default"
-							size="small"
-							value={'forSale'}
-							checked={(searchFilter?.search?.options || []).includes('forSale')}
-							onChange={watchOptionSelectHandler}
-						/>
-						<label htmlFor={'forSale'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">For Sale</Typography>
-						</label>
-					</Stack>
-					<Stack className={'input-box'}>
-						<Checkbox
-							id={'auction'}
-							className="property-checkbox"
-							color="default"
-							size="small"
-							value={'auction'}
-							checked={(searchFilter?.search?.options || []).includes('auction')}
-							onChange={watchOptionSelectHandler}
-						/>
-						<label htmlFor={'auction'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Auction</Typography>
-						</label>
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'}>
-					<Typography className={'title'}>Price Range</Typography>
-					<Stack className="square-year-input">
-						<input
-							type="number"
-							placeholder="$ min"
-							min={0}
-							value={searchFilter?.search?.pricesRange?.start ?? 0}
-							onChange={(e: any) => {
-								if (e.target.value >= 0) {
-									watchPriceHandler(e.target.value, 'start');
-								}
+					<Typography className={'title'}>Condition</Typography>
+					<Stack className="button-group">
+						<Button
+							sx={{
+								borderRadius: '12px 0 0 12px',
+								border: searchFilter?.search?.propertyCondition?.includes(WatchCondition.NEW)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
 							}}
-						/>
-						<div className="central-divider"></div>
-						<input
-							type="number"
-							placeholder="$ max"
-							value={searchFilter?.search?.pricesRange?.end ?? 0}
-							onChange={(e: any) => {
-								if (e.target.value >= 0) {
-									watchPriceHandler(e.target.value, 'end');
-								}
+							onClick={() => watchConditionSelectHandler(WatchCondition.NEW)}
+						>
+							New
+						</Button>
+						<Button
+							sx={{
+								borderRadius: 0,
+								border: searchFilter?.search?.propertyCondition?.includes(WatchCondition.SECONDHAND)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.propertyCondition?.includes(WatchCondition.SECONDHAND)
+									? undefined
+									: 'none',
 							}}
-						/>
+							onClick={() => watchConditionSelectHandler(WatchCondition.SECONDHAND)}
+						>
+							Used
+						</Button>
+						<Button
+							sx={{
+								borderRadius: '0 12px 12px 0',
+								border: searchFilter?.search?.propertyCondition?.includes(WatchCondition.REFURBISHED)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.propertyCondition?.includes(WatchCondition.REFURBISHED)
+									? undefined
+									: 'none',
+							}}
+							onClick={() => watchConditionSelectHandler(WatchCondition.REFURBISHED)}
+						>
+							Renewed
+						</Button>
 					</Stack>
 				</Stack>
+
+				<Stack className={'find-your-home'} mb={'30px'}>
+					<Typography
+						sx={{
+							fontWeight: 700,
+							fontSize: '14px',
+							color: '#0d0d0d',
+							fontFamily: 'sans-serif',
+							letterSpacing: '1px',
+							mb: 2.5,
+							position: 'relative',
+							'&::after': {
+								content: '""',
+								position: 'absolute',
+								bottom: -6,
+								left: 0,
+								width: '40px',
+								height: '2px',
+								backgroundColor: '#d4af37',
+							},
+						}}
+					>
+						Functionality
+					</Typography>
+
+					<Select
+						displayEmpty
+						value={searchFilter?.search?.propertyMovement || ''}
+						onChange={watchMovementHandler}
+						renderValue={(selected) =>
+							selected ? selected : <span style={{ color: '#9e9e9e' }}>Select Movement</span>
+						}
+						sx={{
+							borderRadius: '12px',
+							backgroundColor: '#f5f5f5',
+							fontWeight: 550,
+							fontSize: '14px',
+							color: '#181a20',
+							fontFamily: 'sans-serif',
+							py: 1.5,
+							'& .MuiSelect-icon': {
+								color: '#d4af37',
+							},
+							'& fieldset': {
+								borderColor: '#b9b9b9',
+							},
+							'&:hover fieldset': {
+								borderColor: '#d4af37',
+							},
+							'&.Mui-focused fieldset': {
+								borderColor: '#d4af37',
+							},
+						}}
+					>
+						<MenuItem value="clear" sx={{ color: '#999' }}>
+							Clear Selection
+						</MenuItem>
+
+						{Object.values(WatchMovement).map((movement: string) => (
+							<MenuItem key={movement} value={movement}>
+								{movement}
+							</MenuItem>
+						))}
+					</Select>
+				</Stack>
+
+				<Stack className={'find-your-home'} mb={'30px'}>
+					<Typography
+						sx={{
+							fontWeight: 700,
+							fontSize: '14px',
+							color: '#0d0d0d',
+							fontFamily: 'sans-serif',
+							letterSpacing: '1px',
+							mb: 2.5,
+							position: 'relative',
+							'&::after': {
+								content: '""',
+								position: 'absolute',
+								bottom: -6,
+								left: 0,
+								width: '40px',
+								height: '2px',
+								backgroundColor: '#d4af37',
+							},
+						}}
+					>
+						Material
+					</Typography>
+
+					<Select
+						displayEmpty
+						value={
+							Array.isArray(searchFilter?.search?.propertyMaterial) ? '' : searchFilter?.search?.propertyMaterial || ''
+						}
+						onChange={watchMaterialHandler}
+						renderValue={(selected) =>
+							selected ? selected : <span style={{ color: '#9e9e9e' }}>Select Material</span>
+						}
+						sx={{
+							borderRadius: '12px',
+							backgroundColor: '#f5f5f5',
+							fontWeight: 550,
+							fontSize: '14px',
+							color: '#181a20',
+							fontFamily: 'sans-serif',
+							py: 1.5,
+							'& .MuiSelect-icon': {
+								color: '#d4af37',
+							},
+							'& fieldset': {
+								borderColor: '#b9b9b9',
+							},
+							'&:hover fieldset': {
+								borderColor: '#d4af37',
+							},
+							'&.Mui-focused fieldset': {
+								borderColor: '#d4af37',
+							},
+						}}
+					>
+						<MenuItem value="clear" sx={{ color: '#999' }}>
+							Clear Selection
+						</MenuItem>
+
+						{Object.values(WatchMaterial).map((material: string) => (
+							<MenuItem key={material} value={material}>
+								{material}
+							</MenuItem>
+						))}
+					</Select>
+				</Stack>
+
+				<Typography
+					sx={{
+						fontWeight: 700,
+						fontSize: '14px',
+						color: '#0d0d0d',
+						fontFamily: 'sans-serif',
+						letterSpacing: '1px',
+						mb: 2.5,
+						position: 'relative',
+						'&::after': {
+							content: '""',
+							position: 'absolute',
+							bottom: -6,
+							left: 0,
+							width: '40px',
+							height: '2px',
+							backgroundColor: '#d4af37',
+						},
+					}}
+				>
+					Material
+				</Typography>
+
+				<PriceContainer className="find-your-home">
+					<Typography className="title" sx={{ fontWeight: 'bold', mb: 2 }}>
+						Price Range
+					</Typography>
+
+					<Stack direction="row" justifyContent="space-between" sx={{ px: 1, mb: 1 }}>
+						<Typography variant="body2" sx={{ fontWeight: 600 }}>
+							$0
+						</Typography>
+						<Typography variant="body2" sx={{ fontWeight: 600 }}>
+							$10000
+						</Typography>
+					</Stack>
+
+					<Slider
+						value={[searchFilter?.search?.pricesRange?.start ?? 0, searchFilter?.search?.pricesRange?.end ?? 10000]}
+						onChange={(e: any, newValue: any) => {
+							if (Array.isArray(newValue)) {
+								watchPriceHandler(newValue[0], 'start');
+								watchPriceHandler(newValue[1], 'end');
+							}
+						}}
+						min={0}
+						max={10000}
+						valueLabelDisplay="on"
+						sx={{
+							color: '#000',
+							height: 6,
+							'& .MuiSlider-thumb': {
+								width: 18,
+								height: 18,
+								backgroundColor: '#000',
+								border: '2px solid white',
+								boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+								'&:hover': {
+									boxShadow: '0 0 0 10px rgba(0,0,0,0.1)',
+								},
+							},
+							'& .MuiSlider-track': {
+								backgroundColor: '#000',
+								border: 'none',
+							},
+							'& .MuiSlider-rail': {
+								backgroundColor: '#ddd',
+								opacity: 1,
+							},
+							'& .MuiSlider-valueLabel': {
+								backgroundColor: '#000',
+								color: '#fff',
+								fontSize: '12px',
+								borderRadius: '4px',
+								px: 1,
+								py: '2px',
+								fontWeight: 500,
+							},
+						}}
+					/>
+				</PriceContainer>
 			</Stack>
 		);
 	}

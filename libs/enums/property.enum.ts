@@ -17,6 +17,7 @@ export enum WatchGender {
 	MALE = 'MALE',
 	FEMALE = 'FEMALE',
 	UNISEX = 'UNISEX',
+	ANY = "ANY"
 }
 
 export enum WatchCountry {

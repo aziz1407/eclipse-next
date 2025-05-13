@@ -122,34 +122,34 @@ export const LIKE_TARGET_MEMBER = gql`
  *************************/
 
 export const CREATE_PROPERTY = gql`
-mutation CreateProperty($input: PropertyInput!) {
-    createProperty(input: $input) {
-        _id
-        propertyBrand
-        propertyStatus
-        propertyCountry
-        propertyAddress
-        propertyModel
-        propertyCategory
-        propertyMaterial
-        propertyPrice
-        propertyYear
-        propertyViews
-        propertyCondition
-        propertyMovement
-        propertyLikes
-        propertyImages
-        propertyDesc
-        propertyBarter
-        propertyRent
-        memberId
-        soldAt
-        deletedAt
-        constructedAt
-        createdAt
-        updatedAt
-    }
-}
+	mutation CreateProperty($input: PropertyInput!) {
+		createProperty(input: $input) {
+			_id
+			propertyBrand
+			propertyStatus
+			propertyCountry
+			propertyAddress
+			propertyModel
+			propertyCategory
+			propertyMaterial
+			propertyPrice
+			propertyYear
+			propertyViews
+			propertyCondition
+			propertyMovement
+			propertyLikes
+			propertyImages
+			propertyDesc
+			propertyBarter
+			propertyRent
+			memberId
+			soldAt
+			deletedAt
+			constructedAt
+			createdAt
+			updatedAt
+		}
+	}
 `;
 
 export const UPDATE_PROPERTY = gql`
@@ -184,28 +184,28 @@ export const UPDATE_PROPERTY = gql`
 export const LIKE_TARGET_PROPERTY = gql`
 	mutation LikeTargetProperty($input: String!) {
 		likeTargetProperty(propertyId: $input) {
-		 _id
-        propertyBrand
-        propertyStatus
-        propertyCountry
-        propertyAddress
-        propertyModel
-        propertyCondition
-        propertyCategory
-        propertyMaterial
-        propertyPrice
-        propertyViews
-        propertyLikes
-        propertyImages
-        propertyDesc
-        propertyBarter
-        propertyRent
-        memberId
-        soldAt
-        deletedAt
-        constructedAt
-        createdAt
-        updatedAt
+			_id
+			propertyBrand
+			propertyStatus
+			propertyCountry
+			propertyAddress
+			propertyModel
+			propertyCondition
+			propertyCategory
+			propertyMaterial
+			propertyPrice
+			propertyViews
+			propertyLikes
+			propertyImages
+			propertyDesc
+			propertyBarter
+			propertyRent
+			memberId
+			soldAt
+			deletedAt
+			constructedAt
+			createdAt
+			updatedAt
 		}
 	}
 `;
@@ -218,13 +218,14 @@ export const CREATE_BOARD_ARTICLE = gql`
 	mutation CreateBoardArticle($input: BoardArticleInput!) {
 		createBoardArticle(input: $input) {
 			_id
-			articleCategory
-			articleStatus
-			articleTitle
-			articleContent
-			articleImage
-			articleViews
-			articleLikes
+			blogCategory
+			blogStatus
+			blogTitle
+			blogContent
+			blogImage
+			blogViews
+			blogLikes
+			blogComments
 			memberId
 			createdAt
 			updatedAt
@@ -236,13 +237,14 @@ export const UPDATE_BOARD_ARTICLE = gql`
 	mutation UpdateBoardArticle($input: BoardArticleUpdate!) {
 		updateBoardArticle(input: $input) {
 			_id
-			articleCategory
-			articleStatus
-			articleTitle
-			articleContent
-			articleImage
-			articleViews
-			articleLikes
+			blogCategory
+			blogStatus
+			blogTitle
+			blogContent
+			blogImage
+			blogViews
+			blogLikes
+			blogComments
 			memberId
 			createdAt
 			updatedAt
@@ -254,13 +256,14 @@ export const LIKE_TARGET_BOARD_ARTICLE = gql`
 	mutation LikeTargetBoardArticle($input: String!) {
 		likeTargetBoardArticle(articleId: $input) {
 			_id
-			articleCategory
-			articleStatus
-			articleTitle
-			articleContent
-			articleImage
-			articleViews
-			articleLikes
+			blogCategory
+			blogStatus
+			blogTitle
+			blogContent
+			blogImage
+			blogViews
+			blogLikes
+			blogComments
 			memberId
 			createdAt
 			updatedAt

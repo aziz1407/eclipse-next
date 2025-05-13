@@ -223,7 +223,7 @@ PropertyList.defaultProps = {
 		search: {
 			pricesRange: {
 				start: 0,
-				end: 20000,
+				end: 10000,
 			},
 		},
 	},

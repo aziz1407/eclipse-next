@@ -24,7 +24,7 @@ interface PISearch {
 	memberId?: string;
 	locationList?: WatchCountry[];
 	typeList?: WatchBrand [];
-	propertyCondition?: WatchCondition,
+	propertyCondition?: WatchCondition[],
 	propertyMovement?: WatchMovement,
 	propertyCategory?: WatchGender[];
 	options?: string[];

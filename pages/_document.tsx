@@ -5,7 +5,7 @@ export default function Document() {
 		<Html lang="en">
 			<Head>
 				<meta name="robots" content="index,follow" />
-				<link rel="icon" type="image/png" href="/img/logo/svg.svg" />
+				<link rel="icon" type="image/png" href="/img/logo/logo1.png" />
 
 				{/* SEO */}
 				<meta name="keyword" content={'eclipse, eclipse.uz, devex mern, mern nestjs fullstack'} />
