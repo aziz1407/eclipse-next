@@ -14,8 +14,8 @@ export interface PropertyInput {
 	propertyMovement: WatchMovement;
 	propertyImages: string[];
 	propertyDesc?: string;
-	propertyBarter?: boolean;
-	propertyRent?: boolean;
+	// propertyBarter?: boolean;
+	// propertyRent?: boolean;
 	memberId?: string;
 	constructedAt?: Date;
 }

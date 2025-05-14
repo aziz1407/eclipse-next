@@ -110,8 +110,7 @@ export const GET_PROPERTY = gql`
 			propertyViews
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyRank
 			memberId
 			soldAt
 			deletedAt
@@ -177,9 +176,8 @@ export const GET_PROPERTIES = gql`
 				propertyYear
 				propertyViews
 				propertyImages
+				propertyRank
 				propertyDesc
-				propertyBarter
-				propertyRent
 				memberId
 				soldAt
 				deletedAt
@@ -246,8 +244,7 @@ export const GET_AGENT_PROPERTIES = gql`
 				propertyMovement
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyRank
 				memberId
 				soldAt
 				deletedAt
@@ -266,56 +263,55 @@ export const GET_FAVORITES = gql`
 	query GetFavorites($input: OrdinaryInquiry!) {
 		getFavorites(input: $input) {
 			list {
-				 _id
-            propertyBrand
-            propertyStatus
-            propertyCountry
-            propertyAddress
-            propertyModel
-            propertyCategory
-            propertyMaterial
-            propertyPrice
-            propertyYear
-            propertyCondition
-            propertyMovement
-            propertyViews
-            propertyLikes
-            propertyImages
-            propertyDesc
-            propertyBarter
-            propertyRent
-            memberId
-            soldAt
-            deletedAt
-            constructedAt
-            createdAt
-            updatedAt
+				_id
+				propertyBrand
+				propertyStatus
+				propertyCountry
+				propertyAddress
+				propertyModel
+				propertyCategory
+				propertyMaterial
+				propertyPrice
+				propertyYear
+				propertyCondition
+				propertyMovement
+				propertyViews
+				propertyLikes
+				propertyImages
+				propertyDesc
+				propertyRank
+				memberId
+				soldAt
+				deletedAt
+				constructedAt
+				createdAt
+				updatedAt
 				memberData {
-					 _id
-                memberType
-                memberStatus
-                memberAuthType
-                memberPhone
-                memberEmail
-                memberNick
-                memberFullName
-                memberImage
-                memberAddress
-                memberDesc
-                memberProperties
-                memberBlogs
-                memberFollowers
-                memberFollowings
-                memberPoints
-                memberLikes
-                memberViews
-                memberComments
-                memberRank
-                memberWarnings
-                deletedAt
-                createdAt
-                updatedAt
-                accessToken
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberBlogs
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
 				}
 			}
 			metaCounter {
@@ -329,56 +325,55 @@ export const GET_VISITED = gql`
 	query GetVisited($input: OrdinaryInquiry!) {
 		getVisited(input: $input) {
 			list {
-				 _id
-            propertyBrand
-            propertyStatus
-            propertyCountry
-            propertyAddress
-            propertyModel
-            propertyCategory
-            propertyMaterial
-            propertyYear
-            propertyMovement
-            propertyLikes
-            propertyPrice
-            propertyViews
-            propertyCondition
-            propertyImages
-            propertyDesc
-            propertyBarter
-            propertyRent
-            memberId
-            soldAt
-            deletedAt
-            constructedAt
-            createdAt
-            updatedAt
+				_id
+				propertyBrand
+				propertyStatus
+				propertyCountry
+				propertyAddress
+				propertyModel
+				propertyCategory
+				propertyMaterial
+				propertyYear
+				propertyMovement
+				propertyLikes
+				propertyPrice
+				propertyViews
+				propertyCondition
+				propertyImages
+				propertyDesc
+				propertyRank
+				memberId
+				soldAt
+				deletedAt
+				constructedAt
+				createdAt
+				updatedAt
 				memberData {
-					 _id
-                memberType
-                memberStatus
-                memberAuthType
-                memberPhone
-                memberEmail
-                memberNick
-                memberFullName
-                memberImage
-                memberAddress
-                memberDesc
-                memberProperties
-                memberBlogs
-                memberFollowers
-                memberFollowings
-                memberPoints
-                memberLikes
-                memberViews
-                memberComments
-                memberRank
-                memberWarnings
-                deletedAt
-                createdAt
-                updatedAt
-                accessToken
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberBlogs
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
 				}
 			}
 			metaCounter {
@@ -450,54 +445,53 @@ export const GET_BLOG = gql`
 
 export const GET_BLOGS = gql`
 	query GetBlogs($input: BlogsInquiry!) {
-    getBlogs(input: $input) {
-        list {
-            _id
-            blogCategory
-            blogStatus
-            blogTitle
-            blogContent
-            blogImage
-            blogViews
-            blogLikes
-            blogComments
-            memberId
-            createdAt
-            updatedAt
-            memberData {
-                _id
-                memberType
-                memberStatus
-                memberAuthType
-                memberPhone
-                memberEmail
-                memberNick
-                memberFullName
-                memberImage
-                memberAddress
-                memberDesc
-                memberProperties
-                memberBlogs
-                memberFollowers
-                memberFollowings
-                memberPoints
-                memberLikes
-                memberViews
-                memberComments
-                memberRank
-                memberWarnings
-                deletedAt
-                createdAt
-                updatedAt
-                accessToken
-            }
-        }
-        metaCounter {
-            total
-        }
-    }
-}
-
+		getBlogs(input: $input) {
+			list {
+				_id
+				blogCategory
+				blogStatus
+				blogTitle
+				blogContent
+				blogImage
+				blogViews
+				blogLikes
+				blogComments
+				memberId
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberBlogs
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
 `;
 
 /**************************
@@ -506,50 +500,49 @@ export const GET_BLOGS = gql`
 
 export const GET_COMMENTS = gql`
 	query GetComments($input: CommentsInquiry!) {
-    getComments(input: $input) {
-        list {
-            _id
-            commentStatus
-            commentGroup
-            commentContent
-            commentRefId
-            memberId
-            createdAt
-            updatedAt
-            memberData {
-                _id
-                memberType
-                memberStatus
-                memberAuthType
-                memberPhone
-                memberEmail
-                memberNick
-                memberFullName
-                memberImage
-                memberAddress
-                memberDesc
-                memberProperties
-                memberBlogs
-                memberFollowers
-                memberFollowings
-                memberPoints
-                memberLikes
-                memberViews
-                memberComments
-                memberRank
-                memberWarnings
-                deletedAt
-                createdAt
-                updatedAt
-                accessToken
-            }
-        }
-        metaCounter {
-            total
-        }
-    }
-}
-
+		getComments(input: $input) {
+			list {
+				_id
+				commentStatus
+				commentGroup
+				commentContent
+				commentRefId
+				memberId
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberBlogs
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
 `;
 
 /**************************
@@ -557,105 +550,103 @@ export const GET_COMMENTS = gql`
  *************************/
 export const GET_MEMBER_FOLLOWERS = gql`
 	query GetMemberFollowers($input: FollowInquiry!) {
-    getMemberFollowers(input: $input) {
-        list {
-            _id
-            followingId
-            followerId
-            createdAt
-            updatedAt
-            meFollowed {
-                followingId
-                followerId
-                myFollowing
-            }
-            followerData {
-                _id
-                memberType
-                memberStatus
-                memberAuthType
-                memberPhone
-                memberEmail
-                memberNick
-                memberFullName
-                memberImage
-                memberAddress
-                memberDesc
-                memberProperties
-                memberBlogs
-                memberFollowers
-                memberFollowings
-                memberPoints
-                memberLikes
-                memberViews
-                memberComments
-                memberRank
-                memberWarnings
-                deletedAt
-                createdAt
-                updatedAt
-                accessToken
-            }
-        }
-        metaCounter {
-            total
-        }
-    }
-}
-
+		getMemberFollowers(input: $input) {
+			list {
+				_id
+				followingId
+				followerId
+				createdAt
+				updatedAt
+				meFollowed {
+					followingId
+					followerId
+					myFollowing
+				}
+				followerData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberBlogs
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
 `;
 
 export const GET_MEMBER_FOLLOWINGS = gql`
 	query GetMemberFollowings($input: FollowInquiry!) {
-    getMemberFollowings(input: $input) {
-        list {
-            _id
-            followingId
-            followerId
-            createdAt
-            updatedAt
-            followingData {
-                _id
-                memberType
-                memberStatus
-                memberAuthType
-                memberPhone
-                memberEmail
-                memberNick
-                memberFullName
-                memberImage
-                memberAddress
-                memberDesc
-                memberProperties
-                memberBlogs
-                memberFollowers
-                memberFollowings
-                memberPoints
-                memberLikes
-                memberViews
-                memberComments
-                memberRank
-                memberWarnings
-                deletedAt
-                createdAt
-                updatedAt
-                accessToken
-            }
-            meLiked {
-                memberId
-                likeRefId
-                myFavorite
-            }
-             meFollowed {
-                followingId
-                followerId
-                myFollowing
-            }
-        }
-        metaCounter {
-            total
-        }
-    }
-}
-
+		getMemberFollowings(input: $input) {
+			list {
+				_id
+				followingId
+				followerId
+				createdAt
+				updatedAt
+				followingData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberBlogs
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
+				}
+				meFollowed {
+					followingId
+					followerId
+					myFollowing
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
 `;

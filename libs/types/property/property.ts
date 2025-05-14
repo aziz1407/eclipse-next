@@ -26,11 +26,10 @@ export interface Property {
 	propertyMovement: WatchMovement;
 	propertyViews: number;
 	propertyLikes: number;
+	propertyRank: number;
 	propertyComments: number;
 	propertyImages: string[];
 	propertyDesc?: string;
-	propertyBarter: boolean;
-	propertyRent: boolean;
 	memberId: string;
 	soldAt?: Date;
 	deletedAt?: Date;

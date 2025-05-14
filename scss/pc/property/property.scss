@@ -1,7 +1,8 @@
 #pc-wrap {
 	#property-list-page {
 		padding-bottom: 40px;
-		background: #f6f6f6;
+		background: #0d0d0d;
+
 		.container {
 			.right {
 				position: absolute;
@@ -11,34 +12,44 @@
 				flex-direction: row;
 				align-items: center;
 				z-index: 2;
+				color: #817d7d;
+
 				button {
 					margin-left: 10px;
-					color: #181a20;
+					color: #f5f5f5; // Soft white for clarity
 					font-family: $font;
 					font-size: 14px;
 					font-style: normal;
 					font-weight: bold;
 					line-height: 26px;
+					transition: color 0.3s ease;
+
 					&:hover {
+						color: #ffd700; // Elegant gold hover
 						background: none;
 					}
 				}
 			}
+
 			.property-page {
 				position: relative;
 				width: 100%;
 				flex-direction: row;
 				gap: 25px;
 				padding-top: 96px;
+
 				.filter-config {
 					width: 339px;
 					height: auto;
+
 					.filter-main {
 						width: 100%;
 						padding: 30px 24px;
+						background: #0c0d0e; // Softer glassy black
+						box-shadow: 0 2px 6px rgba(255, 215, 0, 0.05); // Subtle gold glow
+						border: 1px solid rgba(255, 255, 255, 0.05);
 						border-radius: 12px;
-						background: #fff;
-						box-shadow: 0 1px 4px 0 rgba(24, 26, 32, 0.07);
+						color: #eaeaea; // Slightly off-white text for luxury feel
 						.find-your-home {
 							position: relative;
 							width: 100%;
@@ -55,17 +66,17 @@
 							.title-main {
 								width: 100%;
 								height: 25px;
-								color: #181a20;
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
 								font-weight: 600;
 								line-height: normal;
+								color: #fafafa;
 							}
 							.title {
 								width: auto;
 								height: auto;
-								color: #181a20;
+								color: #fafafa;
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
@@ -73,15 +84,15 @@
 								line-height: normal;
 								position: relative;
 								margin-bottom: 10px;
-							  
+
 								&::after {
-								  content: "";
-								  position: absolute;
-								  bottom: -6px; 
-								  left: 0;
-								  width: 30px; 
-								  height: 2px;
-								  background-color: #d4af37; 
+									content: '';
+									position: absolute;
+									bottom: -8px;
+									left: 0;
+									width: 30px;
+									height: 2px;
+									background-color: #f5c518;
 								}
 							}
 							.input-box {
@@ -171,7 +182,7 @@
 								flex-direction: row;
 								button {
 									width: 100%;
-									color: #181a20;
+									color: #fafafa;
 									text-align: center;
 									font-family: $font;
 									font-size: 13px;
@@ -224,190 +235,200 @@
 						flex-direction: row;
 						flex-wrap: wrap;
 						gap: 23px;
-						.card-config {
+						.watch-card {
 							width: 296px;
-							height: 413px;
-							margin-bottom: 7px;
-							border-radius: 12px;
-							background: #fff;
-							box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-							.top {
+							position: relative;
+							transition: all 0.3s ease;
+							margin-bottom: 20px;
+
+							.watch-card-container {
 								position: relative;
 								width: 100%;
-								height: 240px;
-								a {
-									height: 100%;
-								}
-								img {
+								height: 320px;
+								background-color: #fff;
+								overflow: hidden;
+
+								.watch-image-container {
 									width: 100%;
 									height: 100%;
-									object-fit: cover;
-									border-radius: 12px 12px 0 0;
-								}
-								.top-badge {
-									position: absolute;
-									top: 20px;
-									left: 16px;
 									display: flex;
-									width: 80px;
-									height: 30px;
 									justify-content: center;
 									align-items: center;
-									border-radius: 6px;
-									padding: 6px 20px;
-									background: #eb6753;
-									color: #fff;
-									text-align: center;
-									text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-									font-family: $font;
-									font-size: 12px;
-									font-style: normal;
-									font-weight: 600;
-									line-height: normal;
-									img {
-										height: 16px;
+									padding: 10px;
+									background-color: #fff;
+
+									.watch-image {
+										max-width: 100%;
+										max-height: 100%;
+										object-fit: contain;
+										transition: transform 0.5s ease;
 									}
 								}
-								.price-box {
+
+								.action-buttons {
 									position: absolute;
-									bottom: 20px;
-									left: 20px;
-									padding: 8px 15px;
-									align-items: center;
-									border-radius: 6px;
-									border: 1px solid rgba(255, 255, 255, 0.5);
-									background: #fff;
-									p {
-										color: #181a20;
-										font-family: $font;
-										font-size: 15px;
-										font-style: normal;
-										font-weight: 600;
-										line-height: normal;
+									left: 0;
+									top: 70%;
+									transform: translateY(-50%);
+									display: flex;
+									flex-direction: column;
+									gap: 8px;
+									padding: 10px;
+
+									.action-button {
+										width: 40px;
+										height: 40px;
+										background-color: #fff;
+										border-radius: 50%;
+										display: flex;
+										justify-content: center;
+										align-items: center;
+										box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+										transition: all 0.3s ease;
+										position: relative;
+
+										&:hover {
+											background-color: #eb6753;
+
+											svg {
+												color: #fff;
+											}
+										}
+
+										svg {
+											font-size: 20px;
+											color: #181a20;
+										}
+
+										&.liked {
+											background-color: #fff3f2;
+
+											svg {
+												color: red !important;
+											}
+
+											&:hover {
+												background-color: #eb6753;
+
+												svg {
+													color: #fff !important;
+												}
+											}
+										}
+
+										&.view-button {
+											.view-count {
+												position: absolute;
+												top: -5px;
+												right: -5px;
+												background-color: #eb6753;
+												color: #fff;
+												font-size: 10px;
+												font-weight: 600;
+												min-width: 18px;
+												height: 18px;
+												border-radius: 50%;
+												display: flex;
+												justify-content: center;
+												align-items: center;
+												padding: 0 2px;
+											}
+										}
 									}
 								}
 							}
-							.bottom {
-								width: 100%;
-								height: 173px;
-								padding: 20px 16px 10px 16px;
-								.name-address {
-									width: 100%;
-									height: 48px;
-									gap: 5px;
-									margin-bottom: 20px;
-									.name {
-										width: 100%;
-										height: 23px;
-										overflow: hidden;
-										p {
-											color: #181a20;
-											font-family: $font;
-											font-size: 15px;
-											font-style: normal;
-											font-weight: 600;
-											line-height: normal;
-											text-transform: capitalize;
-										}
-									}
-									.address {
-										width: 100%;
-										overflow: hidden;
-										p {
-											color: #717171;
-											font-family: $font;
-											font-size: 13px;
-											font-style: normal;
-											font-weight: 400;
-											line-height: normal;
-										}
+
+							.watch-details {
+								padding: 15px 0;
+
+								.watch-model {
+									color: #706c6c;
+									font-size: 16px;
+									font-weight: 500;
+									margin-bottom: 8px;
+									text-transform: capitalize;
+									transition: color 0.3s ease;
+									text-align: center;
+
+									&:hover {
+										color: #eb6753;
 									}
 								}
-								.options {
-									flex-direction: row;
-									width: 100%;
-									height: 20px;
-									gap: 20px;
-									margin-bottom: 10px;
-									.option {
-										flex-direction: row;
-										gap: 5px;
-										align-items: center;
-										p {
-											color: #181a20;
-											font-family: $font;
-											font-size: 13px;
-											font-style: normal;
-											font-weight: 400;
-											line-height: normal;
-										}
-									}
-								}
-								.divider {
-									width: 100%;
-									height: 1px;
-									background: #ddd;
-									margin-bottom: 17px;
-								}
-								.type-buttons {
-									flex-direction: row;
-									width: 100%;
-									justify-content: space-between;
+
+								.price-container {
+									display: flex;
 									align-items: center;
-									.type {
-										flex-direction: row;
-										align-items: center;
-										gap: 7px;
-										p {
-											color: #181a20;
-											font-family: $font;
-											font-style: normal;
-											line-height: normal;
-										}
-										.disabled-type {
-											color: rgba(143, 143, 143, 0.54);
-											font-family: $font;
-											font-style: normal;
-											line-height: normal;
-										}
+									gap: 10px;
+									justify-content: center;
+
+									.current-price {
+										color: #ceae3b;
+										font-size: 18px;
+										font-weight: 600;
 									}
-									.buttons {
-										flex-direction: row;
-										width: auto;
-										justify-content: center;
-										align-items: center;
-										svg {
-											width: 24px;
-											height: 24px;
-											cursor: pointer;
-										}
-										.view-cnt {
-											font-size: 13px;
-										}
+
+									.old-price {
+										color: #717171;
+										font-size: 14px;
+										font-weight: 400;
+										text-decoration: line-through;
 									}
+								}
+							}
+
+							&:hover {
+								.watch-image {
+									transform: scale(1.05);
 								}
 							}
 						}
 					}
-					.pagination-config {
-						width: 442px;
-						height: 86px;
+				}
+				.pagination-config {
+					width: 442px;
+					height: 86px;
+					align-items: center;
+					gap: 20px;
+					.pagination-box {
+						width: 100%;
 						align-items: center;
-						gap: 20px;
-						.pagination-box {
-							width: 100%;
-							align-items: center;
+						// color: #803737;
+					}
+					.custom-pagination {
+						.MuiPaginationItem-root {
+						  color: #ffffff;
+						  background-color: transparent;
+						  border-radius: 50%;
+						  transition: all 0.3s ease;
+					  
+						  &:hover {
+							background-color: rgba(255, 255, 255, 0.1);
+						  }
 						}
-						.total-result {
-							p {
-								color: #181a20;
-								text-align: center;
-								font-family: $font;
-								font-size: 24px;
-								font-style: normal;
-								font-weight: 275;
-								line-height: 26px;
-							}
+					  
+						.Mui-selected {
+						  background-color: #fffdfd; 
+						  color: #111;               
+						  font-weight: 600;
+						  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+					  
+						  &:hover {
+							background-color: #ffffff;
+							color: #000000;
+							box-shadow: 0 0 12px rgba(250, 249, 249, 0.5);
+						  }
+						}
+					  }
+					  
+					.total-result {
+						p {
+							color: #e0e0e0;
+							text-align: center;
+							font-family: $font;
+							font-size: 16px;
+							font-style: normal;
+							font-weight: 275;
+							line-height: 26px;
 						}
 					}
 				}

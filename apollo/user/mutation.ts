@@ -140,8 +140,7 @@ export const CREATE_PROPERTY = gql`
 			propertyLikes
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyRank
 			memberId
 			soldAt
 			deletedAt
@@ -156,21 +155,22 @@ export const UPDATE_PROPERTY = gql`
 	mutation UpdateProperty($input: PropertyUpdate!) {
 		updateProperty(input: $input) {
 			_id
-			propertyType
+			propertyBrand
 			propertyStatus
-			propertyLocation
+			propertyCountry
 			propertyAddress
-			propertyTitle
+			propertyModel
+			propertyCategory
+			propertyMaterial
 			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
 			propertyViews
+			propertyCondition
+			propertyMovement
+			propertyRank
+			propertyYear
 			propertyLikes
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
 			memberId
 			soldAt
 			deletedAt
@@ -196,10 +196,9 @@ export const LIKE_TARGET_PROPERTY = gql`
 			propertyPrice
 			propertyViews
 			propertyLikes
+			propertyRank
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
 			memberId
 			soldAt
 			deletedAt

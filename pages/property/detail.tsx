@@ -219,7 +219,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 									<Stack className={'top-box'}>
 										<Typography className={'city'}>{property?.propertyCountry}</Typography>
 										<Stack className={'divider'}></Stack>
-										<Stack className={'buy-rent-box'}>
+										{/* <Stack className={'buy-rent-box'}>
 											{property?.propertyBarter && (
 												<>
 													<Stack className={'circle'}>
@@ -241,7 +241,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 													<Typography className={'buy-rent'}>rent</Typography>
 												</>
 											)}
-										</Stack>
+										</Stack> */}
 										<Stack className={'divider'}></Stack>
 										<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
 											<g clipPath="url(#clip0_6505_6282)">
@@ -444,12 +444,12 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 													<Typography className={'title'}>Property Type</Typography>
 													<Typography className={'data'}>{property?.propertyBrand}</Typography>
 												</Box>
-												<Box component={'div'} className={'info'}>
+												{/* <Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Property Options</Typography>
 													<Typography className={'data'}>
 														For {property?.propertyBarter && 'Barter'} {property?.propertyRent && 'Rent'}
 													</Typography>
-												</Box>
+												</Box> */}
 											</Stack>
 										</Stack>
 									</Stack>

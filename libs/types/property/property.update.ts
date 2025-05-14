@@ -1,16 +1,25 @@
-import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
+import {
+	WatchBrand,
+	WatchCondition,
+	WatchCountry,
+	WatchGender,
+	WatchMaterial,
+	WatchMovement,
+	WatchStatus,
+} from '../../enums/property.enum';
 
 export interface PropertyUpdate {
 	_id: string;
-	propertyType?: PropertyType;
-	propertyStatus?: PropertyStatus;
-	propertyLocation?: PropertyLocation;
+	propertyBrand?: WatchBrand;
+	propertyStatus?: WatchStatus;
+	propertyCountry?: WatchCountry;
 	propertyAddress?: string;
-	propertyTitle?: string;
+	propertyModel?: string;
 	propertyPrice?: number;
-	propertySquare?: number;
-	propertyBeds?: number;
-	propertyRooms?: number;
+	propertyCategory: WatchGender;
+	propertyMaterial: WatchMaterial;
+	propertyCondition: WatchCondition;
+	propertyMovement: WatchMovement;
 	propertyImages?: string[];
 	propertyDesc?: string;
 	propertyBarter?: boolean;

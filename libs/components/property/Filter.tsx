@@ -342,44 +342,37 @@ const Filter = (props: FilterType) => {
 
 	const watchGenderSelectHandler = useCallback(
 		async (gender: WatchGender) => {
-		  try {
-			let updatedPropertyCategory: WatchGender[] = [];
-		
-			// If the gender is already selected, remove it from the propertyCategory
-			if (searchFilter?.search?.propertyCategory?.includes(gender)) {
-			  updatedPropertyCategory = searchFilter?.search?.propertyCategory?.filter(
-				(item: WatchGender) => item !== gender
-			  ) || [];
-			} else {
-			  updatedPropertyCategory = [
-				...(searchFilter?.search?.propertyCategory || []),
-				gender,
-			  ];
+			try {
+				let updatedPropertyCategory: WatchGender[] = [];
+
+				if (searchFilter?.search?.propertyCategory?.includes(gender)) {
+					updatedPropertyCategory =
+						searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender) || [];
+				} else {
+					updatedPropertyCategory = [...(searchFilter?.search?.propertyCategory || []), gender];
+				}
+
+				const updatedSearchFilter = {
+					...searchFilter,
+					search: {
+						...searchFilter.search,
+						propertyCategory: updatedPropertyCategory,
+					},
+				};
+
+				await router.push(
+					`/property?input=${JSON.stringify(updatedSearchFilter)}`,
+					`/property?input=${JSON.stringify(updatedSearchFilter)}`,
+					{ scroll: false },
+				);
+
+				console.log('watchGenderSelectHandler:', gender);
+			} catch (err: any) {
+				console.log('ERROR, watchGenderSelectHandler:', err);
 			}
-		
-			// Create a new search filter with just the updated propertyCategory
-			const updatedSearchFilter = {
-			  ...searchFilter,
-			  search: {
-				...searchFilter.search,
-				propertyCategory: updatedPropertyCategory,
-			  },
-			};
-		
-			// Update the URL with the new search filter
-			await router.push(
-			  `/property?input=${JSON.stringify(updatedSearchFilter)}`,
-			  `/property?input=${JSON.stringify(updatedSearchFilter)}`,
-			  { scroll: false }
-			);
-		
-			console.log('watchGenderSelectHandler:', gender);
-		  } catch (err: any) {
-			console.log('ERROR, watchGenderSelectHandler:', err);
-		  }
 		},
-		[searchFilter, router]
-	  );
+		[searchFilter, router],
+	);
 
 	const watchConditionSelectHandler = useCallback(
 		async (condition: WatchCondition) => {
@@ -591,12 +584,7 @@ const Filter = (props: FilterType) => {
 					<Typography
 						className="title-main"
 						sx={{
-							fontWeight: 700,
-							fontSize: '22px',
-							color: '#0d0d0d',
 							mb: 1.5,
-							fontFamily: 'Playfair Display, serif',
-							letterSpacing: '1px',
 							position: 'relative',
 							'&:after': {
 								content: '""',
@@ -605,7 +593,7 @@ const Filter = (props: FilterType) => {
 								left: 0,
 								width: '40px',
 								height: '2px',
-								backgroundColor: '#d4af37',
+								backgroundColor: '#ceae3b',
 							},
 						}}
 					>
@@ -617,7 +605,7 @@ const Filter = (props: FilterType) => {
 						alignItems="center"
 						spacing={0.5}
 						sx={{
-							backgroundColor: '#fff',
+							backgroundColor: '#e0e0e0',
 							borderRadius: '12px',
 							px: 2.5,
 							py: 0.5,
@@ -752,8 +740,8 @@ const Filter = (props: FilterType) => {
 				<Typography
 					sx={{
 						fontWeight: 700,
-						fontSize: '18px',
-						color: '#0d0d0d',
+						fontSize: '15px',
+						color: '#FAFAFA',
 						mb: 2.5,
 						fontFamily: 'sans-serif',
 						letterSpacing: '1px',
@@ -765,7 +753,7 @@ const Filter = (props: FilterType) => {
 							left: 0,
 							width: '40px',
 							height: '2px',
-							backgroundColor: '#d4af37',
+							backgroundColor: '#ceae3b',
 						},
 					}}
 				>
@@ -782,7 +770,7 @@ const Filter = (props: FilterType) => {
 						}
 					}}
 					sx={{
-						backgroundColor: '#fff',
+						backgroundColor: '#e0e0e0 ',
 						borderRadius: '12px',
 						px: 2,
 						py: 1.5,
@@ -886,8 +874,8 @@ const Filter = (props: FilterType) => {
 					<Typography
 						sx={{
 							fontWeight: 700,
-							fontSize: '18px',
-							color: '#0d0d0d',
+							fontSize: '15px',
+							color: '#FAFAFA',
 							mb: 2.5,
 							fontFamily: 'sans-serif',
 							letterSpacing: '1px',
@@ -899,7 +887,7 @@ const Filter = (props: FilterType) => {
 								left: 0,
 								width: '40px',
 								height: '2px',
-								backgroundColor: '#d4af37',
+								backgroundColor: '#ceae3b',
 							},
 						}}
 					>
@@ -908,7 +896,7 @@ const Filter = (props: FilterType) => {
 
 					<Stack
 						sx={{
-							backgroundColor: '#fff',
+							backgroundColor: '#e0e0e0 ',
 							borderRadius: '12px',
 							px: 2,
 							py: 1.5,
@@ -962,37 +950,50 @@ const Filter = (props: FilterType) => {
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Gender</Typography>
 					<Stack className="button-group">
-						
 						<Button
 							sx={{
 								borderRadius: '12px 0 0 12px',
-								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.MALE)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
+								border: '1px solid #3a3a3a',
+								color: '#fff',
+								...(searchFilter?.search?.propertyCategory?.includes(WatchGender.MALE) && {
+									border: '1.5px solid #d4af37',
+									boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+									color: '#d4af37',
+								}),
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.MALE)}
 						>
 							Men
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE) ? undefined : 'none',
+								border: '1px solid #3a3a3a',
+								borderLeft: 'none',
+								color: '#fff',
+								...(searchFilter?.search?.propertyCategory?.includes(WatchGender.FEMALE) && {
+									border: '1.5px solid #d4af37',
+									boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+									color: '#d4af37',
+								}),
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.FEMALE)}
 						>
 							Women
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX) ? undefined : 'none',
+								border: '1px solid #3a3a3a',
+								borderLeft: 'none',
+								color: '#fff',
+								...(searchFilter?.search?.propertyCategory?.includes(WatchGender.UNISEX) && {
+									border: '1.5px solid #d4af37',
+									boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+									color: '#d4af37',
+								}),
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.UNISEX)}
 						>
@@ -1006,37 +1007,47 @@ const Filter = (props: FilterType) => {
 						<Button
 							sx={{
 								borderRadius: '12px 0 0 12px',
-								border: searchFilter?.search?.propertyCondition?.includes(WatchCondition.NEW)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
+								border: '1px solid #3a3a3a',
+								color: '#fff',
+								...(searchFilter?.search?.propertyCondition?.includes(WatchCondition.NEW) && {
+									border: '1.5px solid #d4af37',
+									boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+									color: '#d4af37',
+								}),
 							}}
 							onClick={() => watchConditionSelectHandler(WatchCondition.NEW)}
 						>
 							New
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.propertyCondition?.includes(WatchCondition.SECONDHAND)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.propertyCondition?.includes(WatchCondition.SECONDHAND)
-									? undefined
-									: 'none',
+								border: '1px solid #3a3a3a',
+								borderLeft: 'none',
+								color: '#fff',
+								...(searchFilter?.search?.propertyCondition?.includes(WatchCondition.SECONDHAND) && {
+									border: '1.5px solid #d4af37',
+									boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+									color: '#d4af37',
+								}),
 							}}
 							onClick={() => watchConditionSelectHandler(WatchCondition.SECONDHAND)}
 						>
 							Used
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.propertyCondition?.includes(WatchCondition.REFURBISHED)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.propertyCondition?.includes(WatchCondition.REFURBISHED)
-									? undefined
-									: 'none',
+								border: '1px solid #3a3a3a',
+								borderLeft: 'none',
+								color: '#fff',
+								...(searchFilter?.search?.propertyCondition?.includes(WatchCondition.REFURBISHED) && {
+									border: '1.5px solid #d4af37',
+									boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+									color: '#d4af37',
+								}),
 							}}
 							onClick={() => watchConditionSelectHandler(WatchCondition.REFURBISHED)}
 						>
@@ -1050,7 +1061,7 @@ const Filter = (props: FilterType) => {
 						sx={{
 							fontWeight: 700,
 							fontSize: '14px',
-							color: '#0d0d0d',
+							color: '#FAFAFA',
 							fontFamily: 'sans-serif',
 							letterSpacing: '1px',
 							mb: 2.5,
@@ -1058,11 +1069,11 @@ const Filter = (props: FilterType) => {
 							'&::after': {
 								content: '""',
 								position: 'absolute',
-								bottom: -6,
+								bottom: -8,
 								left: 0,
 								width: '40px',
 								height: '2px',
-								backgroundColor: '#d4af37',
+								backgroundColor: '#ceae3b',
 							},
 						}}
 					>
@@ -1115,7 +1126,7 @@ const Filter = (props: FilterType) => {
 						sx={{
 							fontWeight: 700,
 							fontSize: '14px',
-							color: '#0d0d0d',
+							color: '#FAFAFA',
 							fontFamily: 'sans-serif',
 							letterSpacing: '1px',
 							mb: 2.5,
@@ -1127,7 +1138,7 @@ const Filter = (props: FilterType) => {
 								left: 0,
 								width: '40px',
 								height: '2px',
-								backgroundColor: '#d4af37',
+								backgroundColor: '#ceae3b',
 							},
 						}}
 					>
@@ -1177,46 +1188,23 @@ const Filter = (props: FilterType) => {
 					</Select>
 				</Stack>
 
-				<Typography
-					sx={{
-						fontWeight: 700,
-						fontSize: '14px',
-						color: '#0d0d0d',
-						fontFamily: 'sans-serif',
-						letterSpacing: '1px',
-						mb: 2.5,
-						position: 'relative',
-						'&::after': {
-							content: '""',
-							position: 'absolute',
-							bottom: -6,
-							left: 0,
-							width: '40px',
-							height: '2px',
-							backgroundColor: '#d4af37',
-						},
-					}}
-				>
-					Material
-				</Typography>
-
 				<PriceContainer className="find-your-home">
 					<Typography className="title" sx={{ fontWeight: 'bold', mb: 2 }}>
 						Price Range
 					</Typography>
 
 					<Stack direction="row" justifyContent="space-between" sx={{ px: 1, mb: 1 }}>
-						<Typography variant="body2" sx={{ fontWeight: 600 }}>
-							$0
+						<Typography variant="body2" sx={{ fontWeight: 600, color: '#FAFAFA' }}>
+							${searchFilter?.search?.pricesRange?.start ?? 0}
 						</Typography>
-						<Typography variant="body2" sx={{ fontWeight: 600 }}>
-							$10000
+						<Typography variant="body2" sx={{ fontWeight: 600, color: '#FAFAFA' }}>
+							${searchFilter?.search?.pricesRange?.end ?? 10000}
 						</Typography>
 					</Stack>
 
 					<Slider
 						value={[searchFilter?.search?.pricesRange?.start ?? 0, searchFilter?.search?.pricesRange?.end ?? 10000]}
-						onChange={(e: any, newValue: any) => {
+						onChange={(e: Event, newValue: number | number[]) => {
 							if (Array.isArray(newValue)) {
 								watchPriceHandler(newValue[0], 'start');
 								watchPriceHandler(newValue[1], 'end');
@@ -1224,7 +1212,8 @@ const Filter = (props: FilterType) => {
 						}}
 						min={0}
 						max={10000}
-						valueLabelDisplay="on"
+						valueLabelDisplay="auto"
+						valueLabelFormat={(value: any) => `$${value}`}
 						sx={{
 							color: '#000',
 							height: 6,
@@ -1254,6 +1243,9 @@ const Filter = (props: FilterType) => {
 								px: 1,
 								py: '2px',
 								fontWeight: 500,
+								'&:before': {
+									display: 'none',
+								},
 							},
 						}}
 					/>

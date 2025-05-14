@@ -32,7 +32,7 @@ const Category = () => {
             className="image"
           />
           <div className="content">
-            <h2>Check Out The<br />Latest Collection<br />Of Watches</h2>
+          <h2>Check Out The<br />Latest Men's<br />Watch Collection</h2>
             <button onClick={(e) => {
               e.stopPropagation();
               handleNavigate('MALE');
@@ -49,7 +49,7 @@ const Category = () => {
               className="image"
             />
             <div className="content">
-              <h3>Shop Stylish<br />Watches</h3>
+            <h3>Shop Stylish<br />Women's Watches</h3>
               <button onClick={(e) => {
                 e.stopPropagation();
                 handleNavigate('FEMALE');
@@ -65,7 +65,7 @@ const Category = () => {
               className="image"
             />
             <div className="content">
-              <h3>Top Branded<br />Watches</h3>
+            <h3>Discover Stylish<br />Watches for Everyone</h3>
               <button onClick={(e) => {
                 e.stopPropagation();
                 handleNavigate('UNISEX');

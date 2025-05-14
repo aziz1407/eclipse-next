@@ -56,10 +56,10 @@ const SpecialOfferCard = (props: SpecialOfferCardProps) => {
 					</div>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 					<div className={'bott'}>
-						<p>
+						{/* <p>
 							{property.propertyRent ? 'Rent' : ''} {property.propertyRent && property.propertyBarter && '/'}{' '}
 							{property.propertyBarter ? 'Barter' : ''}
-						</p>
+						</p> */}
 						<div className="view-like-box">
 							<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)}>
 								<RemoveRedEyeIcon />
@@ -149,12 +149,12 @@ const SpecialOfferCard = (props: SpecialOfferCardProps) => {
 						</div>
 						<p className={'desc'}>${property.propertyPrice}</p>
 					</div>
-					<div className={'bott'}>
+					{/* <div className={'bott'}>
 						<p>
 							{property.propertyRent ? 'Rent' : ''} {property.propertyRent && property.propertyBarter && '/'}{' '}
 							{property.propertyBarter ? 'Barter' : ''}
 						</p>
-					</div>
+					</div> */}
 				</Box>
 			</Stack>
 		);

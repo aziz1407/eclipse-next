@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyCard } from './PropertyCard';
+import { MyPropertyCard } from './MyPropertyCard';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Property } from '../../types/property/property';
 import { AgentPropertiesInquiry } from '../../types/property/property.input';
@@ -132,7 +132,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 						) : (
 							agentProperties.map((property: Property) => {
 								return (
-									<PropertyCard
+									<MyPropertyCard
 										property={property}
 										deletePropertyHandler={deletePropertyHandler}
 										updatePropertyHandler={updatePropertyHandler}

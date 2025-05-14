@@ -17,7 +17,7 @@ interface PropertyCardProps {
 	updatePropertyHandler?: any;
 }
 
-export const PropertyCard = (props: PropertyCardProps) => {
+export const MyPropertyCard = (props: PropertyCardProps) => {
 	const { property, deletePropertyHandler, memberPage, updatePropertyHandler } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();

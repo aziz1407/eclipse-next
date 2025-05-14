@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -11,6 +11,8 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LinkIcon from '@mui/icons-material/Link';
 
 interface PropertyCardType {
 	property: Property;
@@ -23,98 +25,89 @@ const PropertyCard = (props: PropertyCardType) => {
 	const { property, likePropertyHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
-	const imagePath: string = property?.propertyImages[0]
+	const [isHovered, setIsHovered] = useState(false);
+	
+	const primaryImagePath: string = property?.propertyImages[0]
 		? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
 		: '/img/banner/header1.svg';
+		
+	const secondaryImagePath: string = property?.propertyImages[1]
+		? `${REACT_APP_API_URL}/${property?.propertyImages[1]}`
+		: primaryImagePath;
 
 	if (device === 'mobile') {
 		return <div>PROPERTY CARD</div>;
 	} else {
 		return (
-			<Stack className="card-config">
-				<Stack className="top">
+			<Stack 
+				className="watch-card"
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => setIsHovered(false)}
+			>
+				<Box className="watch-card-container">
 					<Link
 						href={{
 							pathname: '/property/detail',
 							query: { id: property?._id },
 						}}
 					>
-						<img src={imagePath} alt="" />
-					</Link>
-					{property && property?.propertyRank > topPropertyRank && (
-						<Box component={'div'} className={'top-badge'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<Typography>TOP</Typography>
+						<Box className="watch-image-container">
+							<img 
+								src={isHovered && property?.propertyImages[1] ? secondaryImagePath : primaryImagePath} 
+								alt={property.propertyModel || "Watch"} 
+								className="watch-image"
+							/>
 						</Box>
-					)}
-					<Box component={'div'} className={'price-box'}>
-						<Typography>${formatterStr(property?.propertyPrice)}</Typography>
-					</Box>
-				</Stack>
-				<Stack className="bottom">
-					<Stack className="name-address">
-						<Stack className="name">
+					</Link>
+					
+					{isHovered && (
+						<Stack className="action-buttons">
+							<IconButton 
+								className={`action-button ${myFavorites || (property?.meLiked && property?.meLiked[0]?.myFavorite) ? 'liked' : ''}`} 
+								onClick={() => likePropertyHandler(user, property?._id)}
+							>
+								{myFavorites || (property?.meLiked && property?.meLiked[0]?.myFavorite) ? (
+									<FavoriteIcon style={{ color: '#eb6753' }} />
+								) : (
+									<FavoriteBorderIcon />
+								)}
+							</IconButton>
+							
 							<Link
 								href={{
 									pathname: '/property/detail',
 									query: { id: property?._id },
 								}}
+								passHref
 							>
-								<Typography>{property.propertyTitle}</Typography>
-							</Link>
-						</Stack>
-						<Stack className="address">
-							<Typography>
-								{property.propertyAddress}, {property.propertyLocation}
-							</Typography>
-						</Stack>
-					</Stack>
-					<Stack className="options">
-						<Stack className="option">
-							<img src="/img/icons/bed.svg" alt="" /> <Typography>{property.propertyBeds} bed</Typography>
-						</Stack>
-						<Stack className="option">
-							<img src="/img/icons/room.svg" alt="" /> <Typography>{property.propertyRooms} room</Typography>
-						</Stack>
-						<Stack className="option">
-							<img src="/img/icons/expand.svg" alt="" /> <Typography>{property.propertySquare} m2</Typography>
-						</Stack>
-					</Stack>
-					<Stack className="divider"></Stack>
-					<Stack className="type-buttons">
-						<Stack className="type">
-							<Typography
-								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={property.propertyRent ? '' : 'disabled-type'}
-							>
-								Rent
-							</Typography>
-							<Typography
-								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={property.propertyBarter ? '' : 'disabled-type'}
-							>
-								Barter
-							</Typography>
-						</Stack>
-						{!recentlyVisited && (
-							<Stack className="buttons">
-								<IconButton color={'default'}>
+								<IconButton className="action-button view-button" component="a">
 									<RemoveRedEyeIcon />
-								</IconButton>
-								<Typography className="view-cnt">{property?.propertyViews}</Typography>
-								<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)}>
-									{myFavorites ? (
-										<FavoriteIcon color="primary" />
-									) : property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-										<FavoriteIcon color="primary" />
-									) : (
-										<FavoriteBorderIcon />
+									{property?.propertyViews > 0 && (
+										<span className="view-count">{property.propertyViews}</span>
 									)}
 								</IconButton>
-								<Typography className="view-cnt">{property?.propertyLikes}</Typography>
-							</Stack>
-						)}
-					</Stack>
+							</Link>
+							
+							<IconButton className="action-button">
+								<ShoppingCartIcon />
+							</IconButton>
+						</Stack>
+					)}
+				</Box>
+				
+				<Stack className="watch-details">
+					<Link
+						href={{
+							pathname: '/property/detail',
+							query: { id: property?._id },
+						}}
+					>
+						<Typography className="watch-model">{property.propertyModel}</Typography>
+					</Link>
+					
+					<Box className="price-container">
+						<Typography className="current-price">${formatterStr(property?.propertyPrice)}</Typography>
+					</Box>
 				</Stack>
 			</Stack>
 		);

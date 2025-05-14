@@ -63,8 +63,8 @@ const AddProperty = ({ initialValues, ...props }: AddPropertyProps) => {
         propertyMaterial: getPropertyData.getProperty.propertyMaterial as WatchMaterial || initialValues.propertyMaterial,
         propertyCondition: getPropertyData.getProperty.propertyCondition as WatchCondition || initialValues.propertyCondition,
         propertyMovement: getPropertyData.getProperty.propertyMovement as WatchMovement || initialValues.propertyMovement,
-        propertyBarter: getPropertyData.getProperty.propertyBarter || false,
-        propertyRent: getPropertyData.getProperty.propertyRent || false,
+        // propertyBarter: getPropertyData.getProperty.propertyBarter || false,
+        // propertyRent: getPropertyData.getProperty.propertyRent || false,
         propertyDesc: getPropertyData.getProperty.propertyDesc || '',
         propertyImages: getPropertyData.getProperty.propertyImages || [],
       });
@@ -326,7 +326,7 @@ const AddProperty = ({ initialValues, ...props }: AddPropertyProps) => {
                 </Stack>
               </Stack>
 
-              <Stack className="config-row">
+              {/* <Stack className="config-row">
                 <Stack className="price-year-after-price">
                   <Typography className="title">Barter</Typography>
                   <select
@@ -363,7 +363,7 @@ const AddProperty = ({ initialValues, ...props }: AddPropertyProps) => {
                   <div className={'divider'}></div>
                   <img src={'/img/icons/Vector.svg'} className={'arrow-down'} alt="arrow" />
                 </Stack>
-              </Stack>
+              </Stack> */}
 
               <Stack className="config-row">
                 <Stack className="price-year-after-price">

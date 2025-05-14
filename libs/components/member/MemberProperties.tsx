@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyCard } from '../mypage/PropertyCard';
+import { MyPropertyCard } from '../mypage/MyPropertyCard';
 import { Property } from '../../types/property/property';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import { T } from '../../types/common';
@@ -76,7 +76,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 							</div>
 						)}
 						{agentProperties?.map((property: Property) => {
-							return <PropertyCard property={property} memberPage={true} key={property?._id} />;
+							return <MyPropertyCard property={property} memberPage={true} key={property?._id} />;
 						})}
 
 						{agentProperties.length !== 0 && (
