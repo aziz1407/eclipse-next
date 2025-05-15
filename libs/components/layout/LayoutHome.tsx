@@ -12,7 +12,7 @@ import Chat from '../Chat';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-// import HeaderFilter from '../homepage/HeaderFilter';
+import HeaderFilter from '../homepage/HeaderFilter';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
@@ -64,7 +64,7 @@ const withLayoutMain = (Component: any) => {
 						<Stack className={'header-main'}>
 							<FiberContainer />
 							<Stack className={'container'}>
-								{/* <HeaderFilter /> */}
+								<HeaderFilter />
 							</Stack>
 						</Stack>
 

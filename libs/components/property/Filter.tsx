@@ -33,6 +33,8 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { propertySquare } from '../../config';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+
+
 const TagButton = styled(Button)({
 	borderRadius: '16px',
 	border: '1px solid #e0e0e0',
@@ -580,162 +582,162 @@ const Filter = (props: FilterType) => {
 	} else {
 		return (
 			<Stack className={'filter-main'}>
-				<Stack className="find-your-home" mb="32px">
-					<Typography
-						className="title-main"
-						sx={{
-							mb: 1.5,
-							position: 'relative',
-							'&:after': {
-								content: '""',
-								position: 'absolute',
-								bottom: -8,
-								left: 0,
-								width: '40px',
-								height: '2px',
-								backgroundColor: '#ceae3b',
-							},
-						}}
-					>
-						Find Your Watch
-					</Typography>
+<Stack className="find-your-home" mb="32px">
+  <Typography
+    className="title-main"
+    sx={{
+      mb: 1.5,
+      position: 'relative',
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        bottom: -8,
+        left: 0,
+        width: '40px',
+        height: '2px',
+        backgroundColor: '#ceae3b',
+      },
+    }}
+  >
+    Find Your Watch
+  </Typography>
 
-					<Stack
-						direction="row"
-						alignItems="center"
-						spacing={0.5}
-						sx={{
-							backgroundColor: '#e0e0e0',
-							borderRadius: '12px',
-							px: 2.5,
-							py: 0.5,
-							boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-							border: '1px solid #e8e8e8',
-							transition: 'all 0.3s ease',
-							height: '48px',
-							'&:hover': {
-								boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
-								borderColor: '#d4af37',
-							},
-							'&:focus-within': {
-								borderColor: '#d4af37',
-								boxShadow: '0 6px 24px rgba(212, 175, 55, 0.2)',
-							},
-						}}
-					>
-						<img
-							src="/img/icons/search_icon.png"
-							alt="Search"
-							style={{
-								width: '16px',
-								height: '16px',
-								opacity: 0.7,
-								transition: 'all 0.3s ease',
-							}}
-							className="search-icon"
-						/>
+  <Stack
+    direction="row"
+    alignItems="center"
+    spacing={0.5}
+    sx={{
+      backgroundColor: 'rgba(0,0,0,0.08)',
+      borderRadius: '12px',
+      px: 2.5,
+      py: 0.5,
+      boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+      border: '1px solid #e8e8e8',
+      transition: 'all 0.3s ease',
+      height: '48px',
+      '&:hover': {
+        boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
+        borderColor: '#d4af37',
+      },
+      '&:focus-within': {
+        borderColor: '#d4af37',
+        boxShadow: '0 6px 24px rgba(212, 175, 55, 0.2)',
+      },
+    }}
+  >
+    <img
+      src="/img/icons/search_icon.png"
+      alt="Search"
+      style={{
+        width: '16px',
+        height: '16px',
+        opacity: 0.7,
+        transition: 'all 0.3s ease',
+      }}
+      className="search-icon"
+    />
 
-						<OutlinedInput
-							value={searchText}
-							type="text"
-							placeholder="Search luxury watches..."
-							onChange={(e: any) => setSearchText(e.target.value)}
-							onKeyDown={(event: any) => {
-								if (event.key === 'Enter') {
-									setSearchFilter({
-										...searchFilter,
-										search: { ...searchFilter.search, text: searchText },
-									});
-								}
-							}}
-							sx={{
-								flex: 1,
-								fontSize: '14px',
-								background: 'transparent',
-								border: 'none',
-								'& fieldset': { border: 'none' },
-								'& input': {
-									padding: '8px 12px',
-									fontWeight: 500,
-									color: '#1a1a1a',
-									'&::placeholder': {
-										color: '#999',
-									},
-								},
-								'&.Mui-focused': {
-									'& + .search-icon': {
-										opacity: 1,
-										transform: 'scale(1.1)',
-									},
-								},
-							}}
-							endAdornment={
-								<Stack direction="row" alignItems="center" spacing={0.5}>
-									{searchText && (
-										<Tooltip title="Clear">
-											<IconButton
-												onClick={() => {
-													setSearchText('');
-													setSearchFilter({
-														...searchFilter,
-														search: { ...searchFilter.search, text: '' },
-													});
-												}}
-												sx={{
-													p: 0.5,
-													color: '#888',
-													transition: 'all 0.3s',
-													'&:hover': {
-														color: '#d4af37',
-														transform: 'scale(1.1)',
-													},
-												}}
-											>
-												<CancelRoundedIcon sx={{ fontSize: 18 }} />
-											</IconButton>
-										</Tooltip>
-									)}
+    <OutlinedInput
+      value={searchText}
+      type="text"
+      placeholder="Search luxury watches..."
+      onChange={(e: any) => setSearchText(e.target.value)}
+      onKeyDown={(event: any) => {
+        if (event.key === 'Enter') {
+          setSearchFilter({
+            ...searchFilter,
+            search: { ...searchFilter.search, text: searchText },
+          });
+        }
+      }}
+      sx={{
+        flex: 1,
+        fontSize: '14px',
+        background: 'transparent',
+        border: 'none',
+        '& fieldset': { border: 'none' },
+        '& input': {
+          padding: '8px 12px',
+          fontWeight: 500,
+          color: '#1a1a1a',
+          '&::placeholder': {
+            color: '#999',
+          },
+        },
+        '&.Mui-focused': {
+          '& + .search-icon': {
+            opacity: 1,
+            transform: 'scale(1.1)',
+          },
+        },
+      }}
+      endAdornment={
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          {searchText && (
+            <Tooltip title="Clear">
+              <IconButton
+                onClick={() => {
+                  setSearchText('');
+                  setSearchFilter({
+                    ...searchFilter,
+                    search: { ...searchFilter.search, text: '' },
+                  });
+                }}
+                sx={{
+                  p: 0.5,
+                  color: '#888',
+                  transition: 'all 0.3s',
+                  '&:hover': {
+                    color: '#d4af37',
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              >
+                <CancelRoundedIcon sx={{ fontSize: 18 }} />
+              </IconButton>
+            </Tooltip>
+          )}
 
-									<Tooltip title="Reset filters">
-										<IconButton
-											onClick={refreshHandler}
-											sx={{
-												p: 0.5,
-												color: '#888',
-												transition: 'all 0.3s',
-												'&:hover': {
-													color: '#d4af37',
-													transform: 'rotate(90deg)',
-												},
-											}}
-										>
-											<RefreshIcon sx={{ fontSize: 18 }} />
-										</IconButton>
-									</Tooltip>
-								</Stack>
-							}
-						/>
-					</Stack>
+          <Tooltip title="Reset filters">
+            <IconButton
+              onClick={refreshHandler}
+              sx={{
+                p: 0.5,
+                color: '#888',
+                transition: 'all 0.3s',
+                '&:hover': {
+                  color: '#d4af37',
+                  transform: 'rotate(90deg)',
+                },
+              }}
+            >
+              <RefreshIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+      }
+    />
+  </Stack>
 
-					{searchText && (
-						<Typography
-							variant="caption"
-							sx={{
-								mt: 1,
-								color: '#d4af37',
-								fontSize: '12px',
-								display: 'flex',
-								alignItems: 'center',
-								'&:before': {
-									content: '"↳"',
-									mr: 0.5,
-								},
-							}}
-						>
-							Searching for: {searchText}
-						</Typography>
-					)}
-				</Stack>
+  {searchText && (
+    <Typography
+      variant="caption"
+      sx={{
+        mt: 1,
+        color: '#d4af37',
+        fontSize: '12px',
+        display: 'flex',
+        alignItems: 'center',
+        '&:before': {
+          content: '"↳"',
+          mr: 0.5,
+        },
+      }}
+    >
+      Searching for: {searchText}
+    </Typography>
+  )}
+</Stack>
 
 				<Typography
 					sx={{
@@ -770,7 +772,7 @@ const Filter = (props: FilterType) => {
 						}
 					}}
 					sx={{
-						backgroundColor: '#e0e0e0 ',
+						backgroundColor: 'rgba(255, 255, 255, 0.03);',
 						borderRadius: '12px',
 						px: 2,
 						py: 1.5,
@@ -814,8 +816,8 @@ const Filter = (props: FilterType) => {
 													height: 16,
 													borderRadius: '3px',
 													border: '1.5px solid #999',
-													backgroundColor: '#fff',
 													transition: 'all 0.2s',
+													ml: 1,
 												}}
 											/>
 										}
@@ -830,10 +832,11 @@ const Filter = (props: FilterType) => {
 													display: 'flex',
 													alignItems: 'center',
 													justifyContent: 'center',
+													ml: 1,
 													'&::after': {
 														content: '""',
-														width: 8,
-														height: 8,
+														width: 10,
+														height: 10,
 														borderRadius: '1px',
 														backgroundColor: '#fff',
 													},
@@ -853,9 +856,12 @@ const Filter = (props: FilterType) => {
 									<Typography
 										sx={{
 											fontSize: '14px',
-											color: '#1a1a1a',
+											color: '#f8f9fa',
 											fontWeight: 500,
 											fontFamily: 'inherit',
+											'&:hover': {
+												color: '#d4af37',
+											},
 										}}
 									>
 										{country}
@@ -896,7 +902,7 @@ const Filter = (props: FilterType) => {
 
 					<Stack
 						sx={{
-							backgroundColor: '#e0e0e0 ',
+							backgroundColor: 'rgba(255, 255, 255, 0.03);',
 							borderRadius: '12px',
 							px: 2,
 							py: 1.5,
@@ -919,19 +925,53 @@ const Filter = (props: FilterType) => {
 									value={brand}
 									onChange={watchBrandSelectHandler}
 									checked={(searchFilter?.search?.typeList || []).includes(brand as WatchBrand)}
+									icon={
+										<Box
+											sx={{
+												width: 16,
+												height: 16,
+												borderRadius: '3px',
+												border: '1.5px solid #999',
+												transition: 'all 0.2s',
+											}}
+										/>
+									}
+									checkedIcon={
+										<Box
+											sx={{
+												width: 16,
+												height: 16,
+												borderRadius: '3px',
+												backgroundColor: '#1a1a1a',
+												border: '1.5px solid #1a1a1a',
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'center',
+												'&::after': {
+													content: '""',
+													width: 8,
+													height: 8,
+													borderRadius: '1px',
+													backgroundColor: '#fff',
+												},
+											}}
+										/>
+									}
 									sx={{
 										p: 0.5,
-										'& .MuiIconButton-root': {
-											padding: 0.5,
+										mr: 1,
+										'&:hover': {
+											backgroundColor: 'transparent',
 										},
 									}}
 								/>
+
 								<label style={{ cursor: 'pointer' }}>
 									<Typography
 										className="property_type"
 										sx={{
 											fontSize: '14px',
-											color: '#1a1a1a',
+											color: '#f8f9fa',
 											fontWeight: 500,
 											fontFamily: 'inherit',
 											'&:hover': {
@@ -1089,7 +1129,7 @@ const Filter = (props: FilterType) => {
 						}
 						sx={{
 							borderRadius: '12px',
-							backgroundColor: '#f5f5f5',
+							backgroundColor: 'rgba(255, 255, 255, 0.03)',
 							fontWeight: 550,
 							fontSize: '14px',
 							color: '#181a20',
@@ -1156,7 +1196,7 @@ const Filter = (props: FilterType) => {
 						}
 						sx={{
 							borderRadius: '12px',
-							backgroundColor: '#f5f5f5',
+							backgroundColor: 'rgba(255, 255, 255, 0.03)',
 							fontWeight: 550,
 							fontSize: '14px',
 							color: '#181a20',
@@ -1188,7 +1228,19 @@ const Filter = (props: FilterType) => {
 					</Select>
 				</Stack>
 
-				<PriceContainer className="find-your-home">
+				<PriceContainer
+					className="find-your-home"
+					sx={{
+						backgroundColor: 'rgba(255, 255, 255, 0.03)',
+						borderRadius: '12px',
+						border: '1.5px solid #b9b9b9',
+						p: 2,
+						mt: 1.5,
+						'&:hover': {
+							borderColor: '#d4af37',
+						},
+					}}
+				>
 					<Typography className="title" sx={{ fontWeight: 'bold', mb: 2 }}>
 						Price Range
 					</Typography>
@@ -1221,18 +1273,22 @@ const Filter = (props: FilterType) => {
 								width: 18,
 								height: 18,
 								backgroundColor: '#000',
-								border: '2px solid white',
+								border: '2px solid rgba(255, 255, 255, 0.5)',
 								boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
 								'&:hover': {
 									boxShadow: '0 0 0 10px rgba(0,0,0,0.1)',
 								},
+								'&:focus, &:focus-visible, &:active': {
+									outline: 'none',
+									boxShadow: 'none',
+								},
 							},
 							'& .MuiSlider-track': {
-								backgroundColor: '#000',
+								backgroundColor: '#e0e0e0',
 								border: 'none',
 							},
 							'& .MuiSlider-rail': {
-								backgroundColor: '#ddd',
+								backgroundColor: '#bbb',
 								opacity: 1,
 							},
 							'& .MuiSlider-valueLabel': {

@@ -63,8 +63,6 @@ const AddProperty = ({ initialValues, ...props }: AddPropertyProps) => {
         propertyMaterial: getPropertyData.getProperty.propertyMaterial as WatchMaterial || initialValues.propertyMaterial,
         propertyCondition: getPropertyData.getProperty.propertyCondition as WatchCondition || initialValues.propertyCondition,
         propertyMovement: getPropertyData.getProperty.propertyMovement as WatchMovement || initialValues.propertyMovement,
-        // propertyBarter: getPropertyData.getProperty.propertyBarter || false,
-        // propertyRent: getPropertyData.getProperty.propertyRent || false,
         propertyDesc: getPropertyData.getProperty.propertyDesc || '',
         propertyImages: getPropertyData.getProperty.propertyImages || [],
       });
@@ -326,45 +324,6 @@ const AddProperty = ({ initialValues, ...props }: AddPropertyProps) => {
                 </Stack>
               </Stack>
 
-              {/* <Stack className="config-row">
-                <Stack className="price-year-after-price">
-                  <Typography className="title">Barter</Typography>
-                  <select
-                    className={'select-description'}
-                    value={insertPropertyData.propertyBarter ? 'yes' : 'no'}
-                    onChange={({ target: { value } }) =>
-                      setInsertPropertyData({ ...insertPropertyData, propertyBarter: value === 'yes' })
-                    }
-                  >
-                    <option disabled={true} value="select">
-                      Select
-                    </option>
-                    <option value={'yes'}>Yes</option>
-                    <option value={'no'}>No</option>
-                  </select>
-                  <div className={'divider'}></div>
-                  <img src={'/img/icons/Vector.svg'} className={'arrow-down'} alt="arrow" />
-                </Stack>
-                <Stack className="price-year-after-price">
-                  <Typography className="title">Rent</Typography>
-                  <select
-                    className={'select-description'}
-                    value={insertPropertyData.propertyRent ? 'yes' : 'no'}
-                    onChange={({ target: { value } }) =>
-                      setInsertPropertyData({ ...insertPropertyData, propertyRent: value === 'yes' })
-                    }
-                  >
-                    <option disabled={true} value="select">
-                      Select
-                    </option>
-                    <option value={'yes'}>Yes</option>
-                    <option value={'no'}>No</option>
-                  </select>
-                  <div className={'divider'}></div>
-                  <img src={'/img/icons/Vector.svg'} className={'arrow-down'} alt="arrow" />
-                </Stack>
-              </Stack> */}
-
               <Stack className="config-row">
                 <Stack className="price-year-after-price">
                   <Typography className="title">Condition</Typography>
@@ -618,8 +577,6 @@ AddProperty.defaultProps = {
     propertyMovement: undefined as unknown as WatchMovement,
     propertyDesc: '',
     propertyImages: [],
-    propertyBarter: false,
-    propertyRent: false
   }
 };
 
