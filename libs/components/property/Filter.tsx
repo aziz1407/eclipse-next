@@ -1132,7 +1132,7 @@ const Filter = (props: FilterType) => {
 							backgroundColor: 'rgba(255, 255, 255, 0.03)',
 							fontWeight: 550,
 							fontSize: '14px',
-							color: '#181a20',
+							color: '#FAFAFA',
 							fontFamily: 'sans-serif',
 							py: 1.5,
 							'& .MuiSelect-icon': {
@@ -1199,7 +1199,7 @@ const Filter = (props: FilterType) => {
 							backgroundColor: 'rgba(255, 255, 255, 0.03)',
 							fontWeight: 550,
 							fontSize: '14px',
-							color: '#181a20',
+							color: '#FAFAFA',
 							fontFamily: 'sans-serif',
 							py: 1.5,
 							'& .MuiSelect-icon': {
