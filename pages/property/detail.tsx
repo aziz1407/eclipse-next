@@ -219,29 +219,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 									<Stack className={'top-box'}>
 										<Typography className={'city'}>{property?.propertyCountry}</Typography>
 										<Stack className={'divider'}></Stack>
-										{/* <Stack className={'buy-rent-box'}>
-											{property?.propertyBarter && (
-												<>
-													<Stack className={'circle'}>
-														<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
-															<circle cx="3" cy="3" r="3" fill="#EB6753" />
-														</svg>
-													</Stack>
-													<Typography className={'buy-rent'}>Barter</Typography>
-												</>
-											)}
-
-											{property?.propertyRent && (
-												<>
-													<Stack className={'circle'}>
-														<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
-															<circle cx="3" cy="3" r="3" fill="#EB6753" />
-														</svg>
-													</Stack>
-													<Typography className={'buy-rent'}>rent</Typography>
-												</>
-											)}
-										</Stack> */}
+			
 										<Stack className={'divider'}></Stack>
 										<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
 											<g clipPath="url(#clip0_6505_6282)">
@@ -264,18 +242,18 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 									</Stack>
 									<Stack className={'bottom-box'}>
 										<Stack className="option">
-											<img src="/img/icons/bed.svg" alt="" /> <Typography>{property?.propertyBrand} bed</Typography>
+											<img src="/img/icons/bed.svg" alt="" /> <Typography>{property?.propertyBrand}</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/room.svg" alt="" /> <Typography>{property?.propertyCategory} room</Typography>
+											<img src="/img/icons/room.svg" alt="" /> <Typography>{property?.propertyCategory}</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/expand.svg" alt="" /> <Typography>{property?.propertyCondition} m2</Typography>
+											<img src="/img/icons/expand.svg" alt="" /> <Typography>{property?.propertyCondition}</Typography>
 											<Stack className="option">
-											<img src="/img/icons/expand.svg" alt="" /> <Typography>{property?.propertyMaterial} m2</Typography>
+											<img src="/img/icons/expand.svg" alt="" /> <Typography>{property?.propertyMaterial}</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/expand.svg" alt="" /> <Typography>{property?.propertyMovement} m2</Typography>
+											<img src="/img/icons/expand.svg" alt="" /> <Typography>{property?.propertyMovement}</Typography>
 										</Stack>
 										</Stack>
 									</Stack>
@@ -444,34 +422,8 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 													<Typography className={'title'}>Property Type</Typography>
 													<Typography className={'data'}>{property?.propertyBrand}</Typography>
 												</Box>
-												{/* <Box component={'div'} className={'info'}>
-													<Typography className={'title'}>Property Options</Typography>
-													<Typography className={'data'}>
-														For {property?.propertyBarter && 'Barter'} {property?.propertyRent && 'Rent'}
-													</Typography>
-												</Box> */}
 											</Stack>
 										</Stack>
-									</Stack>
-								</Stack>
-								<Stack className={'floor-plans-config'}>
-									<Typography className={'title'}>Floor Plans</Typography>
-									<Stack className={'image-box'}>
-										<img src={'/img/property/floorPlan.png'} alt={'image'} />
-									</Stack>
-								</Stack>
-								<Stack className={'address-config'}>
-									<Typography className={'title'}>Address</Typography>
-									<Stack className={'map-box'}>
-										<iframe
-											src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25867.098915951767!2d128.68632810247993!3d35.86402299180927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35660bba427bf179%3A0x1fc02da732b9072f!2sGeumhogangbyeon-ro%2C%20Dong-gu%2C%20Daegu!5e0!3m2!1suz!2skr!4v1695537640704!5m2!1suz!2skr"
-											width="100%"
-											height="100%"
-											style={{ border: 0 }}
-											allowFullScreen={true}
-											loading="lazy"
-											referrerPolicy="no-referrer-when-downgrade"
-										></iframe>
 									</Stack>
 								</Stack>
 								{commentTotal !== 0 && (

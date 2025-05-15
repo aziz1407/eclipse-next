@@ -26,7 +26,7 @@ const Category = () => {
       <section className="product-category">
         <div className="left" onClick={() => handleNavigate('MALE')}>
           <Image
-            src="/img/watches/male.jpg"
+            src="/img/watches/bentley.jpg"
             alt="watch"
             fill
             className="image"
