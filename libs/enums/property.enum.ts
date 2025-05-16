@@ -10,7 +10,7 @@ export enum WatchStatus {
 	AVAILABLE = 'AVAILABLE',
 	RESERVED = 'RESERVED',
 	SOLD = 'SOLD',
-	DELETED = 'DELETED',
+	DELETE = 'DELETE',
 }
 
 export enum WatchGender {

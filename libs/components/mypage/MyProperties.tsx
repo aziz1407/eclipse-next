@@ -109,8 +109,8 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 							On Sale
 						</Typography>
 						<Typography
-							onClick={() => changeStatusHandler(WatchStatus.SOLD)}
-							className={searchFilter.search.propertyStatus === 'SOLD' ? 'active-tab-name' : 'tab-name'}
+							onClick={() => changeStatusHandler(WatchStatus.DELETE)}
+							className={searchFilter.search.propertyStatus === 'DELETE' ? 'active-tab-name' : 'tab-name'}
 						>
 							On Sold
 						</Typography>

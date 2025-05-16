@@ -459,11 +459,10 @@
 						font-weight: 600;
 						color: #fafafa;
 						cursor: pointer;
+						transition: color 0.3s ease;
 					  }
-				  
-					  .model {
-						font-size: 15px;
-						color: rgb(182, 169, 152);
+					  .title:hover {
+						color: grey;
 					  }
 				  
 					  .price {
