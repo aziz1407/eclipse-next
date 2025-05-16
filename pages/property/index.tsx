@@ -177,7 +177,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 								{properties?.length === 0 ? (
 									<div className={'no-data'}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
-										<p style={{ color: 'white' }}>No Properties found!</p>
+										<p style={{ color: 'white' }}>No Watches Found!</p>
 									</div>
 								) : (
 									properties.map((property: Property) => {
