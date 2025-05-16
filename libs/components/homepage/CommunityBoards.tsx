@@ -1,95 +1,167 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Stack, Typography } from '@mui/material';
-import CommunityCard from './CommunityCard';
 import { Blog } from '../../types/blog/blog';
 import { GET_BLOGS } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { BlogCategory } from '../../enums/blog.enum';
 import { T } from '../../types/common';
+import { Article } from 'phosphor-react';
 
-const CommunityBoards = () => {
+const JournalSection = () => {
 	const device = useDeviceDetect();
-	const [searchCommunity, setSearchCommunity] = useState({
+	const [searchParams] = useState({
 		page: 1,
 		sort: 'blogViews',
 		direction: 'DESC',
-	});
-	const [newsArticles, setNewsArticles] = useState<Blog[]>([]);
-	const [freeArticles, setFreeArticles] = useState<Blog[]>([]);
-
-	/** APOLLO REQUESTS **/
-	const {
-		loading: getGeneralBlogsLoading,
-		data: getGeneralBlogsData,
-		error: getGeneralBlogsError,
-		refetch: getGeneralBlogsRefetch,
-	} = useQuery(GET_BLOGS, {
-		fetchPolicy: 'network-only',
-		variables: { input: { ...searchCommunity, limit: 6, search: { blogCategory: BlogCategory.INSTRUCTIVE } } },
-		notifyOnNetworkStatusChange: true,
-		onCompleted: (data: T) => {
-			console.log('Received data:', data);
-			setNewsArticles(data?.getBlogs?.list);
-		  }
+		limit: 1,
 	});
 
-	const {
-		loading: getLifeStyleBlogsLoading,
-		data: getLifeStyleBlogsData,
-		error: getLifeStyleBlogsError,
-		refetch: getLifeStyleBlogsRefetch,
-	} = useQuery(GET_BLOGS, {
+	const [generalArticle, setGeneralArticle] = useState<Blog | null>(null);
+	const [instructiveArticle, setInstructiveArticle] = useState<Blog | null>(null);
+	const [lifestyleArticle, setLifestyleArticle] = useState<Blog | null>(null);
+
+	const { loading: generalLoading, data: generalData } = useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
-		variables: { input: { ...searchCommunity, limit: 3, search: { blogCategory: BlogCategory.LIFESTYLE } } },
+		variables: {
+			input: {
+				...searchParams,
+				search: { blogCategory: BlogCategory.GENERAL },
+			},
+		},
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setFreeArticles(data?.getBlogs?.list);
+			if (data?.getBlogs?.list?.length > 0) {
+				setGeneralArticle(data.getBlogs.list[0]);
+			}
 		},
 	});
 
-	if (device === 'mobile') {
-		return <div>COMMUNITY BOARDS (MOBILE)</div>;
-	} else {
+	const { loading: instructiveLoading, data: instructiveData } = useQuery(GET_BLOGS, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: {
+				...searchParams,
+				search: { blogCategory: BlogCategory.INSTRUCTIVE },
+			},
+		},
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getBlogs?.list?.length > 0) {
+				setInstructiveArticle(data.getBlogs.list[0]);
+			}
+		},
+	});
+
+	const { loading: lifestyleLoading, data: lifestyleData } = useQuery(GET_BLOGS, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: {
+				...searchParams,
+				search: { blogCategory: BlogCategory.LIFESTYLE },
+			},
+		},
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getBlogs?.list?.length > 0) {
+				setLifestyleArticle(data.getBlogs.list[0]);
+			}
+		},
+	});
+
+	const formatDate = (dateString: Date) => {
+		const date = new Date(dateString);
+		return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+	};
+
+	const truncateText = (text: string, maxLength: number = 120) => {
+		if (!text) return '';
+		return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+	};
+
+	const getArticleTitle = (article: Blog | null) => {
+		if (!article) return '';
+
+		switch (article.blogCategory) {
+			case BlogCategory.INSTRUCTIVE:
+				return article.blogTitle;
+			case BlogCategory.GENERAL:
+				return article.blogTitle;
+			case BlogCategory.LIFESTYLE:
+				return article.blogTitle;
+			default:
+				return article.blogTitle?.toUpperCase() || '';
+		}
+	};
+
+	const renderArticleCard = (article: Blog | null, index: number) => {
+		if (!article) return null;
+
+		const blogImage = article?.blogImage
+			? `${process.env.REACT_APP_API_URL}/${article?.blogImage}`
+			: '/img/watches/all.jpg';
+
 		return (
-			<Stack className={'community-board'}>
-				<Stack className={'container'}>
-					<Stack>
-						<Typography variant={'h1'}>BLOGS</Typography>
-					</Stack>
-					<Stack className="community-main">
-						<Stack className={'community-left'}>
-							<Stack className={'content-top'}>
-								<Link href={'/community?blogCategory=GENERAL'}>
-									<span>General</span>
-								</Link>
-								<img src="/img/icons/arrowBig.svg" alt="" />
-							</Stack>
-							<Stack className={'card-wrap'}>
-								{newsArticles.map((blog, index) => {
-									return <CommunityCard vertical={true} blog={blog} index={index} key={blog?._id} />;
-								})}
-							</Stack>
-						</Stack>
-						<Stack className={'community-right'}>
-							<Stack className={'content-top'}>
-								<Link href={'/community?blogCategory=LIFESTYLE'}>
-									<span>LifeStyle</span>
-								</Link>
-								<img src="/img/icons/arrowBig.svg" alt="" />
-							</Stack>
-							<Stack className={'card-wrap vertical'}>
-								{freeArticles.map((blog, index) => {
-									return <CommunityCard vertical={false} blog={blog} index={index} key={blog?._id} />;
-								})}
-							</Stack>
-						</Stack>
-					</Stack>
-				</Stack>
-			</Stack>
+			<div className="journal-card" key={`article-${index}`}>
+				<div className="journal-image">
+					<img style={{ backgroundImage: `url(${blogImage})` }} />
+				</div>
+				<div className="journal-content">
+					<h2 className="journal-title">{getArticleTitle(article)}</h2>
+					<div className="journal-date">{formatDate(article.createdAt)}</div>
+					<div className="journal-meta">
+						<span className="journal-comments">{article.blogComments} comments</span>
+						<span className="journal-separator"> | </span>
+						<span className="journal-author">{article.memberData?.memberNick}</span>
+					</div>
+					<p className="journal-excerpt">
+						{truncateText(article.blogContent, 250)}
+						<p style={{ marginTop: '5px' }}>
+							<Link
+								href={`/community/detail?blogCategory=${article.blogCategory}&id=${article._id}`}
+								style={{
+									color: '#fafafa',
+									whiteSpace: 'nowrap',
+									textDecoration: 'none',
+								}}
+								onMouseEnter={(e) => (e.currentTarget.style.color = 'grey')}
+								onMouseLeave={(e) => (e.currentTarget.style.color = '#fafafa')}
+							>
+								Read more...
+							</Link>
+						</p>
+					</p>
+				</div>
+			</div>
 		);
+	};
+
+	if (device === 'mobile') {
+		return <div>BLOGS (MOBILE)</div>;
 	}
+
+	return (
+		<div className="journal-section">
+			<div className="journal-container">
+				<h2 className="journal-heading">BLOGS</h2>
+				<p className="journal-subheading" style={{color: "#fafafa"}}>
+					Discover expert insights, luxury trends, and timeless blogs from the world of Eclipse.
+				</p>
+				<div className="journal-grid">
+					{renderArticleCard(instructiveArticle, 0)}
+					{renderArticleCard(generalArticle, 1)}
+					{renderArticleCard(lifestyleArticle, 2)}
+				</div>
+
+				<div className="journal-view-all">
+					<Link href="/community">
+						<div className="view-all-button">View Blogs</div>
+					</Link>
+				</div>
+			</div>
+		</div>
+	);
 };
 
-export default CommunityBoards;
+export default JournalSection;

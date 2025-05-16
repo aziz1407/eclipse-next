@@ -2,11 +2,10 @@ import { NextPage } from 'next';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 import withLayoutMain from '../libs/components/layout/LayoutHome';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
-import PopularProperties from '../libs/components/homepage/PopularProperties';
+import TabProperties from '../libs/components/homepage/TabProperties';
 import TopAgents from '../libs/components/homepage/TopAgents';
 import Category from '../libs/components/homepage/Category';
 import SpecialOffers from '../libs/components/homepage/SpecialOffers';
-import TopProperties from '../libs/components/homepage/TopProperties';
 import { Stack } from '@mui/material';
 import Advertisement from '../libs/components/homepage/Advertisement';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -24,9 +23,8 @@ const Home: NextPage = () => {
 		return (
 			<Stack className={'home-page'}>
 				<SpecialOffers />
-				<PopularProperties />
+				<TabProperties />
 				<Advertisement />
-				<TopProperties />
 				<TopAgents />
 			</Stack>
 		);
@@ -36,7 +34,7 @@ const Home: NextPage = () => {
 				<SpecialOffers />
 				<Category />
 				<Advertisement />
-				<PopularProperties />
+				<TabProperties />
 				{/* <TopProperties /> */}
 				<TopAgents />
 				<CommunityBoards />

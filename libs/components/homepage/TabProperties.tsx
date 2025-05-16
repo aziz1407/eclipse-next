@@ -24,7 +24,7 @@ const sortDirections: Record<string, PropertiesInquiry> = {
 	'Top Favored': { page: 1, limit: 6, sort: 'propertyLikes', direction: Direction.DESC, search: {} },
 };
 
-const PopularProperties = (props: PopularPropertiesProps) => {
+const TabProperties = (props: PopularPropertiesProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
 	const [tabIndex, setTabIndex] = useState(0);
@@ -148,7 +148,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 	);
 };
 
-PopularProperties.defaultProps = {
+TabProperties.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 6,
@@ -158,4 +158,4 @@ PopularProperties.defaultProps = {
 	},
 };
 
-export default PopularProperties;
+export default TabProperties;
