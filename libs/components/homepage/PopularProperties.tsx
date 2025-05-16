@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Stack, Box, Tabs, Tab } from '@mui/material';
+import React, { useState } from 'react';
+import { Stack, Box, Tabs, Tab, Divider, Typography, IconButton } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper';
-import WestIcon from '@mui/icons-material/West';
-import EastIcon from '@mui/icons-material/East';
-import PopularPropertyCard from './PopularPropertyCard';
 import { Property } from '../../types/property/property';
 import Link from 'next/link';
 import { PropertiesInquiry } from '../../types/property/property.input';
@@ -13,119 +8,132 @@ import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { T } from '../../types/common';
 import { Direction } from '../../enums/common.enum';
+import { useRouter } from 'next/router';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { REACT_APP_API_URL, topPropertyRank } from '../../config';
 
 interface PopularPropertiesProps {
-	initialInput: PropertiesInquiry;
+  initialInput: PropertiesInquiry;
 }
 
 const tabLabels = ['New Arrivals', 'Best Sellers', 'Top Rates'];
 
 const sortDirections: Record<string, PropertiesInquiry> = {
-	'New Arrivals': { page: 1, limit: 7, sort: 'createdAt', direction: Direction.DESC, search: {} },
-	'Best Sellers': { page: 1, limit: 7, sort: 'propertyViews', direction: Direction.DESC , search: {} },
-	'Top Rates': { page: 1, limit: 7, sort: 'propertyLikes', direction: Direction.ASC, search: {} },
+  'New Arrivals': { page: 1, limit: 6, sort: 'createdAt', direction: Direction.DESC, search: {} },
+  'Best Sellers': { page: 1, limit: 6, sort: 'propertyViews', direction: Direction.DESC, search: {} },
+  'Top Rates': { page: 1, limit: 6, sort: 'propertyLikes', direction: Direction.ASC, search: {} },
 };
 
 const PopularProperties = (props: PopularPropertiesProps) => {
-	const { initialInput } = props;
-	const device = useDeviceDetect();
-	const [tabIndex, setTabIndex] = useState(0);
-	const [popularProperties, setPopularProperties] = useState<Property[]>([]);
+  const { initialInput } = props;
+  const device = useDeviceDetect();
+  const [tabIndex, setTabIndex] = useState(0);
+  const [popularProperties, setPopularProperties] = useState<Property[]>([]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const router = useRouter();
 
-	const currentTabLabel = tabLabels[tabIndex];
-	const currentSort = sortDirections[currentTabLabel];
+  const currentTabLabel = tabLabels[tabIndex];
+  const currentSort = sortDirections[currentTabLabel];
 
-	const {
-		loading: getPropertiesLoading,
-		data: getPropertiesData,
-		error: getPropertiesError,
-		refetch: getPropertiesRefetch,
-	} = useQuery(GET_PROPERTIES, {
-		fetchPolicy: 'cache-and-network',
-		variables: { input: currentSort },
-		notifyOnNetworkStatusChange: true,
-		onCompleted: (data: T) => {
-			setPopularProperties(data?.getProperties?.list);
-		},
-	});
+  const {
+    loading: getPropertiesLoading,
+    data: getPropertiesData,
+    error: getPropertiesError,
+    refetch: getPropertiesRefetch,
+  } = useQuery(GET_PROPERTIES, {
+    fetchPolicy: 'cache-and-network',
+    variables: { input: currentSort },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setPopularProperties(data?.getProperties?.list);
+    },
+  });
 
-	const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-		setTabIndex(newValue);
-	};
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
+  };
 
-	if (!popularProperties) return null;
+  const pushDetailHandler = async (propertyId: string) => {
+    await router.push({ pathname: '/property/detail', query: { id: propertyId } });
+  };
 
-	return (
-		<Stack className={'popular-properties'}>
-			<Stack className={'container'}>
-				<Stack className={'info-box'}>
-					<Box component={'div'} className={'left'}>
-						<span>Popular properties</span>
-						<p>Popularity is based on views</p>
-					</Box>
-					<Box component={'div'} className={'right'}>
-						<div className={'more-box'}>
-							<Link href={'/property'}>
-								<span>See All Categories</span>
-							</Link>
-							<img src="/img/icons/rightup.svg" alt="" />
-						</div>
-					</Box>
-				</Stack>
+  if (!popularProperties) return null;
 
-				<Tabs
-					value={tabIndex}
-					onChange={handleTabChange}
-					className={'popular-tab-header'}
-					variant="scrollable"
-					scrollButtons="auto"
-					allowScrollButtonsMobile
-				>
-					{tabLabels.map((label, index) => (
-						<Tab key={index} label={label} className="popular-tab" />
-					))}
-				</Tabs>
+  return (
+    <Stack className={'popular-properties'}>
+      <Stack className={'container'}>
+        <Tabs
+          value={tabIndex}
+          onChange={handleTabChange}
+          className={'popular-tab-header'}
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+        >
+          {tabLabels.map((label, index) => (
+            <Tab key={index} label={label} className="popular-tab" />
+          ))}
+        </Tabs>
 
-				<Stack className={'card-box'}>
-					<Swiper
-						className={'popular-property-swiper'}
-						slidesPerView={'auto'}
-						spaceBetween={25}
-						modules={[Autoplay, Navigation, Pagination]}
-						navigation={{
-							nextEl: '.swiper-popular-next',
-							prevEl: '.swiper-popular-prev',
-						}}
-						pagination={{
-							el: '.swiper-popular-pagination',
-						}}
-					>
-						{popularProperties.map((property: Property) => (
-							<SwiperSlide key={property._id} className={'popular-property-slide'}>
-								<PopularPropertyCard property={property} />
-							</SwiperSlide>
-						))}
-					</Swiper>
-				</Stack>
+        <Stack className={'card-box'}>
+          <div className="popular-property-grid">
+            {popularProperties.map((property: Property, index: number) => (
+     <Stack key={property._id} className="popular-card-box">
+	 <Box
+	   component={'div'}
+	   className={'card-img'}
+	   style={{
+		 backgroundImage: hoveredIndex === index && property.propertyImages.length > 1
+		   ? `url(${REACT_APP_API_URL}/${property?.propertyImages[1]})`
+		   : `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})`
+	   }}
+	   onClick={() => pushDetailHandler(property._id)}
+	   onMouseEnter={() => setHoveredIndex(index)}
+	   onMouseLeave={() => setHoveredIndex(null)}
+	 >
+	   {hoveredIndex === index && property?.propertyRank >= topPropertyRank && (
+		 <div className={'status'}>
+		   <img src="/img/icons/electricity.svg" alt="" />
+		   <span>top</span>
+		 </div>
+	   )}
+   
+	   {hoveredIndex === index && property.propertyBrand && (
+		 <div className="condition-tag">{property.propertyBrand}</div>
+	   )}
+	 </Box>
+   
+	 <Box component="div" className="property-details">
+	   <strong className="title" onClick={() => pushDetailHandler(property._id)}>
+		 {property.propertyModel}
+	   </strong>
+	   <p className="price">${property.propertyPrice}</p>
+	 </Box>
+   </Stack>
+   
+		
+            ))}
+          </div>
+        </Stack>
 
-				<Stack className={'pagination-box'}>
-					<WestIcon className={'swiper-popular-prev'} />
-					<div className={'swiper-popular-pagination'}></div>
-					<EastIcon className={'swiper-popular-next'} />
-				</Stack>
-			</Stack>
-		</Stack>
-	);
+        <div className="show-more-container">
+          <Link href="/property">
+            <button className="show-more-button">SEE ALL</button>
+          </Link>
+        </div>
+      </Stack>
+    </Stack>
+  );
 };
 
 PopularProperties.defaultProps = {
-	initialInput: {
-		page: 1,
-		limit: 7,
-		sort: 'propertyViews',
-		direction: 'DESC',
-		search: {},
-	},
+  initialInput: {
+    page: 1,
+    limit: 6,
+    sort: 'propertyViews',
+    direction: 'DESC',
+    search: {},
+  },
 };
 
 export default PopularProperties;
