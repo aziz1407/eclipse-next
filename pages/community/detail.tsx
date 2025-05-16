@@ -20,7 +20,7 @@ import { CommentGroup, CommentStatus } from '../../libs/enums/comment.enum';
 import { T } from '../../libs/types/common';
 import EditIcon from '@mui/icons-material/Edit';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Blog } from '../../libs/types/board-article/blog';
+import { Blog } from '../../libs/types/blog/blog';
 import { CREATE_COMMENT, LIKE_TARGET_BOARD_ARTICLE, UPDATE_COMMENT } from '../../apollo/user/mutation';
 import { GET_BLOG, GET_COMMENTS } from '../../apollo/user/query';
 import { Messages } from '../../libs/config';

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Stack, Typography } from '@mui/material';
 import CommunityCard from './CommunityCard';
-import { Blog } from '../../types/board-article/blog';
+import { Blog } from '../../types/blog/blog';
 import { GET_BLOGS } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { BlogCategory } from '../../enums/blog.enum';
@@ -30,8 +30,9 @@ const CommunityBoards = () => {
 		variables: { input: { ...searchCommunity, limit: 6, search: { blogCategory: BlogCategory.INSTRUCTIVE } } },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
+			console.log('Received data:', data);
 			setNewsArticles(data?.getBlogs?.list);
-		},
+		  }
 	});
 
 	const {

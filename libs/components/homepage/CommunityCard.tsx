@@ -3,7 +3,7 @@ import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Box } from '@mui/material';
 import Moment from 'react-moment';
-import { Blog } from '../../types/board-article/blog';
+import { Blog } from '../../types/blog/blog';
 
 interface CommunityCardProps {
 	vertical: boolean;
