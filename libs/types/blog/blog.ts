@@ -23,4 +23,5 @@ export interface Blog {
 export interface Blogs {
 	list: Blog[];
 	metaCounter: TotalCounter[];
+	blogImages: string[];
 }

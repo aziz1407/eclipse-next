@@ -21,7 +21,7 @@ import { T } from '../../libs/types/common';
 import EditIcon from '@mui/icons-material/Edit';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Blog } from '../../libs/types/blog/blog';
-import { CREATE_COMMENT, LIKE_TARGET_BOARD_ARTICLE, UPDATE_COMMENT } from '../../apollo/user/mutation';
+import { CREATE_COMMENT, LIKE_TARGET_BLOG, UPDATE_COMMENT } from '../../apollo/user/mutation';
 import { GET_BLOG, GET_COMMENTS } from '../../apollo/user/query';
 import { Messages } from '../../libs/config';
 import {
@@ -67,7 +67,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const [blog, setBlog] = useState<Blog>();
 
 	/** APOLLO REQUESTS **/
-	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
+	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BLOG);
 	const [createComment] = useMutation(CREATE_COMMENT);
 	const [updateComment] = useMutation(UPDATE_COMMENT);
 

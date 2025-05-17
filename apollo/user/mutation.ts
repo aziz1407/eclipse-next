@@ -68,19 +68,22 @@ export const UPDATE_MEMBER = gql`
 			memberStatus
 			memberAuthType
 			memberPhone
+			memberEmail
 			memberNick
 			memberFullName
 			memberImage
 			memberAddress
 			memberDesc
 			memberProperties
-			memberRank
-			memberArticles
+			memberBlogs
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
 			memberWarnings
-			memberBlocks
 			deletedAt
 			createdAt
 			updatedAt
@@ -97,18 +100,22 @@ export const LIKE_TARGET_MEMBER = gql`
 			memberStatus
 			memberAuthType
 			memberPhone
+			memberEmail
 			memberNick
 			memberFullName
 			memberImage
 			memberAddress
 			memberDesc
-			memberWarnings
-			memberBlocks
 			memberProperties
-			memberRank
+			memberBlogs
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
+			memberWarnings
 			deletedAt
 			createdAt
 			updatedAt
@@ -213,23 +220,23 @@ export const LIKE_TARGET_PROPERTY = gql`
  *      BOARD-ARTICLE     *
  *************************/
 
-export const CREATE_BOARD_ARTICLE = gql`
-	mutation CreateBoardArticle($input: BoardArticleInput!) {
-		createBoardArticle(input: $input) {
-			_id
-			blogCategory
-			blogStatus
-			blogTitle
-			blogContent
-			blogImage
-			blogViews
-			blogLikes
-			blogComments
-			memberId
-			createdAt
-			updatedAt
-		}
-	}
+export const CREATE_BLOG = gql`
+	mutation CreateBlog($input: BlogInput!) {
+    createBlog(input: $input) {
+        _id
+        blogCategory
+        blogStatus
+        blogTitle
+        blogContent
+        blogImage
+        blogViews
+        blogLikes
+        blogComments
+        memberId
+        createdAt
+        updatedAt
+    }
+}
 `;
 
 export const UPDATE_BOARD_ARTICLE = gql`
@@ -251,23 +258,24 @@ export const UPDATE_BOARD_ARTICLE = gql`
 	}
 `;
 
-export const LIKE_TARGET_BOARD_ARTICLE = gql`
-	mutation LikeTargetBoardArticle($input: String!) {
-		likeTargetBoardArticle(articleId: $input) {
-			_id
-			blogCategory
-			blogStatus
-			blogTitle
-			blogContent
-			blogImage
-			blogViews
-			blogLikes
-			blogComments
-			memberId
-			createdAt
-			updatedAt
-		}
-	}
+export const LIKE_TARGET_BLOG = gql`
+mutation LikeTargetBlog($input: String!) {
+    likeTargetBlog(blogId: $input) {
+        _id
+        blogCategory
+        blogStatus
+        blogTitle
+        blogContent
+        blogImage
+        blogViews
+        blogLikes
+        blogComments
+        memberId
+        createdAt
+        updatedAt
+    }
+}
+
 `;
 
 /**************************
@@ -285,6 +293,7 @@ export const CREATE_COMMENT = gql`
 			memberId
 			createdAt
 			updatedAt
+			memberData
 		}
 	}
 `;

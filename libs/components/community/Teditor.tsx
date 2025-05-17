@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Box, Button, FormControl, MenuItem, Stack, Typography, Select, TextField } from '@mui/material';
-import { BoardArticleCategory } from '../../enums/blog.enum';
+import { BlogCategory } from '../../enums/blog.enum';
 import { Editor } from '@toast-ui/react-editor';
 import { getJwtToken } from '../../auth';
 import { REACT_APP_API_URL } from '../../config';
@@ -9,7 +9,7 @@ import axios from 'axios';
 import { T } from '../../types/common';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { useMutation } from '@apollo/client';
-import { CREATE_BOARD_ARTICLE } from '../../../apollo/user/mutation';
+import { CREATE_BLOG } from '../../../apollo/user/mutation';
 import { Message } from '../../enums/common.enum';
 import { sweetErrorHandling, sweetTopSuccessAlert } from '../../sweetAlert';
 
@@ -17,17 +17,17 @@ const TuiEditor = () => {
 	const editorRef = useRef<Editor>(null),
 		token = getJwtToken(),
 		router = useRouter();
-	const [articleCategory, setArticleCategory] = useState<BoardArticleCategory>(BoardArticleCategory.FREE);
+	const [blogCategory, setBlogCategory] = useState<BlogCategory>(BlogCategory.GENERAL);
 
 	/** APOLLO REQUESTS **/
-	const [createboardArticle] = useMutation(CREATE_BOARD_ARTICLE);
+	const [createboardArticle] = useMutation(CREATE_BLOG);
 
 	const memoizedValues = useMemo(() => {
-		const articleTitle = '',
-			articleContent = '',
-			articleImage = '';
+		const blogTitle = '',
+			blogContent = '',
+			blogImage = '';
 
-		return { articleTitle, articleContent, articleImage };
+		return { blogTitle: blogTitle, blogContent: blogContent, blogImage: blogImage };
 	}, []);
 
 	/** HANDLERS **/
@@ -42,7 +42,7 @@ const TuiEditor = () => {
 				  }`,
 					variables: {
 						file: null,
-						target: 'article',
+						target: 'blogs',
 					},
 				}),
 			);
@@ -64,7 +64,7 @@ const TuiEditor = () => {
 
 			const responseImage = response.data.data.imageUploader;
 			console.log('=responseImage: ', responseImage);
-			memoizedValues.articleImage = responseImage;
+			memoizedValues.blogImage = responseImage;
 
 			return `${REACT_APP_API_URL}/${responseImage}`;
 		} catch (err) {
@@ -73,31 +73,31 @@ const TuiEditor = () => {
 	};
 
 	const changeCategoryHandler = (e: any) => {
-		setArticleCategory(e.target.value);
+		setBlogCategory(e.target.value);
 	};
 
 	const articleTitleHandler = (e: T) => {
 		console.log(e.target.value);
-		memoizedValues.articleTitle = e.target.value;
+		memoizedValues.blogTitle = e.target.value;
 	};
 
 	const handleRegisterButton = async () => {
 		try {
 			const editor = editorRef.current;
-			const articleContent = editor?.getInstance().getHTML() as string;
-			memoizedValues.articleContent = articleContent;
-	
-			if (memoizedValues.articleContent === '' && memoizedValues.articleTitle === '') {
+			const blogContent = editor?.getInstance().getHTML() as string;
+			memoizedValues.blogContent = blogContent;
+
+			if (memoizedValues.blogContent === '' && memoizedValues.blogTitle === '') {
 				throw new Error(Message.INSERT_ALL_INPUTS);
 			}
-	
+
 			await createboardArticle({
 				variables: {
-					input: { ...memoizedValues, articleCategory },
+					input: { ...memoizedValues, blogCategory: blogCategory },
 				},
 			});
-	
-			await sweetTopSuccessAlert('Article is created successfully', 700);
+
+			await sweetTopSuccessAlert('Blog is created successfully', 700);
 			await router.push({
 				pathname: '/mypage',
 				query: {
@@ -109,9 +109,9 @@ const TuiEditor = () => {
 			sweetErrorHandling(new Error(Message.INSERT_ALL_INPUTS)).then();
 		}
 	};
-	
+
 	const doDisabledCheck = () => {
-		if (memoizedValues.articleContent === '' || memoizedValues.articleTitle === '') {
+		if (memoizedValues.blogContent === '' || memoizedValues.blogTitle === '') {
 			return true;
 		}
 	};
@@ -125,17 +125,16 @@ const TuiEditor = () => {
 					</Typography>
 					<FormControl sx={{ width: '100%', background: 'white' }}>
 						<Select
-							value={articleCategory}
+							value={blogCategory}
 							onChange={changeCategoryHandler}
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}
 						>
-							<MenuItem value={BoardArticleCategory.FREE}>
-								<span>Free</span>
+							<MenuItem value={BlogCategory.GENERAL}>
+								<span>General</span>
 							</MenuItem>
-							<MenuItem value={BoardArticleCategory.HUMOR}>Humor</MenuItem>
-							<MenuItem value={BoardArticleCategory.NEWS}>News</MenuItem>
-							<MenuItem value={BoardArticleCategory.RECOMMEND}>Recommendation</MenuItem>
+							<MenuItem value={BlogCategory.LIFESTYLE}>Lifestyle</MenuItem>
+							<MenuItem value={BlogCategory.INSTRUCTIVE}>Instructive</MenuItem>
 						</Select>
 					</FormControl>
 				</Box>

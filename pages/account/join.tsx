@@ -24,8 +24,6 @@ const Join: NextPage = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  
-
   const viewChangeHandler = (state: boolean) => {
     setLoginView(state);
   };
@@ -65,7 +63,9 @@ const Join: NextPage = () => {
 
   const doLogin = useCallback(async () => {
     try {
-      await logIn(input.nick, input.password);
+      // Use either nick or email as login id
+      const loginId = input.nick !== '' ? input.nick : input.email;
+      await logIn(loginId, input.password);
       await router.push(`${router.query.referrer ?? '/'}`);
     } catch (err: any) {
       await sweetMixinErrorAlert(err.message);
@@ -209,7 +209,7 @@ const Join: NextPage = () => {
                             name="CUSTOMER"
                             onChange={checkUserTypeHandler}
                             checked={input?.type === 'CUSTOMER'}
-							style={{color: "#fff"}}
+                            style={{color: "#fff"}}
                           />
                         }
                         label="Customer"
@@ -223,7 +223,7 @@ const Join: NextPage = () => {
                             name="DEALER"
                             onChange={checkUserTypeHandler}
                             checked={input?.type === 'DEALER'}
-							style={{color: "#fff"}}
+                            style={{color: "#fff"}}
                           />
                         }
                         label="Dealer"
@@ -237,7 +237,7 @@ const Join: NextPage = () => {
                             name="MODERATOR"
                             onChange={checkUserTypeHandler}
                             checked={input?.type === 'MODERATOR'}
-							style={{color: "#fff"}}
+                            style={{color: "#fff"}}
                           />
                         }
                         label="Moderator"
@@ -259,7 +259,7 @@ const Join: NextPage = () => {
               {loginView ? (
                 <Button
                   variant="contained"
-                  disabled={input.nick === '' || input.password === '' || input.email === ''}
+                  disabled={input.password === '' || (input.nick === '' && input.email === '')}
                   onClick={doLogin}
                   className="login-button"
                 >
@@ -291,19 +291,38 @@ const Join: NextPage = () => {
               ) : (
                 <p>
                   Already have an account?
-                  <b onClick={() => viewChangeHandler(true)}> SIGN IN</b>
+                  <b
+                    onClick={() => {
+                      viewChangeHandler(true);
+                    }}
+                  >
+                    LOGIN
+                  </b>
                 </p>
               )}
             </Box>
           </Stack>
-         <Stack className="right" style={{ width: '50%', position: 'relative' }}>
-  <img
-    src="/img/banner/login.jpg"
-    alt="Login Banner"
-    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-  />
-</Stack>
-
+          <Stack className="right">
+            <Stack
+              className="profile-image-box"
+              onClick={triggerFileInput}
+            >
+              <Box className="image-box">
+                {previewUrl ? (
+                  <img src={previewUrl} alt="Profile preview" />
+                ) : (
+                  <Upload size={28} strokeWidth={2} />
+                )}
+              </Box>
+              <input
+                type="file"
+                hidden
+                accept="image/png, image/jpeg"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+              />
+            </Stack>
+          </Stack>
         </Stack>
       </Stack>
     </Stack>

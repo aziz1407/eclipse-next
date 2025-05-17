@@ -157,77 +157,194 @@
 		}
 	}
 }
+/* Enhanced SCSS for AgentCard Component */
 .agent-general-card {
-	position: relative;
-	margin-right: 27px;
-	margin-bottom: 34px;
-	display: flex;
-	flex-direction: column;
-	.agent-img {
-		border-radius: 12px;
-		width: 233px;
-		height: 273px;
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		cursor: pointer;
-		div {
-			position: absolute;
-			padding: 12px;
-			top: 12px;
-			left: 12px;
-			border-radius: 6px;
-			background: #eb6753;
-			color: #fff;
-			font-family: $font;
-			font-size: 12px;
-			font-style: normal;
-			font-weight: 600;
-			line-height: normal;
-		}
-	}
-	.agent-desc {
-		margin-top: 23px;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		.agent-info {
-			display: flex;
-			flex-direction: column;
-			strong {
-				color: #181a20;
-				font-family: $font;
-				font-size: 15px;
-				font-style: normal;
-				font-weight: 600;
-				line-height: normal;
-				cursor: pointer;
-			}
-			span {
-				color: #181a20;
-				font-family: $font;
-				font-size: 15px;
-				font-style: normal;
-				font-weight: 400;
-				line-height: 28px;
-			}
-		}
-		.buttons {
-			width: auto;
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;
-			svg {
-				width: 24px;
-				height: 24px;
-				cursor: pointer;
-			}
-			.view-cnt {
-				font-size: 13px;
-			}
-		}
-	}
+  position: relative;
+  margin-right: 27px;
+  margin-bottom: 34px;
+  border-radius: 10px;
+  height: 370px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    
+    .agent-img {
+      &::after {
+        opacity: 0.7;
+      }
+    }
+  }
+  
+.agent-img {
+  border-radius: 12px;
+  width: 100%;
+  height: 273px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  div {
+    position: absolute;
+    padding: 12px;
+    top: 12px;
+    left: 12px;
+    border-radius: 6px;
+    background: #574d4c;
+    color: #fff;
+    font-family: $font;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(235, 103, 83, 0.3);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .watch-count {
+    bottom: 12px;
+    top: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  &:hover .watch-count {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  
+  .agent-desc {
+	margin-left: 10px;
+    margin-top: 23px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    .agent-info {
+      display: flex;
+      flex-direction: column;
+      
+      strong {
+        color: #fafafa;
+        font-family: $font;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        
+        &:hover {
+          color: goldenrod;
+          text-decoration: none;
+        }
+      }
+      
+      span {
+        color: #6e6e6e;
+        font-family: $font;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        margin-top: 2px;
+      }
+    }
+    
+    .buttons {
+      width: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      
+      svg {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        color: #6e6e6e;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          color: #eb6753;
+          transform: scale(1.1);
+        }
+      }
+      
+      .view-cnt {
+        font-size: 13px;
+        color: #fafafa;
+        margin-right: 8px;
+      }
+    }
+  }
+  
+  /* Mobile Styles */
+  @media screen and (max-width: 768px) {
+    margin-right: 15px;
+    margin-bottom: 25px;
+    
+    .agent-img {
+      width: 180px;
+      height: 220px;
+    }
+    
+    .agent-desc {
+      margin-top: 15px;
+      
+      .agent-info {
+        strong {
+          font-size: 14px;
+        }
+        
+        span {
+          font-size: 13px;
+          line-height: 20px;
+        }
+      }
+      
+      .buttons {
+        gap: 4px;
+        
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+        
+        .view-cnt {
+          font-size: 12px;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
 }
 .community-general-card-config {
 	position: relative;
