@@ -293,7 +293,6 @@ export const CREATE_COMMENT = gql`
 			memberId
 			createdAt
 			updatedAt
-			memberData
 		}
 	}
 `;

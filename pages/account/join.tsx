@@ -98,7 +98,6 @@ const Join: NextPage = () => {
           <Stack className="left">
             <Box className="logo">
               <div className="flex items-center">
-                {/* <Clock className="text-amber-500" size={28} strokeWidth={1.5} /> */}
                 <span className="ml-2 text-gray-100">ÉCLIPSE</span>
               </div>
             </Box>
@@ -303,25 +302,7 @@ const Join: NextPage = () => {
             </Box>
           </Stack>
           <Stack className="right">
-            <Stack
-              className="profile-image-box"
-              onClick={triggerFileInput}
-            >
-              <Box className="image-box">
-                {previewUrl ? (
-                  <img src={previewUrl} alt="Profile preview" />
-                ) : (
-                  <Upload size={28} strokeWidth={2} />
-                )}
-              </Box>
-              <input
-                type="file"
-                hidden
-                accept="image/png, image/jpeg"
-                ref={fileInputRef}
-                onChange={handleImageUpload}
-              />
-            </Stack>
+            <img src="/img/banner/login.jpg" alt="" />
           </Stack>
         </Stack>
       </Stack>

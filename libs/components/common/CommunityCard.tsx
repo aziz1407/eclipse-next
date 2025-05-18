@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Box, Grid } from '@mui/material';
 import { Blog } from '../../types/blog/blog';
 import Moment from 'react-moment';
 import { REACT_APP_API_URL } from '../../config';
@@ -48,51 +48,77 @@ const CommunityCard = (props: CommunityCardProps) => {
 		return <div>COMMUNITY CARD MOBILE</div>;
 	} else {
 		return (
-			<Stack
-				sx={{ width: size === 'small' ? '285px' : '317px' }}
-				className="community-general-card-config"
-				onClick={(e: any) => chooseArticleHandler(e, blog)}
-			>
-				<Stack className="image-box">
-					<img src={imagePath} alt="" className="card-img" />
-				</Stack>
-				<Stack className="desc-box" sx={{ marginTop: '-20px' }}>
-					<Stack>
-						<Typography
-							className="desc"
-							onClick={(e: any) => {
-								e.stopPropagation();
-								goMemberPage(blog?.memberData?._id as string);
-							}}
-						>
-							{blog?.memberData?.memberNick}
-						</Typography>
-						<Typography className="title">{blog?.blogTitle}</Typography>
-					</Stack>
-					<Stack className={'buttons'}>
-						<IconButton color={'default'}>
-							<RemoveRedEyeIcon />
-						</IconButton>
-						<Typography className="view-cnt">{blog?.blogViews}</Typography>
-						<IconButton color={'default'} onClick={(e: any) => likeArticleHandler(e, user, blog?._id)}>
-							{blog?.meLiked && blog?.meLiked[0]?.myFavorite ? (
-								<FavoriteIcon color={'primary'} />
-							) : (
-								<FavoriteBorderIcon />
-							)}
-						</IconButton>
-						<Typography className="view-cnt">{blog?.blogLikes}</Typography>
-					</Stack>
-				</Stack>
-				<Stack className="date-box">
-					<Moment className="month" format={'MMMM'}>
-						{blog?.createdAt}
-					</Moment>
-					<Typography className="day">
-						<Moment format={'DD'}>{blog?.createdAt}</Moment>
-					</Typography>
-				</Stack>
-			</Stack>
+			<div className="community-general-card-config">
+				<Grid container>
+					{/* Left side - Image */}
+					<Grid item xs={5} className="image-side">
+						<div className="image-container" onClick={(e: any) => chooseArticleHandler(e, blog)}>
+							<img src={imagePath} alt="" className="card-img" />
+						</div>
+					</Grid>
+
+					{/* Right side - Content */}
+					<Grid item xs={7} className="content-side">
+						<div className="content-container">
+							<div className="post-date">
+								<Moment format="MMM DD, YYYY">{blog?.createdAt}</Moment> | {blog?.blogComments}{' '}
+								{blog?.blogComments >= 1 ? 'COMMENT' : 'COMMENTS'}
+							</div>
+
+							<Typography className="title" onClick={(e: any) => chooseArticleHandler(e, blog)}>
+								{blog?.blogTitle}
+							</Typography>
+
+							<Typography className="excerpt">
+								{blog?.blogContent.substring(0, 100)}
+								{blog?.blogContent?.length > 100 ? '...' : ''}
+							</Typography>
+
+							<div className="read-more" onClick={(e: any) => chooseArticleHandler(e, blog)}>
+								READ MORE
+							</div>
+
+							<div className="author-stats">
+								<Typography
+									className="author-name"
+									onClick={(e: any) => {
+										e.stopPropagation();
+										goMemberPage(blog?.memberData?._id as string);
+									}}
+								>
+									{blog?.memberData?.memberNick}
+								</Typography>
+
+								<div className="stats">
+									<div className="stat-item">
+										<IconButton size="small">
+											<RemoveRedEyeIcon fontSize="small" />
+										</IconButton>
+										<span>{blog?.blogViews}</span>
+									</div>
+
+									<div className="stat-item">
+										<IconButton
+											size="small"
+											onClick={(e: any) => {
+												likeArticleHandler(e, user, blog?._id);
+											}}
+										>
+											{blog?.meLiked && blog?.meLiked[0]?.myFavorite ? (
+												<FavoriteIcon sx={{ color: '#eb6753' }} />
+											) : (
+												<FavoriteBorderIcon />
+											)}
+										</IconButton>
+
+										<span>{blog?.blogLikes}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</Grid>
+				</Grid>
+			</div>
 		);
 	}
 };

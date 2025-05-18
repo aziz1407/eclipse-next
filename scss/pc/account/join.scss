@@ -159,55 +159,6 @@
               }
             }
             
-            // Profile image upload styling
-            .profile-upload {
-              margin-top: 5px;
-              
-              .upload-preview {
-                width: 80px; // Smaller size
-                height: 80px; // Smaller size
-                border-radius: 50%; // Circular shape
-                border: 1px dashed #2d2d2d;
-                background: #1a1a1a;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                overflow: hidden;
-                transition: all 0.3s ease;
-                margin: 0 auto; // Center it
-                
-                &:hover {
-                  border-color: #f59e0b;
-                  background: rgba(245, 158, 11, 0.05);
-                }
-                
-                .upload-placeholder {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  
-                  .upload-icon {
-                    color: #f59e0b;
-                    margin-bottom: 6px;
-                  }
-                  
-                  span {
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 12px;
-                    font-weight: 500;
-                    color: #9ca3af;
-                  }
-                }
-                
-                .preview-image {
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  border-radius: 50%; // Circular shape
-                }
-              }
-            }
           }
         }
         
@@ -382,64 +333,7 @@
         height: 100%;
         background-size: cover;
         background-position: center;
-        position: relative;
-        
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
-        }
-        
-        .content {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          z-index: 2;
-          
-          h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: #f59e0b;
-            margin-bottom: 0.75rem;
-          }
-          
-          p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 15px;
-            font-weight: 400;
-            color: #ffffff;
-            text-align: center;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
-          }
-          
-          .separator {
-            width: 60px;
-            height: 2px;
-            background-color: #f59e0b;
-            margin-bottom: 1rem;
-          }
-          
-          .quote {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            font-weight: 400;
-            font-style: italic;
-            color: #d1d5db;
-            text-align: center;
-            max-width: 80%;
-          }
-        }
+        position: relative; 
       }
     }
   }

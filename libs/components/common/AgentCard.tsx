@@ -65,14 +65,11 @@ const AgentCard = (props: AgentCardProps) => {
 						<span>Dealer</span>
 					</div>
 					<div className="buttons">
-						<RemoveRedEyeIcon />
+						<RemoveRedEyeIcon sx={{ color: '#fafafa' }} />
+
 						<span className="view-cnt">{agent?.memberViews}</span>
-						<IconButton onClick={() => likeMemberHandler(user, agent?._id)}>
-							{agent?.meLiked && agent?.meLiked[0]?.myFavorite ? (
-								<FavoriteIcon sx={{ color: 'red' }} />
-							) : (
-								<FavoriteBorderIcon />
-							)}
+						<IconButton onClick={() => likeMemberHandler(user, agent?._id)} className="like-button">
+							{agent?.meLiked && agent?.meLiked[0]?.myFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
 						</IconButton>
 
 						<span style={{ color: '#fafafa' }}>{agent?.memberLikes}</span>

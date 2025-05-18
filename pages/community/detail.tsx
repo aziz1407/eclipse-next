@@ -278,8 +278,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 									label={'News'}
 									className={`tab-button ${blogCategory === 'INSTRUCTIVE' ? 'active' : ''}`}
 								/>
-								
-							</Tabs> 
+							</Tabs>
 						</Stack>
 						<div className="community-detail-config">
 							<Stack className="title-box">
@@ -479,7 +478,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 																					variant="outlined"
 																					color="inherit"
 																					onClick={() => cancelButtonHandler()}
-																				>	
+																				>
 																					Cancel
 																				</Button>
 																				<Button

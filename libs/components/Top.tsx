@@ -167,7 +167,6 @@ const Top = () => {
 			<Stack className={'navbar'}>
 				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
-						{/* Left side icons */}
 						<Box component={'div'} className={'navbar-icons-left'}>
 							{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
 							{user?._id ? (
@@ -177,7 +176,6 @@ const Top = () => {
 							) : null}
 						</Box>
 
-						{/* Left navigation links */}
 						<Box component={'div'} className={'left-links'}>
 							<Link href={'/'}>
 								<div>{t('Home')}</div>
@@ -190,27 +188,26 @@ const Top = () => {
 							</Link>
 						</Box>
 
-						{/* Center logo */}
 						<Box component={'div'} className={'logo-box'}>
 							<Link href={'/'}>
 								<div>ÉCLIPSE</div>
 							</Link>
 						</Box>
 
-						{/* Right navigation links */}
 						<Box component={'div'} className={'right-links'}>
 							<Link href={'/community?blogCategory=GENERAL'}>
 								<div>{t('Community')}</div>
 							</Link>
-							<Link href={'/mypage'}>
-								<div>{t('My Page')}</div>
-							</Link>
+							{user?._id ? (
+								<Link href={'/mypage'}>
+									<div>{t('My Page')}</div>
+								</Link>
+							) : null}
 							<Link href={'/cs'}>
 								<div>{t('CS')}</div>
 							</Link>
 						</Box>
 
-						{/* Right side icons/user box */}
 						<Box component={'div'} className={'navbar-icons-right'}>
 							{user?._id ? (
 								<>
@@ -244,7 +241,6 @@ const Top = () => {
 							)}
 
 							<div className={'lan-box'}>
-								{/* {user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />} */}
 								<Button
 									disableRipple
 									className="btn-lang"
