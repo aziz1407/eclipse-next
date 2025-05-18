@@ -88,7 +88,7 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 					{memberBoArticles?.length === 0 && (
 						<div className={'no-data'}>
 							<img src="/img/icons/icoAlert.svg" alt="" />
-							<p>No Articles found!</p>
+							<p>No Blogs found!</p>
 						</div>
 					)}
 					{memberBoArticles?.map((boardArticle: Blog) => {

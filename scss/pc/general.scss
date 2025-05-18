@@ -328,48 +328,61 @@
 	}
 
 	.agent-img {
-		border-radius: 12px;
+	border-radius: 12px;
+	width: 100%;
+	height: 273px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
 		width: 100%;
-		height: 273px;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		cursor: pointer;
-		position: relative;
-		overflow: hidden;
-		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+		height: 100%;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+		opacity: 0.5;
+		transition: opacity 0.3s ease;
+	}
 
-		&::after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
-			opacity: 0.5;
-			transition: opacity 0.3s ease;
-		}
+	> div {
+		position: absolute;
+		padding: 12px;
+		top: 220px;
+		left: 12px;
+		border-radius: 6px;
+		background: #574d4c;
+		color: #fff;
+		font-family: $font;
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+		z-index: 2;
+		box-shadow: 0 2px 8px rgba(235, 103, 83, 0.3);
+		backdrop-filter: blur(4px);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		transition: all 0.3s ease;
+		opacity: 0;
+		transform: translateY(-10px);
+		pointer-events: none;
+	}
 
-		div {
-			position: absolute;
-			padding: 12px;
-			top: 12px;
-			left: 12px;
-			border-radius: 6px;
-			background: #574d4c;
-			color: #fff;
-			font-family: $font;
-			font-size: 12px;
-			font-style: normal;
-			font-weight: 600;
-			line-height: normal;
-			z-index: 2;
-			box-shadow: 0 2px 8px rgba(235, 103, 83, 0.3);
-			backdrop-filter: blur(4px);
-			border: 1px solid rgba(255, 255, 255, 0.1);
-			transition: all 0.3s ease;
+	&:hover {
+		> div {
+			opacity: 1;
+			transform: translateY(0);
+			pointer-events: auto;
 		}
+	}
+}
+
 
 		.watch-count {
 			bottom: 12px;
@@ -466,8 +479,8 @@
 
 	/* Mobile Styles */
 	@media screen and (max-width: 768px) {
-		margin-right: 15px;
-		margin-bottom: 25px;
+		// margin-right: 15px;
+		// margin-bottom: 25px;
 
 		.agent-img {
 			width: 180px;
@@ -503,7 +516,7 @@
 			}
 		}
 	}
-}
+
 .community-general-card-config {
 	display: flex;
 	position: relative;

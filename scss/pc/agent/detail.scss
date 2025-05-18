@@ -7,16 +7,21 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
+		background-color: #0F0F0F; // Dark background to match luxury theme
+		color: #FFFFFF;
+		
 		.container {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			
 			.agent-info {
 				margin-left: 58px;
 				width: 100%;
 				display: flex;
 				flex-direction: row;
 				align-items: center;
+				
 				img {
 					margin-right: 32px;
 					width: 135px;
@@ -24,32 +29,41 @@
 					border-radius: 50%;
 					cursor: pointer;
 					object-fit: cover;
+					border: 2px solid #AE8C4A; // Gold border for luxury feel
+					box-shadow: 0 0 15px rgba(174, 140, 74, 0.2); // Subtle gold glow
 				}
+				
 				.info {
 					display: flex;
 					flex-direction: column;
+					
 					strong {
-						color: #181a20;
+						color: #FFFFFF; // White text for contrast
 						font-family: $font;
-						font-size: 24px;
+						font-size: 28px; // Slightly larger
 						font-style: normal;
 						font-weight: 600;
 						line-height: normal;
 						text-transform: capitalize;
 						cursor: pointer;
+						letter-spacing: 0.5px; // More luxury feel
 					}
+					
 					div {
 						margin-top: 13px;
 						display: flex;
 						flex-direction: row;
 						align-items: center;
+						
 						img {
 							margin-right: 10px;
 							width: 16px;
 							height: 16px;
+							border: none; // Remove border for icons
 						}
+						
 						span {
-							color: #181a20;
+							color: #D4D4D4; // Light gray instead of pure white
 							font-family: $font;
 							font-size: 20px;
 							font-style: normal;
@@ -59,16 +73,18 @@
 					}
 				}
 			}
+			
 			.agent-home-list {
 				position: relative;
-				width: 100%;
+				width: 83%;
 				margin-top: 33px;
 				padding: 0px 0 46px;
 				display: flex;
 				flex-direction: column;
 				border-radius: 12px;
-				background: #fff;
-				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+				background: #131313; // Dark card background
+				box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+				
 				.card-wrap {
 					position: relative;
 					margin-top: 35px;
@@ -77,6 +93,7 @@
 					display: flex;
 					flex-direction: row;
 					flex-wrap: wrap;
+					
 					.wrap-main {
 						margin-right: 0px;
 						margin-left: 5px;
@@ -84,25 +101,33 @@
 						flex-direction: row;
 						flex-wrap: wrap;
 					}
+					
 					.agent-card {
 						position: relative;
 						margin-right: 27px;
 						margin-bottom: 34px;
 						display: flex;
 						flex-direction: column;
+						
 						.agent-img {
 							border-radius: 12px;
 							width: 233px;
 							height: 273px;
 							background-size: cover;
 							cursor: pointer;
+							transition: transform 0.3s ease;
+							
+							&:hover {
+								transform: scale(1.02); // Subtle zoom on hover
+							}
+							
 							div {
 								position: absolute;
 								padding: 12px;
 								top: 12px;
 								left: 12px;
 								border-radius: 6px;
-								background: #eb6753;
+								background: #AE8C4A; // Gold accent color
 								color: #fff;
 								font-family: $font;
 								font-size: 12px;
@@ -111,12 +136,14 @@
 								line-height: normal;
 							}
 						}
+						
 						.agent-info {
 							margin-top: 23px;
 							display: flex;
 							flex-direction: column;
+							
 							strong {
-								color: #181a20;
+								color: #FFFFFF;
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
@@ -124,8 +151,9 @@
 								line-height: normal;
 								cursor: pointer;
 							}
+							
 							span {
-								color: #181a20;
+								color: #D4D4D4;
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
@@ -135,13 +163,26 @@
 						}
 					}
 				}
+				
 				.pagination {
 					display: flex;
 					flex-direction: column;
 					align-items: center;
+					
+					.pagination-box {
+						// Style for pagination controls
+						.MuiPaginationItem-root {
+							color: #FFFFFF;
+							
+							&.Mui-selected {
+								background-color: #AE8C4A; // Gold for selected page
+							}
+						}
+					}
+					
 					span {
 						margin-top: 20px;
-						color: #181a20;
+						color: #D4D4D4;
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
@@ -149,7 +190,20 @@
 						line-height: 26px;
 					}
 				}
+				
+				.no-data {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					padding: 40px 0;
+					
+					p {
+						color: #D4D4D4;
+						margin-top: 15px;
+					}
+				}
 			}
+			
 			.review-box {
 				position: relative;
 				margin-top: 75px;
@@ -157,12 +211,15 @@
 				width: 95%;
 				height: auto;
 				border-radius: 24px;
-				background: #f6f6f6;
+				background: #151515; // Dark background for reviews
+				border: 1px solid #222222; // Subtle border
+				
 				.main-intro {
 					display: flex;
 					flex-direction: column;
+					
 					span {
-						color: #181a20;
+						color: #FFFFFF;
 						font-family: $font;
 						font-size: 30px;
 						font-style: normal;
@@ -171,31 +228,37 @@
 						letter-spacing: 0.6px;
 						text-transform: capitalize;
 					}
+					
 					p {
-						color: #181a20;
+						color: #AE8C4A; // Gold accent for subtitle
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
 						font-weight: 400;
 						line-height: 26px;
+						margin-top: 5px;
 					}
 				}
+				
 				.review-wrap {
 					padding: 29px 25px;
 					margin-top: 57px;
 					display: flex;
 					flex-direction: column;
 					border-radius: 12px;
-					background: #fff;
-					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+					background: #1A1A1A; // Slightly lighter than parent
+					box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
+					
 					.title-box {
 						svg {
-							width: 10px;
-							height: 10px;
+							width: 16px; // Larger star
+							height: 16px;
+							color: #AE8C4A; // Gold star
 						}
+						
 						span {
 							margin-left: 8px;
-							color: #181a20;
+							color: #FFFFFF;
 							font-family: $font;
 							font-size: 17px;
 							font-style: normal;
@@ -203,40 +266,49 @@
 							line-height: normal;
 						}
 					}
+					
 					.review-card {
 						margin-top: 20px;
 						display: flex;
 						flex-direction: column;
-						padding-bottom: 10px;
-						border-bottom: 1px solid #c4c4c4;
+						padding-bottom: 20px;
+						padding-top: 10px;
+						border-bottom: 1px solid #333333; // Darker line
+						
 						.info {
 							display: flex;
 							flex-direction: row;
 							justify-content: space-between;
+							
 							.left {
 								display: flex;
 								flex-direction: row;
+								
 								img {
 									width: 55px;
 									height: 59px;
 									border-radius: 50%;
 									object-fit: cover;
+									border: 1px solid #AE8C4A; // Gold border
 								}
+								
 								div {
-									margin-left: 8px;
+									margin-left: 15px;
 									display: flex;
 									flex-direction: column;
+									
 									strong {
-										color: #181a20;
+										color: #FFFFFF;
 										font-family: $font;
 										font-size: 15px;
 										font-style: normal;
 										font-weight: 600;
 										line-height: normal;
 									}
+									
 									span {
 										margin-top: 4px;
-										color: #181a20;
+										color: #D4D4D4;
 										font-family: $font;
 										font-size: 13px;
 										font-style: normal;
@@ -245,17 +317,20 @@
 									}
 								}
 							}
+							
 							.right {
 								display: flex;
 								flex-direction: row;
+								
 								svg {
-									color: #edf023;
+									color: #AE8C4A; // Gold stars
 								}
 							}
 						}
+						
 						p {
-							margin-top: 10px;
-							color: #181a20;
+							margin-top: 15px;
+							color: #EFEFEF;
 							font-family: $font;
 							font-size: 14px;
 							font-style: normal;
@@ -263,58 +338,83 @@
 							line-height: 26px;
 						}
 					}
+					
 					.pagination-box {
-						margin-top: 15px;
+						margin-top: 25px;
 						width: 100%;
 						height: auto;
 						display: flex;
 						justify-content: center;
+						
+						.MuiPaginationItem-root {
+							color: #FFFFFF;
+							
+							&.Mui-selected {
+								background-color: #AE8C4A; // Gold for selected page
+							}
+						}
 					}
 				}
+				
 				.leave-review-config {
-					margin-top: 15px;
+					margin-top: 35px;
 					border-radius: 12px;
-					background: #fff;
-					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+					background: #1A1A1A; // Slightly lighter shade than parent bg
+					box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
 					padding: 30px 38px;
+					
 					.main-title {
-						color: #181a20;
+						color: #FFFFFF;
 						font-family: $font;
-						font-size: 17px;
+						font-size: 20px; // Larger title
 						font-style: normal;
 						font-weight: 600;
 						line-height: normal;
+						letter-spacing: 0.5px;
 					}
+					
 					.review-title {
-						margin-top: 20px;
-						color: #181a20;
+						margin-top: 25px;
+						color: #D4D4D4;
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
 						font-weight: 600;
 						line-height: normal;
 					}
+					
 					textarea {
 						width: 100%;
 						height: 120px;
 						margin-top: 8px;
 						padding: 20px;
 						border-radius: 8px;
-						border: 1px solid #ddd;
-						color: #717171;
+						border: 1px solid #333333; // Darker border
+						background-color: #0F0F0F; // Darker textarea
+						color: #D4D4D4;
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
 						font-weight: 400;
 						line-height: 26px;
+						transition: border-color 0.3s ease;
+						
+						&:focus {
+							border-color: #AE8C4A; // Gold border on focus
+							outline: none;
+						}
 					}
+					
 					.submit-btn {
 						width: 100%;
 						display: flex;
 						justify-content: flex-end;
+						
 						button:disabled {
-							background: #dfdfdf;
+							background: #2A2A2A; // Darker disabled button
+							color: #555555;
 						}
+						
 						.submit-review {
 							display: flex;
 							width: 256px;
@@ -324,15 +424,24 @@
 							align-items: center;
 							gap: 10px;
 							border-radius: 12px;
-							border: 1px solid #c4c4c4;
+							background: #AE8C4A; // Gold button for luxury
+							border: none;
 							cursor: pointer;
+							transition: all 0.3s ease;
+							
+							&:hover {
+								background: #C4A05E; // Lighter gold on hover
+								box-shadow: 0 0 15px rgba(174, 140, 74, 0.3); // Subtle glow
+							}
+							
 							.title {
-								color: #181a20;
+								color: #FFFFFF; // White text on gold button
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
 								font-weight: 600;
 								line-height: normal;
+								letter-spacing: 0.5px;
 							}
 						}
 					}
