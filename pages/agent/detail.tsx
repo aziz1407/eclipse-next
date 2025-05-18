@@ -186,7 +186,6 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 						<Box component={'div'} className={'info'} onClick={() => redirectToMemberPageHandler(agent?._id as string)}>
 							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>
 							<div>
-								<img src="/img/icons/call.svg" alt="" />
 								<span>{agent?.memberPhone}</span>
 							</div>
 						</Box>
@@ -214,7 +213,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 										/>
 									</Stack>
 									<span>
-										Total {propertyTotal} propert{propertyTotal > 1 ? 'ies' : 'y'} available
+										Total {propertyTotal} watch{propertyTotal > 1 ? 'es' : ''} available
 									</span>
 								</>
 							) : (

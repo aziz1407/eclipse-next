@@ -66,6 +66,7 @@ query GetMember($input: String!) {
         memberAddress
         memberDesc
         memberProperties
+        memberBlogs
         memberFollowers
         memberFollowings
         memberPoints
@@ -78,7 +79,6 @@ query GetMember($input: String!) {
         createdAt
         updatedAt
         accessToken
-        memberBlogs
         meFollowed {
             followingId
             followerId
@@ -86,6 +86,7 @@ query GetMember($input: String!) {
         }
     }
 }
+
 `);
 
 /**************************

@@ -9,8 +9,8 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
 interface CommunityCardProps {
 	blog: Blog;
@@ -92,7 +92,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 								<div className="stats">
 									<div className="stat-item">
 										<IconButton size="small">
-											<RemoveRedEyeIcon fontSize="small" />
+											<RemoveRedEyeIcon fontSize="small" sx={{ color: 'grey' }} />
 										</IconButton>
 										<span>{blog?.blogViews}</span>
 									</div>
@@ -105,12 +105,11 @@ const CommunityCard = (props: CommunityCardProps) => {
 											}}
 										>
 											{blog?.meLiked && blog?.meLiked[0]?.myFavorite ? (
-												<FavoriteIcon sx={{ color: '#eb6753' }} />
+												<ThumbUpIcon sx={{ color: '#eb6753' }} />
 											) : (
-												<FavoriteBorderIcon />
+												<ThumbUpOffAltIcon sx={{ color: 'grey' }} />
 											)}
 										</IconButton>
-
 										<span>{blog?.blogLikes}</span>
 									</div>
 								</div>

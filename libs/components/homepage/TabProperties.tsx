@@ -87,6 +87,7 @@ const TabProperties = (props: PopularPropertiesProps) => {
 											hoveredIndex === index && property.propertyImages.length > 1
 												? `url(${REACT_APP_API_URL}/${property?.propertyImages[1]})`
 												: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})`,
+												transition: "background-image 0.3s ease-in-out"
 									}}
 									onClick={() => pushDetailHandler(property._id)}
 									onMouseEnter={() => setHoveredIndex(index)}

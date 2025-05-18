@@ -55,7 +55,7 @@ const PropertyCard = (props: PropertyCardType) => {
         >
           <Box className="watch-image-container">
             <img
-              src={isHovered && property?.propertyImages[1] ? secondaryImagePath : primaryImagePath}
+              src={isHovered && property?.propertyImages[1] ? secondaryImagePath : primaryImagePath} style={{transition: "0.3s ease-in-out"}} 
               alt={property.propertyModel || 'Watch'}
               className="watch-image"
             />
