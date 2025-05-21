@@ -11,7 +11,7 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import MessageIcon from '@mui/icons-material/Message';
 
 interface PropertyCardType {
   property: Property;
@@ -93,11 +93,10 @@ const PropertyCard = (props: PropertyCardType) => {
                   <span className="view-count">{property.propertyViews}</span>
                 )}
               </IconButton>
-            </Link>
-
-            <IconButton className="action-button">
-              <ShoppingCartIcon />
+              <IconButton className="action-button" style={{marginTop: "10px"}}>
+              <MessageIcon />
             </IconButton>
+            </Link>
           </Stack>
         )}
       </Box>
