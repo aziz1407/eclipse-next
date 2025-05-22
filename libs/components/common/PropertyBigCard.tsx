@@ -38,13 +38,6 @@ const PropertyBigCard = (props: PropertyBigCardProps) => {
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages?.[0]})` }}
 					onClick={() => goPropertyDetailPage(property?._id)}
 				>
-					{property && property?.propertyRank >= topPropertyRank && (
-						<div className={'status'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<span>top</span>
-						</div>
-					)}
-
 					<div className={'price'}>${formatterStr(property?.propertyPrice)}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>

@@ -33,7 +33,7 @@ import { Direction, Message } from '../../libs/enums/common.enum';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { create } from 'domain';
-import { VerifiedIcon, Truck, ShieldIcon,  } from 'lucide-react';
+import { VerifiedIcon, Truck, ShieldIcon } from 'lucide-react';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -50,7 +50,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const [propertyId, setPropertyId] = useState<string | null>(null);
 	const [property, setProperty] = useState<Property | null>(null);
 	const [slideImage, setSlideImage] = useState<string>('');
-	const [destinationProperties, setDestinationProperties] = useState<Property[]>([]);
+	const [similarWatches, setSimilarWatches] = useState<Property[]>([]);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
 	const [propertyComments, setPropertyComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
@@ -59,8 +59,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		commentContent: '',
 		commentRefId: '',
 	});
-	
-	
+
 	/** APOLLO REQUESTS **/
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 	const [createComment] = useMutation(CREATE_COMMENT);
@@ -102,7 +101,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		skip: !propertyId && !property,
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			if (data?.getProperties?.list) setDestinationProperties(data?.getProperties?.list);
+			if (data?.getProperties?.list) setSimilarWatches(data?.getProperties?.list);
 		},
 	});
 
@@ -157,46 +156,45 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	};
 
 	// Modified zoom functionality with proper TypeScript typing
+	useEffect(() => {
+		const mainImage = mainImageRef.current;
 
-useEffect(() => {
-  const mainImage = mainImageRef.current;
-  
-  if (!mainImage) return;
-  
-  // Create a magnify lens effect directly applied to the image
-  const handleMouseMove = (e: MouseEvent) => {
-    const { left, top, width, height } = mainImage.getBoundingClientRect();
-    
-    // Calculate mouse position relative to the image
-    const mouseX = e.clientX - left;
-    const mouseY = e.clientY - top;
-    
-    // Calculate mouse position as percentage (clamped between 0 and 1)
-    const percentX = Math.max(0, Math.min(0.5, mouseX / width));
-    const percentY = Math.max(0, Math.min(0.5, mouseY / height));
-    
-    // Apply the zoomed image effect directly
-    const zoomFactor = 1.5;
-    
-    // Update the main image to show the zoomed portion
-    mainImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
-    mainImage.style.transform = `scale(${zoomFactor})`;
-  };
-  
-  const handleMouseLeave = () => {
-    // Reset the image to normal when mouse leaves
-    mainImage.style.transform = 'scale(1)';
-  };
-  
-  // TypeScript-safe event listener attachment
-  mainImage.addEventListener('mousemove', handleMouseMove as unknown as EventListener);
-  mainImage.addEventListener('mouseleave', handleMouseLeave);
-  
-  return () => {
-    mainImage.removeEventListener('mousemove', handleMouseMove as unknown as EventListener);
-    mainImage.removeEventListener('mouseleave', handleMouseLeave);
-  };
-}, [slideImage]);
+		if (!mainImage) return;
+
+		// Create a magnify lens effect directly applied to the image
+		const handleMouseMove = (e: MouseEvent) => {
+			const { left, top, width, height } = mainImage.getBoundingClientRect();
+
+			// Calculate mouse position relative to the image
+			const mouseX = e.clientX - left;
+			const mouseY = e.clientY - top;
+
+			// Calculate mouse position as percentage (clamped between 0 and 1)
+			const percentX = Math.max(0, Math.min(0.5, mouseX / width));
+			const percentY = Math.max(0, Math.min(0.5, mouseY / height));
+
+			// Apply the zoomed image effect directly
+			const zoomFactor = 1.5;
+
+			// Update the main image to show the zoomed portion
+			mainImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
+			mainImage.style.transform = `scale(${zoomFactor})`;
+		};
+
+		const handleMouseLeave = () => {
+			// Reset the image to normal when mouse leaves
+			mainImage.style.transform = 'scale(1)';
+		};
+
+		// TypeScript-safe event listener attachment
+		mainImage.addEventListener('mousemove', handleMouseMove as unknown as EventListener);
+		mainImage.addEventListener('mouseleave', handleMouseLeave);
+
+		return () => {
+			mainImage.removeEventListener('mousemove', handleMouseMove as unknown as EventListener);
+			mainImage.removeEventListener('mouseleave', handleMouseLeave);
+		};
+	}, [slideImage]);
 
 	const likePropertyHandler = async (user: T, id: string) => {
 		try {
@@ -246,10 +244,8 @@ useEffect(() => {
 
 	if (getPropertiesLoading) {
 		return (
-			<Stack
-				sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '1800px' }}
-			>
-				<CircularProgress size={"4rem"}/>
+			<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '1800px' }}>
+				<CircularProgress size={'4rem'} />
 			</Stack>
 		);
 	}
@@ -257,264 +253,406 @@ useEffect(() => {
 	if (device === 'mobile') {
 		return <div>PROPERTY DETAIL PAGE</div>;
 	} else {
-	return (
-  <div id={'property-detail-page'}>
-    <div className={'container'}>
-      <Stack className={'property-detail-config'}>
-        <Stack className={'property-info-config'}>
-          <Stack className={'info'}>
-            <Stack className={'left-box'}>
-              <Typography className={'title-main'}>{property?.propertyModel}</Typography>
-              <Stack className={'top-box'}>
-                <Typography className={'brand'}>{property?.propertyBrand}</Typography>
-                <Stack className={'divider'}></Stack>
-                <Typography className={'ref-number'}>Ref. {property?._id?.substring(0, 8)}</Typography>
-                <Stack className={'divider'}></Stack>
-                <Typography className={'date'}>{moment().diff(property?.createdAt, 'days')} days ago</Typography>
-              </Stack>
-            </Stack>
-            <Stack className={'right-box'}>
-              <Typography className="price">${formatterStr(property?.propertyPrice)}</Typography>
-            </Stack>
-          </Stack>
-          <Stack className={'images-showcase'}>
-            <Stack className={'main-image-container'}>
-              <div className="magnify-glass" ref={magnifyGlassRef}></div>
-              <img
-                ref={mainImageRef}
-                src={slideImage ? `${REACT_APP_API_URL}/${slideImage}` : '/img/property/bigImage.png'}
-                alt={'main-image'}
-                className="main-watch-image"
-              />
-            </Stack>
-            <Stack className={'sub-images'}>
-              {property?.propertyImages.map((subImg: string) => {
-                const imagePath: string = `${REACT_APP_API_URL}/${subImg}`;
-                return (
-                  <Stack 
-                    className={`sub-img-box ${slideImage === subImg ? 'active' : ''}`} 
-                    onClick={() => changeImageHandler(subImg)} 
-                    key={subImg}
-                  >
-                    <img src={imagePath} alt={'sub-image'} />
-                  </Stack>
-                );
-              })}
-            </Stack>
-          </Stack>
-        </Stack>
-        <Stack className={'property-desc-config'}>
-          <Stack className={'left-config'}>
-            <Stack className={'watch-details-config'}>
-              <Typography className={'title'}>Watch Specifications</Typography>
-              <Stack className={'specs-container'}>
-                <Stack className={'spec-group'}>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Brand</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyBrand}</Typography>
-                  </Box>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Model</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyModel}</Typography>
-                  </Box>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Address</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyAddress}</Typography>
-                  </Box>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Category</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyCategory}</Typography>
-                  </Box>
-                </Stack>
-                <Stack className={'spec-group'}>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Material</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyMaterial}</Typography>
-                  </Box>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Condition</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyCondition}</Typography>
-                  </Box>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Movement</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyMovement}</Typography>
-                  </Box>
-                  <Box component={'div'} className={'spec-item'}>
-                    <Typography className={'spec-title'}>Year</Typography>
-                    <Typography className={'spec-value'}>{property?.propertyYear || moment(property?.createdAt).format('YYYY')}</Typography>
-                  </Box>
-                </Stack>
-              </Stack>
-            </Stack>
+		return (
+			<div id={'property-detail-page'}>
+				<div className={'container'}>
+					<Stack className={'property-detail-config'}>
+						<Stack className={'property-info-config'}>
+							<Stack className={'info'}>
+								<Stack className={'left-box'}>
+									<Typography className={'title-main'}>{property?.propertyModel}</Typography>
+									<Stack className={'top-box'}>
+										<Typography className={'brand'}>{property?.propertyBrand}</Typography>
+										<Stack className={'divider'}></Stack>
+										<Typography className={'ref-number'}>Ref. {property?._id?.substring(0, 8)}</Typography>
+										<Stack className={'divider'}></Stack>
+										<Typography className={'date'}>{moment().diff(property?.createdAt, 'days')} days ago</Typography>
+									</Stack>
+								</Stack>
+								<Stack className={'right-box'}>
+									<Typography className="price">${formatterStr(property?.propertyPrice)}</Typography>
+								</Stack>
+							</Stack>
+							<Stack className={'images-showcase'}>
+								<Stack className={'sub-images'}>
+									{property?.propertyImages.map((subImg: string) => {
+										const imagePath: string = `${REACT_APP_API_URL}/${subImg}`;
+										return (
+											<Stack
+												className={`sub-img-box ${slideImage === subImg ? 'active' : ''}`}
+												onClick={() => changeImageHandler(subImg)}
+												key={subImg}
+											>
+												<img src={imagePath} alt={'sub-image'} />
+											</Stack>
+										);
+									})}
+								</Stack>
 
-			  <Stack className={'prop-tabs-container'}>
-              <Tabs 
-                value={activeTab} 
-                onChange={(e: any, newValue: any) => setActiveTab(newValue)} 
-                className="property-tabs"
-              >
-                <Tab label="Description" value="description" />
-                <Tab label="Purchase Info" value="purchase" />
-				<Tab label="Comments" value="comments" />
-              </Tabs>
+								<Stack className={'main-image-container'}>
+									<div className="magnify-glass" ref={magnifyGlassRef}></div>
+									<img
+										ref={mainImageRef}
+										src={slideImage ? `${REACT_APP_API_URL}/${slideImage}` : '/img/property/bigImage.png'}
+										alt={'main-image'}
+										className="main-watch-image"
+									/>
+								</Stack>
+							</Stack>
+							<Stack className={'property-desc-config'}>
+								<Stack className={'left-config'}>
+									<Stack className={'watch-details-config'}>
+										<Typography className={'title'}>Watch Specifications</Typography>
+										<Stack className={'specs-container'}>
+											<Stack className={'spec-group'}>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Brand</Typography>
+													<Typography className={'spec-value'}>{property?.propertyBrand}</Typography>
+												</Box>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Model</Typography>
+													<Typography className={'spec-value'}>{property?.propertyModel}</Typography>
+												</Box>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Address</Typography>
+													<Typography className={'spec-value'}>{property?.propertyAddress}</Typography>
+												</Box>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Category</Typography>
+													<Typography className={'spec-value'}>{property?.propertyCategory}</Typography>
+												</Box>
+											</Stack>
+											<Stack className={'spec-group'}>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Material</Typography>
+													<Typography className={'spec-value'}>{property?.propertyMaterial}</Typography>
+												</Box>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Condition</Typography>
+													<Typography className={'spec-value'}>{property?.propertyCondition}</Typography>
+												</Box>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Movement</Typography>
+													<Typography className={'spec-value'}>{property?.propertyMovement}</Typography>
+												</Box>
+												<Box component={'div'} className={'spec-item'}>
+													<Typography className={'spec-title'}>Year</Typography>
+													<Typography className={'spec-value'}>
+														{property?.propertyYear || moment(property?.createdAt).format('YYYY')}
+													</Typography>
+												</Box>
+											</Stack>
+										</Stack>
+									</Stack>
+									<Stack className={'prop-tabs-container'}>
+										<Tabs
+											value={activeTab}
+											onChange={(e: any, newValue: any) => setActiveTab(newValue)}
+											className="property-tabs"
+											centered
+										>
+											<Tab label="Description" value="description" />
+											<Tab label="Purchase Info" value="purchase" />
+											<Tab label="Comments" value="comments" />
+										</Tabs>
 
-              {activeTab === 'description' && (
-                <Stack className={'tab-content description-tab'}>
-                  <Typography className={'title'}>Watch Description</Typography>
-                  <Typography className={'desc'}>{property?.propertyDesc ?? 'No Description!'}</Typography>
-                </Stack>
-              )}
+										{activeTab === 'description' && (
+											<Stack className={'tab-content description-tab'}>
+												<Typography className={'title'}>Watch Description</Typography>
+												<Typography className={'desc'}>{property?.propertyDesc ?? 'No Description!'}</Typography>
+											</Stack>
+										)}
 
-              {activeTab === 'purchase' && (
-                <Stack className={'tab-content purchase-tab'}>
-                  <Typography className={'title'}>Purchase Information</Typography>
-                  <Typography className={'desc'}>
-                    To purchase this luxury timepiece, please contact our authorized dealers directly. We ensure secure packaging and insured shipping worldwide. Delivery typically takes 3-5 business days depending on location. All watches come with authentication certificates and a 2-year international warranty.
-                  </Typography>
-                </Stack>
-              )}
-            </Stack>
+										{activeTab === 'purchase' && (
+											<Stack className={'tab-content purchase-tab'} sx={{ p: 3 }}>
+												<Typography
+													sx={{
+														fontSize: '1.5rem',
+														fontWeight: 600,
+														mb: 2,
+														color: '#fafafa',
+													}}
+												>
+													Need to know:
+												</Typography>
 
-            {commentTotal !== 0 && (
-              <Stack className={'reviews-config'}>
-                <Stack className={'filter-box'}>
-                  <Stack className={'review-cnt'}>
-                    <Typography className={'reviews'}>{commentTotal} reviews</Typography>
-                  </Stack>
-                </Stack>
-                <Stack className={'review-list'}>
-                  {propertyComments?.map((comment: Comment) => {
-                    return <Review comment={comment} key={comment?._id} />;
-                  })}
-                  <Box component={'div'} className={'pagination-box'}>
-                    <MuiPagination
-                      page={commentInquiry.page}
-                      count={Math.ceil(commentTotal / commentInquiry.limit)}
-                      onChange={commentPaginationChangeHandler}
-                      shape="circular"
-                      color="primary"
-                    />
-                  </Box>
-                </Stack>
-              </Stack>
-            )}
-            <Stack className={'leave-review-config'}>
-              <Typography className={'main-title'}>Drop a comment</Typography>
-              <textarea
-                onChange={({ target: { value } }: any) => {
-                  setInsertCommentData({ ...insertCommentData, commentContent: value });
-                }}
-                value={insertCommentData.commentContent}
-                placeholder="Share your experience with this timepiece..."
-              ></textarea>
-              <Box className={'submit-btn'} component={'div'}>
-                <Button
-                  className={'submit-review'}
-                  disabled={insertCommentData.commentContent === '' || user?._id === ''}
-                  onClick={createCommentHandler}
-                >
-                  <Typography className={'title'}>Submit Review</Typography>
-                </Button>
-              </Box>
-            </Stack>
-          </Stack>
-          <Stack className={'right-config'}>
-            <Stack className={'dealer-info-box'}>
-              <Typography className={'main-title'}>Contact Dealer</Typography>
-              <Stack className={'dealer-details'}>
-                <img
-                  className={'dealer-image'}
-                  src={
-                    property?.memberData?.memberImage
-                      ? `${REACT_APP_API_URL}/${property?.memberData?.memberImage}`
-                      : '/img/profile/defaultUser.svg'
-                  }
-                />
-                <Stack className={'dealer-info'}>
-                  <Link href={`/member?memberId=${property?.memberData?._id}`}>
-                    <Typography className={'name'}>{property?.memberData?.memberNick}</Typography>
-                  </Link>
-                  <Stack className={'phone-number'}>
-                    <Typography className={'number'}>{property?.memberData?.memberPhone}</Typography>
-                  </Stack>
-                  <Link href={`/member?memberId=${property?.memberData?._id}`} className="inventory-link">
-                    <Typography className={'listings'}>View Inventory</Typography>
-                  </Link>
-                </Stack>
-              </Stack>
-            </Stack>
-            <Stack className={'contact-form'}>
-              <Stack className={'form-field'}>
-                <Typography className={'field-label'}>Name</Typography>
-                <input type={'text'} placeholder={'Enter your name'} style={{color: "grey"}}/>
-              </Stack>
-              <Stack className={'form-field'}>
-                <Typography className={'field-label'}>Phone</Typography>
-                <input type={'text'} placeholder={'Enter your phone'} />
-              </Stack>
-              <Stack className={'form-field'}>
-                <Typography className={'field-label'}>Email</Typography>
-                <input type={'email'} placeholder={'Enter your email'} />
-              </Stack>
-              <Stack className={'form-field'}>
-                <Typography className={'field-label'}>Message</Typography>
-                <textarea placeholder={'Hello, I am interested in this timepiece and would like more information...'}></textarea>
-              </Stack>
-              <Stack className={'form-field'}>
-                <Button className={'send-message'}>
-                  <Typography className={'title'}>Contact Dealer</Typography>
-                </Button>
-              </Stack>
-            </Stack>
-            
-          </Stack>
-        </Stack>
-        {destinationProperties.length !== 0 && (
-          <Stack className={'similar-properties-config'}>
-            <Stack className={'title-pagination-box'}>
-              <Stack className={'title-box'}>
-                <Typography className={'main-title'}>Similar Timepieces</Typography>
-                <Typography className={'sub-title'}>You may also be interested in</Typography>
-              </Stack>
-              <Stack className={'pagination-box'}>
-                <WestIcon className={'swiper-similar-prev'} />
-                <div className={'swiper-similar-pagination'}></div>
-                <EastIcon className={'swiper-similar-next'} />
-              </Stack>
-            </Stack>
-            <Stack className={'cards-box'}>
-              <Swiper
-                className={'similar-watches-swiper'}
-                slidesPerView={'auto'}
-                spaceBetween={35}
-                modules={[Autoplay, Navigation, Pagination]}
-                navigation={{
-                  nextEl: '.swiper-similar-next',
-                  prevEl: '.swiper-similar-prev',
-                }}
-                pagination={{
-                  el: '.swiper-similar-pagination',
-                }}
-              >
-                {destinationProperties.map((property: Property) => {
-                  return (
-                    <SwiperSlide className={'similar-watches-slide'} key={property.propertyModel}>
-                      <PropertyBigCard
-                        property={property}
-                        likePropertyHandler={likePropertyHandler}
-                        key={property?._id}
-                      />
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            </Stack>
-          </Stack>
-        )}
-      </Stack>
-    </div>
-  </div>
-);
+												<Stack spacing={1.5} sx={{ mt: 1 }}>
+													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
+														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
+															In order to purchase your desired watch please contact our authorized dealers
+														</Typography>
+													</Stack>
+
+													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
+														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
+															Extended Guarantee: 5-year international warranty with our certified service centers
+														</Typography>
+													</Stack>
+
+													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
+														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
+															Superior Craftsmanship: Hand-assembled components with shock-resistant technology
+														</Typography>
+													</Stack>
+
+													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
+														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
+															Premium Materials: 18k gold cases with scratch-resistant sapphire crystal
+														</Typography>
+													</Stack>
+
+													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
+														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
+															Ownership Verification: Digital certificate of authenticity with blockchain tracking
+														</Typography>
+													</Stack>
+
+													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
+														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
+															Concierge Service: Dedicated watch specialists available 24/7 for maintenance inquiries
+														</Typography>
+													</Stack>
+												</Stack>
+											</Stack>
+										)}
+
+										{activeTab === 'comments' && (
+											<Stack className={'tab-content comments-tab'}>
+												{/* Comment submission form at the top */}
+												<Stack className={'leave-review-config'}>
+													<Typography className={'main-title'}>Drop a comment</Typography>
+													<textarea
+														onChange={({ target: { value } }: any) => {
+															setInsertCommentData({ ...insertCommentData, commentContent: value });
+														}}
+														value={insertCommentData.commentContent}
+														placeholder="Share your experience with this timepiece..."
+													></textarea>
+													<Box className={'submit-btn'} component={'div'}>
+														<Button
+															className={'submit-review'}
+															disabled={insertCommentData.commentContent === '' || user?._id === ''}
+															onClick={createCommentHandler}
+														>
+															<Typography className={'title'}>Submit Review</Typography>
+														</Button>
+													</Box>
+												</Stack>
+
+												{commentTotal !== 0 && (
+													<Stack className={'reviews-config'}>
+														<Stack className={'filter-box'}>
+															<Stack className={'review-cnt'}>
+																<Typography className={'reviews'}>{commentTotal} reviews</Typography>
+															</Stack>
+														</Stack>
+														<Stack className={'review-list'}>
+															{propertyComments?.map((comment: Comment) => (
+																<Stack key={comment?._id} className={'review-item'}>
+																	<Stack
+																		className={'review-itemm'}
+																		sx={{
+																			mb: 3,
+																			background:
+																				'linear-gradient(145deg, rgba(30, 30, 30, 0.8) 0%, rgba(26, 26, 26, 0.9) 100%)',
+																			border: '1px solid rgba(212, 175, 55, 0.15)',
+																			borderRadius: '12px',
+																			padding: '1.5rem',
+																			position: 'relative',
+																			transition: 'all 0.3s ease',
+																			'&::before': {
+																				content: '""',
+																				position: 'absolute',
+																				top: 0,
+																				left: 0,
+																				right: 0,
+																				height: '2px',
+																				background: 'linear-gradient(90deg, #d4af37 0%, #b8860b 50%, #d4af37 100%)',
+																				borderRadius: '12px 12px 0 0',
+																				opacity: 0.6,
+																			},
+																			'&:hover': {
+																				transform: 'translateY(-2px)',
+																				boxShadow: '0 8px 25px rgba(212, 175, 55, 0.15)',
+																				borderColor: 'rgba(212, 175, 55, 0.3)',
+																				background:
+																					'linear-gradient(145deg, rgba(35, 35, 35, 0.9) 0%, rgba(30, 30, 30, 0.95) 100%)',
+																			},
+																		}}
+																	>
+																		<Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 1.5 }}>
+																			<Box
+																				component="img"
+																				src={
+																					comment?.memberData?.memberImage
+																						? `${REACT_APP_API_URL}/${comment?.memberData?.memberImage}`
+																						: '/img/profile/defaultUser.svg'
+																				}
+																				sx={{
+																					width: 48,
+																					height: 48,
+																					borderRadius: '50%',
+																					objectFit: 'cover',
+																					border: '2px solid #d4af37',
+																					boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
+																					transition: 'all 0.3s ease',
+																					'&:hover': {
+																						transform: 'scale(1.05)',
+																						boxShadow: '0 6px 18px rgba(212, 175, 55, 0.4)',
+																					},
+																				}}
+																			/>
+																			<Stack>
+																				<Typography
+																					className={'review-author'}
+																					sx={{
+																						fontWeight: 700,
+																						color: '#fff',
+																						fontSize: '1rem',
+																						letterSpacing: '0.5px',
+																						textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+																						mb: 0.25,
+																					}}
+																				>
+																					{comment?.memberData?.memberNick}
+																				</Typography>
+																				<Typography
+																					className={'review-date'}
+																					sx={{
+																						color: '#d4af37',
+																						fontSize: '0.75rem',
+																						fontWeight: 500,
+																						textTransform: 'uppercase',
+																						letterSpacing: '0.5px',
+																					}}
+																				>
+																					{moment(comment?.createdAt).format('DD MMMM, YYYY')}
+																				</Typography>
+																			</Stack>
+																		</Stack>
+
+																		<Typography className={'review-content'}>{comment?.commentContent}</Typography>
+																	</Stack>
+																</Stack>
+															))}
+															<Box component={'div'} className={'pagination-box'}>
+																<MuiPagination
+																	page={commentInquiry.page}
+																	count={Math.ceil(commentTotal / commentInquiry.limit)}
+																	onChange={commentPaginationChangeHandler}
+																	shape="circular"
+																	color="primary"
+																/>
+															</Box>
+														</Stack>
+													</Stack>
+												)}
+											</Stack>
+										)}
+									</Stack>
+								</Stack>
+								<Stack className={'right-config'}>
+									<Stack className={'dealer-info-box'}>
+										<Typography className={'main-title'}>Contact Dealer</Typography>
+										<Stack className={'dealer-details'}>
+											<img
+												className={'dealer-image'}
+												src={
+													property?.memberData?.memberImage
+														? `${REACT_APP_API_URL}/${property?.memberData?.memberImage}`
+														: '/img/profile/defaultUser.svg'
+												}
+											/>
+											<Stack className={'dealer-info'}>
+												<Link href={`/member?memberId=${property?.memberData?._id}`}>
+													<Typography className={'name'}>{property?.memberData?.memberNick}</Typography>
+												</Link>
+												<Stack className={'phone-number'}>
+													<Typography className={'number'}>{property?.memberData?.memberPhone}</Typography>
+												</Stack>
+												<Link href={`/member?memberId=${property?.memberData?._id}`} className="inventory-link">
+													<Typography className={'listings'}>View Inventory</Typography>
+												</Link>
+											</Stack>
+										</Stack>
+									</Stack>
+									<Stack className={'contact-form'}>
+										<Stack className={'form-field'}>
+											<Typography className={'field-label'}>Name</Typography>
+											<input type={'text'} placeholder={'Enter your name'} style={{ color: 'grey' }} />
+										</Stack>
+										<Stack className={'form-field'}>
+											<Typography className={'field-label'}>Phone</Typography>
+											<input type={'text'} placeholder={'Enter your phone'} />
+										</Stack>
+										<Stack className={'form-field'}>
+											<Typography className={'field-label'}>Email</Typography>
+											<input type={'email'} placeholder={'Enter your email'} />
+										</Stack>
+										<Stack className={'form-field'}>
+											<Typography className={'field-label'}>Message</Typography>
+											<textarea
+												placeholder={'Hello, I am interested in this timepiece and would like more information...'}
+											></textarea>
+										</Stack>
+										<Stack className={'form-field'}>
+											<Button className={'send-message'}>
+												<Typography className={'title'}>Contact Dealer</Typography>
+											</Button>
+										</Stack>
+									</Stack>
+								</Stack>
+							</Stack>
+							{similarWatches.length !== 0 && (
+								<Stack className="similar-properties-config">
+									<Stack className="header-row">
+										<Stack className="title-box">
+											<Typography className="main-title">Similar Timepieces</Typography>
+											<Typography className="sub-title">You may also be interested in</Typography>
+										</Stack>
+									</Stack>
+
+									<div className="swiper-arrows">
+										<WestIcon className="swiper-prev" />
+										<EastIcon className="swiper-next" />
+									</div>
+
+									<div className="swiper-container">
+										<Swiper
+											slidesPerView="auto"
+											spaceBetween={35}
+											navigation={{
+												nextEl: '.swiper-next',
+												prevEl: '.swiper-prev',
+											}}
+											modules={[Navigation]}
+										>
+											{similarWatches.map((property: Property) => {
+												return (
+													<SwiperSlide key={property.propertyModel}>
+														<PropertyBigCard
+															property={property}
+															likePropertyHandler={likePropertyHandler}
+															key={property?._id}
+														/>
+													</SwiperSlide>
+												);
+											})}
+										</Swiper>
+									</div>
+								</Stack>
+							)}
+						</Stack>
+					</Stack>
+				</div>
+			</div>
+		);
 	}
 };
 

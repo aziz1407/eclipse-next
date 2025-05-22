@@ -14,618 +14,699 @@ $gold-gradient: linear-gradient(145deg, #d4af37 0%, #9c7a10 100%);
 
 // Global styles for property detail page
 #property-detail-page {
-  background-color: $background-color;
-  padding: 2rem 0;
-  font-family: 'Montserrat', sans-serif;
-  color: $text-color;
-  
-  .container {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-  
-  .property-detail-config {
-    width: 100%;
-    gap: 3rem;
-  }
-  
-  // Property info section
-  .property-info-config {
-    background-color: $card-background;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow;
-    padding: 2rem;
-    
-    .info {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.5rem;
-      
-      .left-box {
-        .title-main {
-          font-size: 2.25rem;
-          font-weight: 700;
-          margin-bottom: 0.5rem;
-          color: $text-color;
-        }
-        
-        .top-box {
-          display: flex;
-          align-items: center;
-          flex-direction: row;
-          
-          .brand {
-            font-weight: 600;
-            color: $primary-color;
-            font-size: 1rem;
-          }
-          
-          .divider {
-            width: 4px;
-            height: 4px;
-            background-color: $light-text;
-            border-radius: 50%;
-            margin: 0 0.75rem;
-          }
-          
-          .ref-number, .date {
-            color: $light-text;
-            font-size: 0.875rem;
-          }
-        }
-      }
-      
-      .right-box {
-        text-align: right;
-        
-        .buttons {
-          display: flex;
-          justify-content: flex-end;
-          gap: 1rem;
-          margin-bottom: 0.5rem;
-          
-          .button-box {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            
-            svg {
-              color: $secondary-color;
-              transition: $transition;
-              
-              &:hover {
-                color: $primary-color;
-              }
-            }
-            
-            Typography {
-              color: $light-text;
-              font-size: 0.875rem;
-            }
-          }
-        }
-        
-        .price {
-          font-size: 2rem;
-          font-weight: 700;
-          color: $primary-color;
-        }
-      }
-    }
-    
-    // Images showcase
-    .images-showcase {
-      width: 100%;
-      gap: 1.5rem;
-      
-      .main-image-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        height: 500px;
-        
-        .magnify-glass {
-          position: absolute;
-          width: 150px;
-          height: 150px;
-          border-radius: 50%;
-          pointer-events: none;
-          opacity: 0;
-          border: 2px solid $primary-color;
-          box-shadow: 0 0 20px rgba(184, 134, 11, 0.3);
-          transform: translate(-50%, -50%);
-          background-repeat: no-repeat;
-          z-index: 2;
-          transition: opacity 0.3s ease;
-        }
-        
-        .main-watch-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-          
-          &:hover {
-            transform: scale(1.02);
-          }
-        }
-      }
-      
-      .sub-images {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
-        
-        .sub-img-box {
-          width: 120px;
-          height: 120px;
-          flex-shrink: 0;
-          border-radius: $border-radius;
-          overflow: hidden;
-          cursor: pointer;
-          border: 2px solid transparent;
-          transition: $transition;
-          
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-          
-          &.active {
-            border-color: $primary-color;
-          }
-          
-          &:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          }
-        }
-      }
-    }
-  }
-  
-  // Property description section
-  .property-desc-config {
+	background-color: $background-color;
+	padding: 2rem 0;
+	font-family: 'Montserrat', sans-serif;
+	color: $text-color;
+
+	.container {
+		max-width: 1440px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+
+	.property-detail-config {
+		width: 100%;
+		gap: 3rem;
+	}
+
+	// Property info section
+	.property-info-config {
+		background-color: $card-background;
+		border-radius: $border-radius;
+		box-shadow: $box-shadow;
+		padding: 2rem;
+
+		.info {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			margin-bottom: 1.5rem;
+
+			.left-box {
+				.title-main {
+					font-size: 2.25rem;
+					font-weight: 700;
+					margin-bottom: 0.5rem;
+					color: $text-color;
+				}
+
+				.top-box {
+					display: flex;
+					align-items: center;
+					flex-direction: row;
+
+					.brand {
+						font-weight: 600;
+						color: $primary-color;
+						font-size: 1rem;
+					}
+
+					.divider {
+						width: 4px;
+						height: 4px;
+						background-color: $light-text;
+						border-radius: 50%;
+						margin: 0 0.75rem;
+					}
+
+					.ref-number,
+					.date {
+						color: $light-text;
+						font-size: 0.875rem;
+					}
+				}
+			}
+
+			.right-box {
+				text-align: right;
+
+				.buttons {
+					display: flex;
+					justify-content: flex-end;
+					gap: 1rem;
+					margin-bottom: 0.5rem;
+
+					.button-box {
+						display: flex;
+						align-items: center;
+						gap: 0.5rem;
+						cursor: pointer;
+
+						svg {
+							color: $secondary-color;
+							transition: $transition;
+
+							&:hover {
+								color: $primary-color;
+							}
+						}
+
+						Typography {
+							color: $light-text;
+							font-size: 0.875rem;
+						}
+					}
+				}
+
+				.price {
+					font-size: 2rem;
+					font-weight: 700;
+					color: $primary-color;
+				}
+			}
+		}
+
+		// Images showcase
+		.images-showcase {
+			width: 80%;
+			display: flex;
+			flex-direction: row;
+			gap: 1.5rem;
+			align-items: flex-start;
+			margin-bottom: 50px;
+
+			.sub-images {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+				width: 140px;
+				flex-shrink: 0;
+
+				.sub-img-box {
+					width: 120px;
+					height: 120px;
+					border-radius: $border-radius;
+					overflow: hidden;
+					cursor: pointer;
+					border: 3px solid transparent;
+					transition: $transition;
+					position: relative;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+						transition: transform 0.3s ease;
+					}
+
+					&.active {
+						border-color: $primary-color;
+						box-shadow: 0 0 15px rgba(184, 134, 11, 0.4);
+					}
+
+					&:hover {
+						border-color: $primary-color;
+						box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+						img {
+							transform: scale(1.05);
+						}
+					}
+				}
+			}
+
+			.main-image-container {
+				position: relative;
+				overflow: hidden;
+				border-radius: $border-radius;
+				box-shadow: $box-shadow;
+				flex: 1;
+				height: 600px;
+				max-width: calc(100% - 160px);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: #f8f9fa;
+
+				.magnify-glass {
+					position: absolute;
+					width: 150px;
+					height: 150px;
+					border-radius: 50%;
+					pointer-events: none;
+					opacity: 0;
+					border: 2px solid $primary-color;
+					box-shadow: 0 0 20px rgba(184, 134, 11, 0.3);
+					transform: translate(-50%, -50%);
+					background-repeat: no-repeat;
+					z-index: 2;
+					transition: opacity 0.3s ease;
+				}
+
+				.main-watch-image {
+					width: 150%;
+					height: 100%;
+					object-fit: contain;
+					object-position: center;
+					transition: transform 0.5s ease;
+					max-width: 100%;
+					max-height: 100%;
+
+					&:hover {
+						transform: scale(1.02);
+					}
+				}
+			}
+		}
+
+		// Responsive adjustments
+		@media (max-width: 768px) {
+			.images-showcase {
+				flex-direction: column;
+
+				.sub-images {
+					flex-direction: row;
+					width: 100%;
+					overflow-x: auto;
+					padding-bottom: 0.5rem;
+
+					.sub-img-box {
+						flex-shrink: 0;
+					}
+				}
+
+				.main-image-container {
+					max-width: 100%;
+					height: 400px;
+				}
+			}
+		}
+
+		// Property description section
+		.property-desc-config {
+			display: flex;
+			flex-direction: row;
+			gap: 2rem;
+
+			@media (max-width: 1024px) {
+				flex-direction: column;
+			}
+
+			.left-config {
+				flex: 2;
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+
+				// Tabs container
+				.prop-tabs-container {
+					background-color: $card-background;
+					border-radius: $border-radius;
+					box-shadow: $box-shadow;
+					overflow: hidden;
+
+					.property-tabs {
+						border-bottom: $subtle-border;
+
+						.MuiTabs-indicator {
+							background-color: $primary-color;
+							height: 3px;
+						}
+
+						.MuiTab-root {
+							color: $text-color;
+							font-weight: 600;
+							text-transform: none;
+							padding: 1rem 2rem;
+
+							&.Mui-selected {
+								color: $primary-color;
+							}
+						}
+					}
+
+					.tab-content {
+						padding: 2rem;
+
+						.title {
+							font-size: 1.5rem;
+							font-weight: 600;
+							margin-bottom: 1rem;
+							color: $text-color;
+						}
+
+						.desc {
+							color: $light-text;
+							line-height: 1.8;
+							font-size: 1rem;
+						}
+					}
+				}
+
+				// Watch specs
+				.watch-details-config {
+					background-color: $card-background;
+					border-radius: $border-radius;
+					box-shadow: $box-shadow;
+					padding: 2rem;
+
+					.title {
+						font-size: 1.5rem;
+						font-weight: 600;
+						margin-bottom: 1.5rem;
+						color: #fafafa;
+					}
+
+					.specs-container {
+						display: flex;
+						flex-direction: row;
+						gap: 2rem;
+
+						@media (max-width: 768px) {
+							flex-direction: column;
+						}
+
+						.spec-group {
+							flex: 1;
+
+							.spec-item {
+								display: flex;
+								justify-content: space-between;
+								align-items: center;
+								padding: 1rem 0;
+								border-bottom: $subtle-border;
+
+								&:last-child {
+									border-bottom: none;
+								}
+
+								.spec-title {
+									color: $light-text;
+									font-size: 0.875rem;
+								}
+
+								.spec-value {
+									font-weight: 600;
+									color: $text-color;
+								}
+							}
+						}
+					}
+				}
+
+				// Reviews
+				.reviews-config {
+					background-color: $card-background;
+					border-radius: $border-radius;
+					box-shadow: $box-shadow;
+					padding: 2rem;
+
+					.filter-box {
+						margin-bottom: 1.5rem;
+
+						.review-cnt {
+							display: flex;
+							align-items: center;
+							gap: 0.5rem;
+
+							.reviews {
+								font-weight: 600;
+								color: $text-color;
+							}
+						}
+					}
+
+					.review-list {
+						.pagination-box {
+							display: flex;
+							justify-content: center;
+							margin-top: 2rem;
+
+							.MuiPagination-root {
+								.MuiPaginationItem-root {
+									color: $light-text;
+
+									&.Mui-selected {
+										background-color: $primary-color;
+										color: $secondary-color;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				.leave-review-config {
+					background-color: $card-background;
+					border-radius: $border-radius;
+					box-shadow: $box-shadow;
+					padding: 2rem;
+
+					.main-title {
+						font-size: 1.5rem;
+						font-weight: 600;
+						margin-bottom: 1.5rem;
+						color: #fafafa;
+					}
+
+					.review-title {
+						font-weight: 600;
+						margin-bottom: 0.5rem;
+						color: $text-color;
+					}
+
+					textarea {
+						width: 100%;
+						min-height: 150px;
+						padding: 1rem;
+						border: $subtle-border;
+						border-radius: $border-radius;
+						resize: vertical;
+						font-family: inherit;
+						transition: $transition;
+						margin-bottom: 1.5rem;
+						background-color: rgba(0, 0, 0, 0.3);
+						color: $text-color;
+
+						&:focus {
+							outline: none;
+							border-color: $primary-color;
+						}
+					}
+
+					.submit-btn {
+						display: flex;
+						justify-content: flex-end;
+						height: 50px;
+
+						.submit-review {
+							background-color: $primary-color;
+							color: $secondary-color;
+							padding: 0.75rem 1.5rem;
+							border-radius: $border-radius;
+							display: flex;
+							align-items: center;
+							gap: 0.5rem;
+							transition: $transition;
+							padding-top: 25px;
+							width: 150px;
+
+							&:hover {
+								background: $gold-gradient;
+								box-shadow: 0 0 15px rgba($primary-color, 0.4);
+							}
+
+							&:disabled {
+								background-color: #333;
+								color: #666;
+								cursor: not-allowed;
+							}
+
+							.title {
+								font-weight: 400;
+								font-size: 15px;
+							}
+						}
+					}
+				}
+			}
+
+			.right-config {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+
+				.dealer-info-box {
+					display: flex;
+					background-color: $card-background;
+					border-radius: $border-radius;
+					box-shadow: $box-shadow;
+					padding: 2rem;
+
+					.main-title {
+						font-size: 1.5rem;
+						font-weight: 600;
+						margin-bottom: 1.5rem;
+						color: #fafafa;
+					}
+
+					.dealer-details {
+						display: flex;
+						flex-direction: row;
+						gap: 1.5rem;
+
+						.dealer-image {
+							width: 80px;
+							height: 80px;
+							border-radius: 50%;
+							object-fit: cover;
+							border: 2px solid $primary-color;
+						}
+
+						.dealer-info {
+							flex: 1;
+
+							.name {
+								font-weight: 400;
+								font-size: 1.125rem;
+								color: rgb(214, 209, 209);
+								margin-bottom: 0.5rem;
+								transition: $transition;
+
+								&:hover {
+									color: goldenrod;
+								}
+							}
+
+							.phone-number {
+								display: flex;
+								flex-direction: row;
+								align-items: flex-start;
+								gap: 0.5rem;
+								margin-bottom: 0.5rem;
+
+								.number {
+									color: $light-text;
+								}
+							}
+
+							.inventory-link {
+								text-decoration: none;
+
+								.listings {
+									color: $primary-color;
+									font-weight: 600;
+									transition: $transition;
+
+									&:hover {
+										text-decoration: underline;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				.contact-form {
+					background-color: $card-background;
+					border-radius: $border-radius;
+					box-shadow: $box-shadow;
+					padding: 2rem;
+
+					.form-field {
+						margin-bottom: 1.5rem;
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+
+						.field-label {
+							font-weight: 600;
+							margin-bottom: 0.5rem;
+							color: $text-color;
+						}
+
+						input,
+						textarea {
+							width: 100%;
+							padding: 0.875rem 1rem;
+							border: $subtle-border;
+							border-radius: $border-radius;
+							font-family: inherit;
+							transition: $transition;
+
+							&:focus {
+								outline: none;
+								border-color: $primary-color;
+							}
+						}
+
+						textarea {
+							min-height: 120px;
+							resize: vertical;
+						}
+
+						.send-message {
+							width: 100%;
+							background: $gold-gradient;
+							color: white;
+							padding: 1rem;
+							border-radius: $border-radius;
+							transition: $transition;
+
+							&:hover {
+								box-shadow: 0 8px 15px rgba(184, 134, 11, 0.25);
+								transform: translateY(-2px);
+							}
+
+							.title {
+								font-weight: 600;
+							}
+						}
+					}
+				}
+			}
+		}
+
+.similar-properties-config {
+	position: relative;
+  background: #1a1a1a;
+  padding: 40px 20px;
+  margin-top: 60px;
+
+  .header-row {
     display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    
-    @media (max-width: 1024px) {
-      flex-direction: column;
-    }
-    
-    .left-config {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      
-      // Tabs container
-      .prop-tabs-container {
-        background-color: $card-background;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        overflow: hidden;
-        
-        .property-tabs {
-          border-bottom: $subtle-border;
-          
-          .MuiTabs-indicator {
-            background-color: $primary-color;
-            height: 3px;
-          }
-          
-          .MuiTab-root {
-            color: $text-color;
-            font-weight: 600;
-            text-transform: none;
-            padding: 1rem 2rem;
-            
-            &.Mui-selected {
-              color: $primary-color;
-            }
-          }
-        }
-        
-        .tab-content {
-          padding: 2rem;
-          
-          .title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: $text-color;
-          }
-          
-          .desc {
-            color: $light-text;
-            line-height: 1.8;
-            font-size: 1rem;
-          }
-        }
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+
+    .title-box {
+      .main-title {
+        font-size: 28px;
+        color: white;
+        margin: 0;
       }
-      
-      // Watch specs
-      .watch-details-config {
-        background-color: $card-background;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        padding: 2rem;
-        
-        .title {
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-bottom: 1.5rem;
-          color: #fafafa;
-        }
-        
-        .specs-container {
-          display: flex;
-          flex-direction: row;
-          gap: 2rem;
-          
-          @media (max-width: 768px) {
-            flex-direction: column;
-          }
-          
-          .spec-group {
-            flex: 1;
-            
-            .spec-item {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 1rem 0;
-              border-bottom: $subtle-border;
-              
-              &:last-child {
-                border-bottom: none;
-              }
-              
-              .spec-title {
-                color: $light-text;
-                font-size: 0.875rem;
-              }
-              
-              .spec-value {
-                font-weight: 600;
-                color: $text-color;
-              }
-            }
-          }
-        }
-      }
-      
-      // Reviews
-      .reviews-config {
-        background-color: $card-background;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        padding: 2rem;
-        
-        .filter-box {
-          margin-bottom: 1.5rem;
-          
-          .review-cnt {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            
-            .reviews {
-              font-weight: 600;
-              color: $text-color;
-            }
-          }
-        }
-        
-        .review-list {
-          .pagination-box {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            
-            .MuiPagination-root {
-              .MuiPaginationItem-root {
-                color: $light-text;
-                
-                &.Mui-selected {
-                  background-color: $primary-color;
-                  color: $secondary-color;
-                }
-              }
-            }
-          }
-        }
-      }
-      
-      // Leave review
-      .leave-review-config {
-        background-color: $card-background;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        padding: 2rem;
-        
-        .main-title {
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-bottom: 1.5rem;
-          color: #fafafa;
-        }
-        
-        .review-title {
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-          color: $text-color;
-        }
-        
-        textarea {
-          width: 100%;
-          min-height: 150px;
-          padding: 1rem;
-          border: $subtle-border;
-          border-radius: $border-radius;
-          resize: vertical;
-          font-family: inherit;
-          transition: $transition;
-          margin-bottom: 1.5rem;
-          background-color: rgba(0, 0, 0, 0.3);
-          color: $text-color;
-          
-          &:focus {
-            outline: none;
-            border-color: $primary-color;
-          }
-        }
-        
-        .submit-btn {
-          display: flex;
-          justify-content: flex-end;
-          
-          .submit-review {
-            background-color: $primary-color;
-            color: $secondary-color;
-            padding: 0.75rem 1.5rem;
-            border-radius: $border-radius;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: $transition;
-            font-weight: 600;
-            
-            &:hover {
-              background: $gold-gradient;
-              box-shadow: 0 0 15px rgba($primary-color, 0.4);
-            }
-            
-            &:disabled {
-              background-color: #333;
-              color: #666;
-              cursor: not-allowed;
-            }
-            
-            .title {
-              font-weight: 600;
-            }
-          }
-        }
+      .sub-title {
+        font-size: 16px;
+        color: #888;
+        margin: 0;
       }
     }
-    
-    // Right sidebar
-    .right-config {
-      flex: 1;
+
+    .swiper-arrows {
       display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      
-      .dealer-info-box {
-		display: flex;
-        background-color: $card-background;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        padding: 2rem;
-        
-        .main-title {
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-bottom: 1.5rem;
-          color: #fafafa;
-        }
-        
-        .dealer-details {
-          display: flex;
-		  flex-direction: row;
-          gap: 1.5rem;
-          
-          .dealer-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid $primary-color;
-          }
-          
-          .dealer-info {
-            flex: 1;
-            
-            .name {
-              font-weight: 400;
-              font-size: 1.125rem;
-              color: rgb(214, 209, 209);
-              margin-bottom: 0.5rem;
-              transition: $transition;
-              
-              &:hover {
-                color: goldenrod;
-              }
-            }
-            
-            .phone-number {
-              display: flex;
-			  flex-direction: row;
-              align-items: flex-start;
-              gap: 0.5rem;
-              margin-bottom: 0.5rem;
-              
-              .number {
-                color: $light-text;
-              }
-            }
-            
-            .inventory-link {
-              text-decoration: none;
-              
-              .listings {
-                color: $primary-color;
-                font-weight: 600;
-                transition: $transition;
-                
-                &:hover {
-                  text-decoration: underline;
-                }
-              }
-            }
-          }
-        }
-      }
-      
-      .contact-form {
-        background-color: $card-background;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow;
-        padding: 2rem;
-        
-        .form-field {
-          margin-bottom: 1.5rem;
-          
-          &:last-child {
-            margin-bottom: 0;
-          }
-          
-          .field-label {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: $text-color;
-          }
-          
-          input, textarea {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: $subtle-border;
-            border-radius: $border-radius;
-            font-family: inherit;
-            transition: $transition;
-            
-            &:focus {
-              outline: none;
-              border-color: $primary-color;
-            }
-          }
-          
-          textarea {
-            min-height: 120px;
-            resize: vertical;
-          }
-          
-          .send-message {
-            width: 100%;
-            background: $gold-gradient;
-            color: white;
-            padding: 1rem;
-            border-radius: $border-radius;
-            transition: $transition;
-            
-            &:hover {
-              box-shadow: 0 8px 15px rgba(184, 134, 11, 0.25);
-              transform: translateY(-2px);
-            }
-            
-            .title {
-              font-weight: 600;
-            }
-          }
+      align-items: center;
+      gap: 20px;
+
+      .swiper-prev,
+      .swiper-next {
+        font-size: 28px;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+          color: #ccc;
         }
       }
     }
   }
-  
-  // Similar properties section
-  .similar-properties-config {
-    margin-top: 3rem;
+
+  .swiper-container {
+    overflow: hidden;
+
+    .swiper-slide {
+      width: 280px !important;
+    }
+  }
+}
+
+
+  .property-big-card {
+    width: 100%;
+    max-width: 280px;
+    height: 420px;
+    background-color: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #333;
+    margin: 0 auto;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+      }
+
+  @media (max-width: 1200px) {
+    .similar-watches-slide {
+      width: 260px !important;
+    }
+    
+    .property-big-card {
+      max-width: 260px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .similar-watches-slide {
+      width: 240px !important;
+    }
+    
+    .property-big-card {
+      max-width: 240px;
+      height: 380px;
+    }
     
     .title-pagination-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      
-      .title-box {
-        .main-title {
-          font-size: 1.75rem;
-          font-weight: 700;
-          color: $secondary-color;
-          margin-bottom: 0.25rem;
-        }
-        
-        .sub-title {
-          color: $light-text;
-        }
-      }
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
       
       .pagination-box {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        
-        svg {
-          cursor: pointer;
-          color: $text-color;
-          transition: $transition;
-          
-          &:hover {
-            color: $primary-color;
-          }
-        }
-        
-        .swiper-similar-pagination {
-          display: flex;
-          gap: 0.5rem;
-          
-          .swiper-pagination-bullet {
-            width: 8px;
-            height: 8px;
-            background-color: #ccc;
-            border-radius: 50%;
-            transition: $transition;
-            
-            &-active {
-              background-color: $primary-color;
-            }
-          }
-        }
-      }
-    }
-    
-    .cards-box {
-      .similar-watches-swiper {
-        overflow: visible;
-        padding: 1rem 0;
-        
-        .similar-watches-slide {
-          height: auto;
-          transition: $transition;
-          
-          &:hover {
-            transform: translateY(-5px);
-          }
-        }
+        position: static;
+        align-self: flex-end;
+        margin-top: 15px;
       }
     }
   }
 }
+	}
+
