@@ -16,7 +16,7 @@ interface MemberFollowingsProps {
 	initialInput: FollowInquiry;
 	subscribeHandler: any;
 	unsubscribeHandler: any;
-	likeMemberHandler: any
+	likeMemberHandler: any;
 	redirectToMemberPageHandler: any;
 }
 
@@ -103,11 +103,11 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 								<Stack className={'details-box'}>
 									<Box className={'info-box'} component={'div'}>
 										<p>Followers</p>
-										<span>({follower?.followingData?.memberFollowers})</span>
+										<span style={{ color: '#fff' }}>({follower?.followingData?.memberFollowers})</span>
 									</Box>
 									<Box className={'info-box'} component={'div'}>
 										<p>Followings</p>
-										<span>({follower?.followingData?.memberFollowings})</span>
+										<span style={{ color: '#fff' }}>({follower?.followingData?.memberFollowings})</span>
 									</Box>
 									<Box className={'info-box'} component={'div'}>
 										{follower?.meLiked && follower?.meLiked[0]?.myFavorite ? (
@@ -124,7 +124,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 												}
 											/>
 										)}
-										<span>({follower?.followingData?.memberLikes})</span>
+										<span style={{ color: '#fff' }}>({follower?.followingData?.memberLikes})</span>
 									</Box>
 								</Stack>
 								{user?._id !== follower?.followingId && (
@@ -134,7 +134,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 												<Typography>Following</Typography>
 												<Button
 													variant="outlined"
-													sx={{ background: '#f78181', ':hover': { background: '#f06363' } }}
+													sx={{ background: '#f28b82', ':hover': { background: '#e57373' } }}
 													onClick={() =>
 														unsubscribeHandler(follower?.followingData?._id, getMemberFollowingsRefetch, followInquiry)
 													}
@@ -166,8 +166,15 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 								page={followInquiry.page}
 								count={Math.ceil(total / followInquiry.limit)}
 								onChange={paginationHandler}
-								shape="circular"
-								color="primary"
+								size="large"
+								showFirstButton
+								showLastButton
+								sx={{
+									'& .MuiPaginationItem-root': {
+										fontWeight: 600,
+										color: '#fff',
+									},
+								}}
 							/>
 						</Stack>
 						<Stack className="total-result">

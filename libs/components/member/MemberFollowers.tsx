@@ -16,7 +16,7 @@ interface MemberFollowsProps {
 	initialInput: FollowInquiry;
 	subscribeHandler: any;
 	unsubscribeHandler: any;
-	likeMemberHandler: any
+	likeMemberHandler: any;
 	redirectToMemberPageHandler: any;
 }
 
@@ -103,11 +103,11 @@ const MemberFollowers = (props: MemberFollowsProps) => {
 								<Stack className={'details-box'}>
 									<Box className={'info-box'} component={'div'}>
 										<p>Followers</p>
-										<span>({follower?.followerData?.memberFollowers})</span>
+										<span style={{ color: '#fff' }}>({follower?.followerData?.memberFollowers})</span>
 									</Box>
 									<Box className={'info-box'} component={'div'}>
 										<p>Followings</p>
-										<span>({follower?.followerData?.memberFollowings})</span>
+										<span style={{ color: '#fff' }}>({follower?.followerData?.memberFollowings})</span>
 									</Box>
 									<Box className={'info-box'} component={'div'}>
 										{follower?.meLiked && follower?.meLiked[0]?.myFavorite ? (
@@ -124,7 +124,7 @@ const MemberFollowers = (props: MemberFollowsProps) => {
 												}
 											/>
 										)}
-										<span>({follower?.followerData?.memberLikes})</span>
+										<span style={{ color: '#fff' }}>({follower?.followerData?.memberLikes})</span>
 									</Box>
 								</Stack>
 								{user?._id !== follower?.followerId && (
@@ -145,8 +145,8 @@ const MemberFollowers = (props: MemberFollowsProps) => {
 										) : (
 											<Button
 												variant="contained"
-												sx={{ background: '#60eb60d4', ':hover': { background: '#60eb60d4' } }}
-												onClick={() => 
+												sx={{ background: 'goldenrod', ':hover': { background: 'grey' } }}
+												onClick={() =>
 													subscribeHandler(follower?.followerData?._id, getMemberFollowersRefetch, followInquiry)
 												}
 											>
@@ -166,8 +166,15 @@ const MemberFollowers = (props: MemberFollowsProps) => {
 								page={followInquiry.page}
 								count={Math.ceil(total / followInquiry.limit)}
 								onChange={paginationHandler}
-								shape="circular"
-								color="primary"
+								size="large"
+								showFirstButton
+								showLastButton
+								sx={{
+									'& .MuiPaginationItem-root': {
+										fontWeight: 600,
+										color: '#fff',
+									},
+								}}
 							/>
 						</Stack>
 						<Stack className="total-result">

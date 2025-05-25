@@ -120,10 +120,10 @@ export const MyPropertyCard = (props: PropertyCardProps) => {
 				{!memberPage && property.propertyStatus == WatchStatus.AVAILABLE && (
 					<Stack className="action-box">
 						<IconButton className="icon-button" onClick={() => pushEditProperty(property._id)}>
-							<ModeIcon className="buttons" />
+							<ModeIcon style={{ color: 'grey' }} />
 						</IconButton>
 						<IconButton className="icon-button" onClick={() => deletePropertyHandler(property._id)}>
-							<DeleteIcon className="buttons" />
+							<DeleteIcon style={{ color: 'grey' }} />
 						</IconButton>
 					</Stack>
 				)}

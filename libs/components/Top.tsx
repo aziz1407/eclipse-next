@@ -20,8 +20,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { REACT_APP_API_URL } from '../config';
 import member from '../../pages/member';
 
-// ... (imports remain unchanged)
-
 const Top = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
@@ -167,16 +165,7 @@ const Top = () => {
 			<Stack className={'navbar'}>
 				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
-						<Box component={'div'} className={'navbar-icons-left'}>
-							{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
-							{user?._id ? (
-								<Link href={'/mypage?category=myFavorites'}>
-									<FavoriteBorderIcon sx={{ color: '#eeeeeeed', fontSize: 22, cursor: 'pointer' }} />
-								</Link>
-							) : null}
-						</Box>
-
-						<Box component={'div'} className={'left-links'}>
+						<Box component={'div'} className={'left-links'} sx={{fontFamily: "sans-serif"}}>
 							<Link href={'/'}>
 								<div>{t('Home')}</div>
 							</Link>
@@ -186,29 +175,29 @@ const Top = () => {
 							<Link href={'/agent'}>
 								<div>{t('Agents')}</div>
 							</Link>
-						</Box>
-
-						<Box component={'div'} className={'logo-box'}>
-							<Link href={'/'}>
-								<div>ÉCLIPSE</div>
-							</Link>
-						</Box>
-
-						<Box component={'div'} className={'right-links'}>
-							<Link href={'/community?blogCategory=GENERAL'}>
+							<Link href={'/community'}>
 								<div>{t('Community')}</div>
 							</Link>
-							{user?._id ? (
-								<Link href={'/mypage'}>
-									<div>{t('My Page')}</div>
-								</Link>
-							) : null}
 							<Link href={'/cs'}>
 								<div>{t('CS')}</div>
 							</Link>
 						</Box>
 
-						<Box component={'div'} className={'navbar-icons-right'}>
+						<Box component={'div'} className={'logo-box'}>
+							<Link href={'/'}>
+								<div>Éclipse</div>
+							</Link>
+						</Box>
+
+						<Box component={'div'} className={'navbar-icons-right'}>		
+							{user?._id ? (
+								<Link href={'/mypage?category=myFavorites'}>
+									<FavoriteBorderIcon sx={{ color: '#eeeeeeed', fontSize: 22, cursor: 'pointer', marginTop: "5px" }} />
+								</Link>
+							) : null}
+
+							{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
+
 							{user?._id ? (
 								<>
 									<div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>

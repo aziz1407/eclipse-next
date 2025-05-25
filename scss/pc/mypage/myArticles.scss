@@ -8,9 +8,10 @@
 			flex-direction: row;
 			justify-content: space-between;
 			.right-box {
-				width: 315px;
+				width: 100%;
 				.main-title {
-					color: #181a20;
+					text-align: center;
+					color: #fff;
 					font-family: $font;
 					font-size: 30px;
 					font-style: normal;
@@ -20,7 +21,8 @@
 					text-transform: capitalize;
 				}
 				.sub-title {
-					color: #181a20;
+					text-align: center;
+					color: #fff;
 					font-family: $font;
 					font-size: 14px;
 					font-style: normal;
@@ -37,6 +39,8 @@
 			gap: 25px;
 			margin-top: 55px;
 			margin-bottom: 87px;
+			display: flex;
+			justify-content: center;
 		}
 		.pagination-conf {
 			width: 100%;
@@ -46,7 +50,7 @@
 			margin-top: 30px;
 			.total {
 				p {
-					color: #181a20;
+					color: #fff;
 					font-size: 14px;
 					text-align: center;
 					font-family: $font;

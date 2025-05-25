@@ -10,10 +10,12 @@ import { formatterStr } from '../../utils';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 interface PropertyBigCardProps {
 	property: Property;
 	likePropertyHandler?: any;
+	myFavorites?: boolean;
 }
 
 const PropertyBigCard = (props: PropertyBigCardProps) => {
@@ -50,27 +52,41 @@ const PropertyBigCard = (props: PropertyBigCardProps) => {
 					<Typography className={'desc'}>{property?.propertyBrand}</Typography>
 					
 					<div className={'bott'}>
-						<div className="buttons-box">
-							<IconButton className="view-button">
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyViews}</Typography>
-							<IconButton
-								className="like-button"
-								onClick={(e: any) => {
-									e.stopPropagation();
-									likePropertyHandler(user, property?._id);
-								}}
-							>
-								{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-									<FavoriteIcon style={{ color: 'red' }} />
-								) : (
-									<FavoriteIcon />
-								)}
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyLikes}</Typography>
-						</div>
-					</div>
+  <div className="buttons-box">
+    {/* Views */}
+    <IconButton className="view-button">
+      <RemoveRedEyeIcon />
+    </IconButton>
+    <Typography className="view-cnt">{property?.propertyViews}</Typography>
+
+    {/* Likes */}
+    <IconButton
+      className="like-button"
+      onClick={(e: any) => {
+        e.stopPropagation();
+        likePropertyHandler(user, property?._id);
+      }}
+    >
+      {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+        <FavoriteIcon style={{ color: 'red' }} />
+      ) : (
+        <FavoriteIcon />
+      )}
+    </IconButton>
+    <Typography className="view-cnt">{property?.propertyLikes}</Typography>
+
+    {/* Comments */}
+    <IconButton className="comment-button">
+      <ChatBubbleOutlineIcon />
+    </IconButton>
+  <Typography className="view-cnt">
+  {property?.propertyComments?.length ?? 0}
+</Typography>
+
+
+  </div>
+</div>
+
 				</Box>
 			</Stack>
 		);

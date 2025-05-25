@@ -161,32 +161,28 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 		if (!mainImage) return;
 
-		// Create a magnify lens effect directly applied to the image
 		const handleMouseMove = (e: MouseEvent) => {
 			const { left, top, width, height } = mainImage.getBoundingClientRect();
 
-			// Calculate mouse position relative to the image
 			const mouseX = e.clientX - left;
 			const mouseY = e.clientY - top;
 
-			// Calculate mouse position as percentage (clamped between 0 and 1)
-			const percentX = Math.max(0, Math.min(0.5, mouseX / width));
-			const percentY = Math.max(0, Math.min(0.5, mouseY / height));
+			const percentX = Math.max(0, Math.min(1, mouseX / width));
+			const percentY = Math.max(0, Math.min(1, mouseY / height));
 
-			// Apply the zoomed image effect directly
 			const zoomFactor = 1.5;
 
-			// Update the main image to show the zoomed portion
 			mainImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
 			mainImage.style.transform = `scale(${zoomFactor})`;
+
+			mainImage.style.cursor = 'zoom-in';
 		};
 
 		const handleMouseLeave = () => {
-			// Reset the image to normal when mouse leaves
 			mainImage.style.transform = 'scale(1)';
+			mainImage.style.cursor = 'default';
 		};
 
-		// TypeScript-safe event listener attachment
 		mainImage.addEventListener('mousemove', handleMouseMove as unknown as EventListener);
 		mainImage.addEventListener('mouseleave', handleMouseLeave);
 
@@ -380,42 +376,47 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
 														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
 														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
-															In order to purchase your desired watch please contact our authorized dealers
+															Place your order directly through Eclipse — our authorized dealers will handle secure
+															delivery.
 														</Typography>
 													</Stack>
 
 													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
 														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
 														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
-															Extended Guarantee: 5-year international warranty with our certified service centers
+															5-Year Dealer Warranty: Coverage provided exclusively through verified Eclipse delivery
+															partners.
 														</Typography>
 													</Stack>
 
 													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
 														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
 														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
-															Superior Craftsmanship: Hand-assembled components with shock-resistant technology
+															Quality Control: Each timepiece is verified and prepared by certified watchmakers before
+															shipping.
 														</Typography>
 													</Stack>
 
 													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
 														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
 														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
-															Premium Materials: 18k gold cases with scratch-resistant sapphire crystal
+															Secure Nationwide Delivery: Insured shipping handled by our official dealer network.
 														</Typography>
 													</Stack>
 
 													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
 														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
 														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
-															Ownership Verification: Digital certificate of authenticity with blockchain tracking
+															Digital Order Certificate: Every purchase includes blockchain-verified proof of
+															authenticity.
 														</Typography>
 													</Stack>
 
 													<Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
 														<Typography sx={{ color: 'goldenrod' }}>•</Typography>
 														<Typography sx={{ fontSize: '0.95rem', color: '#fff' }}>
-															Concierge Service: Dedicated watch specialists available 24/7 for maintenance inquiries
+															Dealer Support: Get personalized after-order assistance directly from your assigned
+															dealer.
 														</Typography>
 													</Stack>
 												</Stack>

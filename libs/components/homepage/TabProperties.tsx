@@ -93,12 +93,7 @@ const TabProperties = (props: PopularPropertiesProps) => {
 									onMouseEnter={() => setHoveredIndex(index)}
 									onMouseLeave={() => setHoveredIndex(null)}
 								>
-									{hoveredIndex === index && property?.propertyRank >= topPropertyRank && (
-										<div className={'status'}>
-											<img src="/img/icons/electricity.svg" alt="" />
-											<span>top</span>
-										</div>
-									)}
+									{/**/}
 
 									{hoveredIndex === index && property.propertyBrand && (
 										<div className="condition-tag">{property.propertyBrand}</div>

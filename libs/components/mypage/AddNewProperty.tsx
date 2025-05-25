@@ -223,11 +223,7 @@ const AddProperty = ({ initialValues, ...props }: AddPropertyProps) => {
   } else {
     return (
       <div id="add-property-page">
-        <Stack className="main-title-box">
-          <Typography className="main-title">Add New Watch Listing</Typography>
-          <Typography className="sub-title">List your timepiece for sale or trade!</Typography>
-        </Stack>
-
+          <h3 className="main-title" style={{fontSize: "25px", color: "#fff", textAlign: "center"}}>Add New Watch Listing</h3>
         <div>
           <Stack className="config">
             <Stack className="description-box">

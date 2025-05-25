@@ -10,13 +10,33 @@ import IconButton from '@mui/material/IconButton';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
 import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 const MyMenu = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const pathname = router.query.category ?? 'myProfile';
-	const category: any = router.query?.category ?? 'myProfile';
+	const category = router.query?.category ?? 'myProfile';
 	const user = useReactiveVar(userVar);
+
+	// Luxury color palette
+	const colors = {
+		primaryGold: '#d4af37',
+		secondaryGold: '#b8860b',
+		accentGold: '#ffd700',
+		lightGold: '#f4e4bc',
+		primaryDark: '#1a1a1a',
+		secondaryDark: '#2d2d2d',
+		tertiaryDark: '#3a3a3a',
+		charcoal: '#404040',
+		textPrimary: '#ffffff',
+		textSecondary: '#cccccc',
+		textMuted: '#999999',
+		borderLight: 'rgba(212, 175, 55, 0.3)',
+		borderDark: 'rgba(255, 255, 255, 0.1)',
+		shadowGold: 'rgba(212, 175, 55, 0.2)',
+		shadowDark: 'rgba(0, 0, 0, 0.3)',
+	};
 
 	/** HANDLERS **/
 	const logoutHandler = async () => {
@@ -27,317 +47,395 @@ const MyMenu = () => {
 		}
 	};
 
+	// Menu items configuration
+	const menuSections = [
+		{
+			title: 'WATCH COLLECTION',
+			items: user.memberType === 'DEALER' ? [
+				{
+					key: 'addProperty',
+					label: 'Add New Watch',
+					icon: '/img/icons/newTab.svg',
+					activeIcon: '/img/icons/whiteTab.svg',
+				},
+				{
+					key: 'myProperties',
+					label: 'My Watches',
+					icon: '/img/icons/home.svg',
+					activeIcon: '/img/icons/homeWhite.svg',
+				},
+			] : [],
+		},
+		{
+			title: 'PERSONAL VAULT',
+			items: [
+				{
+					key: 'myFavorites',
+					label: 'Favorites',
+					icon: '/img/icons/like.svg',
+					activeIcon: '/img/icons/likeWhite.svg',
+				},
+				{
+					key: 'recentlyVisited',
+					label: 'Recently Viewed',
+					icon: '/img/icons/search.svg',
+					activeIcon: '/img/icons/searchWhite.svg',
+				},
+			],
+		},
+		{
+			title: 'COMMUNITY',
+			items: [
+				{
+					key: 'followers',
+					label: 'Followers',
+					customIcon: true,
+				},
+				{
+					key: 'followings',
+					label: 'Following',
+					customIcon: true,
+				},
+				{
+					key: 'myArticles',
+					label: 'My Articles',
+					icon: '/img/icons/discovery.svg',
+					activeIcon: '/img/icons/discoveryWhite.svg',
+				},
+				{
+					key: 'writeArticle',
+					label: 'Write Article',
+					icon: '/img/icons/newTab.svg',
+					activeIcon: '/img/icons/whiteTab.svg',
+				},
+			],
+		},
+		{
+			title: 'ACCOUNT',
+			items: [
+				{
+					key: 'myProfile',
+					label: 'Profile',
+					icon: '/img/icons/user.png',
+					activeIcon: '/img/icons/userWhite.svg',
+				},
+			],
+		},
+	];
+
+	const FollowerIcon = ({ isActive, type }: { isActive: boolean; type: string }) =>  (
+		<svg
+			style={{
+				width: '18px',
+				height: '18px',
+				marginRight: '12px',
+				filter: isActive ? 'brightness(0) invert(1)' : 'brightness(0) invert(1)',
+			}}
+			fill={isActive ? 'white' : 'white'}
+			viewBox="0 0 328 328"
+		>
+			<g>
+				<path d="M52.25,64.001c0,34.601,28.149,62.749,62.75,62.749c34.602,0,62.751-28.148,62.751-62.749S149.602,1.25,115,1.25C80.399,1.25,52.25,29.4,52.25,64.001z"/>
+				{type === 'followers' ? (
+					<path d="M217.394,262.357c2.929,2.928,6.768,4.393,10.606,4.393c3.839,0,7.678-1.465,10.607-4.394c5.857-5.858,5.857-15.356-0.001-21.214l-19.393-19.391l19.395-19.396c5.857-5.858,5.857-15.356-0.001-21.214c-5.858-5.857-15.356-5.856-21.214,0.001l-30,30.002c-2.813,2.814-4.393,6.629-4.393,10.607c0,3.979,1.58,7.794,4.394,10.607L217.394,262.357z"/>
+				) : (
+					<path d="M228.606,181.144c-5.858-5.857-15.355-5.858-21.214-0.001c-5.857,5.857-5.857,15.355,0,21.214l19.393,19.396l-19.393,19.391c-5.857,5.857-5.857,15.355,0,21.214c2.93,2.929,6.768,4.394,10.607,4.394c3.838,0,7.678-1.465,10.605-4.393l30-29.998c2.813-2.814,4.395-6.629,4.395-10.607c0-3.978-1.58-7.793-4.394-10.607L228.606,181.144z"/>
+				)}
+				<path d="M15,286.75h125.596c19.246,24.348,49.031,40,82.404,40c57.896,0,105-47.103,105-105c0-57.896-47.104-105-105-105c-34.488,0-65.145,16.716-84.297,42.47c-7.764-1.628-15.695-2.47-23.703-2.47c-63.411,0-115,51.589-115,115C0,280.034,6.716,286.75,15,286.75z M223,146.75c41.355,0,75,33.645,75,75s-33.645,75-75,75s-75-33.645-75-75S181.644,146.75,223,146.75z"/>
+			</g>
+		</svg>
+	);
+
 	if (device === 'mobile') {
 		return <div>MY MENU</div>;
-	} else {
-		return (
-			<Stack width={'100%'} padding={'30px 24px'}>
-				<Stack className={'profile'}>
-					<Box component={'div'} className={'profile-img'}>
+	}
+
+	return (
+		<Stack
+			sx={{
+				position: 'sticky',
+				top: '20px',
+				width: '100%',
+				padding: '20px',
+				background: `linear-gradient(180deg, ${colors.primaryDark} 0%, ${colors.secondaryDark} 100%)`,
+				borderRadius: '30px',
+				border: `1px solid ${colors.borderLight}`,
+				boxShadow: `0px 8px 32px ${colors.shadowDark}, 0px 2px 8px ${colors.shadowGold}`,
+				height: 'fit-content',
+				maxHeight: 'calc(100vh - 40px)',
+				overflow: 'auto',
+				maxWidth: '400px',
+				alignSelf: 'flex-start',
+				marginTop: "100px",
+				marginBottom: "90px",
+				marginLeft: "10px",
+				'&::-webkit-scrollbar': {
+					width: '8px',
+				},
+				'&::-webkit-scrollbar-track': {
+					background: colors.secondaryDark,
+					borderRadius: '10px',
+				},
+				'&::-webkit-scrollbar-thumb': {
+					background: colors.primaryGold,
+					borderRadius: '10px',
+					'&:hover': {
+						background: colors.accentGold,
+					},
+				},
+			}}
+		>
+			{/* Profile Section */}
+			<Stack
+				sx={{
+					flexDirection: 'row',
+					alignItems: 'center',
+					padding: '15px',
+					marginBottom: '20px',
+					background: `linear-gradient(135deg, ${colors.tertiaryDark} 0%, ${colors.charcoal} 100%)`,
+					borderRadius: '25px',
+					border: `1px solid ${colors.borderLight}`,
+					boxShadow: `inset 0px 1px 0px rgba(212, 175, 55, 0.1)`,
+				}}
+			>
+				<Box
+					sx={{
+						width: '60px',
+						height: '60px',
+						borderRadius: '50%',
+						border: `3px solid ${colors.primaryGold}`,
+						boxShadow: `0px 4px 12px ${colors.shadowGold}`,
+						overflow: 'hidden',
+						marginRight: '15px',
+					}}
+				>
+					<img
+						src={user?.memberImage ? `${REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'}
+						alt="member-photo"
+						style={{
+							width: '100%',
+							height: '100%',
+							objectFit: 'cover',
+						}}
+					/>
+				</Box>
+				<Stack sx={{ flex: 1 }}>
+					<Typography
+						sx={{
+							color: colors.textPrimary,
+							fontSize: '16px',
+							fontWeight: 600,
+							marginBottom: '4px',
+							textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)',
+						}}
+					>
+						{user?.memberNick}
+					</Typography>
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							marginBottom: '3px',
+						}}
+					>
 						<img
-							src={user?.memberImage ? `${REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'}
-							alt={'member-photo'}
+							src="/img/icons/call.svg"
+							alt="phone"
+							style={{
+								width: '14px',
+								height: '14px',
+								marginRight: '6px',
+								filter: 'brightness(0) invert(1)',
+							}}
 						/>
+						<Typography
+							sx={{
+								color: colors.textSecondary,
+								fontSize: '13px',
+							}}
+						>
+							{user?.memberPhone}
+						</Typography>
 					</Box>
-					<Stack className={'user-info'}>
-						<Typography className={'user-name'}>{user?.memberNick}</Typography>
-						<Box component={'div'} className={'user-phone'}>
-							<img src={'/img/icons/call.svg'} alt={'icon'} />
-							<Typography className={'p-number'}>{user?.memberPhone}</Typography>
-						</Box>
-						{user?.memberType === 'ADMIN' ? (
-							<a href="/_admin/users" target={'_blank'}>
-								<Typography className={'view-list'}>{user?.memberType}</Typography>
-							</a>
-						) : (
-							<Typography className={'view-list'}>{user?.memberType}</Typography>
-						)}
-					</Stack>
-				</Stack>
-				<Stack className={'sections'}>
-					<Stack className={'section'} style={{ height: user.memberType === 'AGENT' ? '228px' : '153px' }}>
-						<Typography className="title" variant={'h5'}>
-							MANAGE LISTINGS
-						</Typography>
-						<List className={'sub-section'}>
-							{user.memberType === 'DEALER' && (
-								<>
-									<ListItem className={pathname === 'addProperty' ? 'focus' : ''}>
-										<Link
-											href={{
-												pathname: '/mypage',
-												query: { category: 'addProperty' },
-											}}
-											scroll={false}
-										>
-											<div className={'flex-box'}>
-												{category === 'addProperty' ? (
-													<img className={'com-icon'} src={'/img/icons/whiteTab.svg'} alt={'com-icon'} />
-												) : (
-													<img className={'com-icon'} src={'/img/icons/newTab.svg'} alt={'com_icon'} />
-												)}
-												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-													Add Property
-												</Typography>
-												<IconButton aria-label="delete" sx={{ ml: '40px' }}>
-													<PortraitIcon style={{ color: 'red' }} />
-												</IconButton>
-											</div>
-										</Link>
-									</ListItem>
-									<ListItem className={pathname === 'myProperties' ? 'focus' : ''}>
-										<Link
-											href={{
-												pathname: '/mypage',
-												query: { category: 'myProperties' },
-											}}
-											scroll={false}
-										>
-											<div className={'flex-box'}>
-												{category === 'myProperties' ? (
-													<img className={'com-icon'} src={'/img/icons/homeWhite.svg'} alt={'com-icon'} />
-												) : (
-													<img className={'com-icon'} src={'/img/icons/home.svg'} alt={'com-icon'} />
-												)}
-												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-													My Properties
-												</Typography>
-												<IconButton aria-label="delete" sx={{ ml: '36px' }}>
-													<PortraitIcon style={{ color: 'red' }} />
-												</IconButton>
-											</div>
-										</Link>
-									</ListItem>
-								</>
-							)}
-							<ListItem className={pathname === 'myFavorites' ? 'focus' : ''}>
-								<Link
-									href={{
-										pathname: '/mypage',
-										query: { category: 'myFavorites' },
-									}}
-									scroll={false}
-								>
-									<div className={'flex-box'}>
-										{category === 'myFavorites' ? (
-											<img className={'com-icon'} src={'/img/icons/likeWhite.svg'} alt={'com-icon'} />
-										) : (
-											<img className={'com-icon'} src={'/img/icons/like.svg'} alt={'com-icon'} />
-										)}
-
-										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Favorites
-										</Typography>
-									</div>
-								</Link>
-							</ListItem>
-							<ListItem className={pathname === 'recentlyVisited' ? 'focus' : ''}>
-								<Link
-									href={{
-										pathname: '/mypage',
-										query: { category: 'recentlyVisited' },
-									}}
-									scroll={false}
-								>
-									<div className={'flex-box'}>
-										{category === 'recentlyVisited' ? (
-											<img className={'com-icon'} src={'/img/icons/searchWhite.svg'} alt={'com-icon'} />
-										) : (
-											<img className={'com-icon'} src={'/img/icons/search.svg'} alt={'com-icon'} />
-										)}
-
-										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											Recently Visited
-										</Typography>
-									</div>
-								</Link>
-							</ListItem>
-							<ListItem className={pathname === 'followers' ? 'focus' : ''}>
-								<Link
-									href={{
-										pathname: '/mypage',
-										query: { category: 'followers' },
-									}}
-									scroll={false}
-								>
-									<div className={'flex-box'}>
-										<svg
-											className={'com-icon'}
-											fill={category === 'followers' ? 'white' : 'black'}
-											height="16px"
-											width="16px"
-											version="1.1"
-											id="Layer_1"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 328 328"
-										>
-											<g id="XMLID_350_">
-												<path
-													id="XMLID_351_"
-													d="M52.25,64.001c0,34.601,28.149,62.749,62.75,62.749c34.602,0,62.751-28.148,62.751-62.749
-		S149.602,1.25,115,1.25C80.399,1.25,52.25,29.4,52.25,64.001z"
-												/>
-												<path
-													id="XMLID_352_"
-													d="M217.394,262.357c2.929,2.928,6.768,4.393,10.606,4.393c3.839,0,7.678-1.465,10.607-4.394
-		c5.857-5.858,5.857-15.356-0.001-21.214l-19.393-19.391l19.395-19.396c5.857-5.858,5.857-15.356-0.001-21.214
-		c-5.858-5.857-15.356-5.856-21.214,0.001l-30,30.002c-2.813,2.814-4.393,6.629-4.393,10.607c0,3.979,1.58,7.794,4.394,10.607
-		L217.394,262.357z"
-												/>
-												<path
-													id="XMLID_439_"
-													d="M15,286.75h125.596c19.246,24.348,49.031,40,82.404,40c57.896,0,105-47.103,105-105
-		c0-57.896-47.104-105-105-105c-34.488,0-65.145,16.716-84.297,42.47c-7.764-1.628-15.695-2.47-23.703-2.47
-		c-63.411,0-115,51.589-115,115C0,280.034,6.716,286.75,15,286.75z M223,146.75c41.355,0,75,33.645,75,75s-33.645,75-75,75
-		s-75-33.645-75-75S181.644,146.75,223,146.75z"
-												/>
-											</g>
-										</svg>
-										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Followers
-										</Typography>
-									</div>
-								</Link>
-							</ListItem>
-							<ListItem className={pathname === 'followings' ? 'focus' : ''}>
-								<Link
-									href={{
-										pathname: '/mypage',
-										query: { category: 'followings' },
-									}}
-									scroll={false}
-								>
-									<div className={'flex-box'}>
-										<svg
-											className={'com-icon'}
-											fill={category === 'followings' ? 'white' : 'black'}
-											height="16px"
-											width="16px"
-											version="1.1"
-											id="Layer_1"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 328 328"
-										>
-											<g id="XMLID_334_">
-												<path
-													id="XMLID_337_"
-													d="M177.75,64.001C177.75,29.4,149.601,1.25,115,1.25c-34.602,0-62.75,28.15-62.75,62.751
-		S80.398,126.75,115,126.75C149.601,126.75,177.75,98.602,177.75,64.001z"
-												/>
-												<path
-													id="XMLID_338_"
-													d="M228.606,181.144c-5.858-5.857-15.355-5.858-21.214-0.001c-5.857,5.857-5.857,15.355,0,21.214
-		l19.393,19.396l-19.393,19.391c-5.857,5.857-5.857,15.355,0,21.214c2.93,2.929,6.768,4.394,10.607,4.394
-		c3.838,0,7.678-1.465,10.605-4.393l30-29.998c2.813-2.814,4.395-6.629,4.395-10.607c0-3.978-1.58-7.793-4.394-10.607
-		L228.606,181.144z"
-												/>
-												<path
-													id="XMLID_340_"
-													d="M223,116.75c-34.488,0-65.145,16.716-84.298,42.47c-7.763-1.628-15.694-2.47-23.702-2.47
-		c-63.412,0-115,51.589-115,115c0,8.284,6.715,15,15,15h125.596c19.246,24.348,49.03,40,82.404,40c57.896,0,105-47.103,105-105
-		C328,163.854,280.896,116.75,223,116.75z M223,296.75c-41.356,0-75-33.645-75-75s33.644-75,75-75c41.354,0,75,33.645,75,75
-		S264.354,296.75,223,296.75z"
-												/>
-											</g>
-										</svg>
-
-										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Followings
-										</Typography>
-									</div>
-								</Link>
-							</ListItem>
-						</List>
-					</Stack>
-					<Stack className={'section'} sx={{ marginTop: '10px' }}>
-						<div>
-							<Typography className="title" variant={'h5'}>
-								{/* Community */}
+					{user?.memberType === 'ADMIN' ? (
+						<a href="/_admin/users" target="_blank" rel="noopener noreferrer">
+							<Typography
+								sx={{
+									color: colors.accentGold,
+									fontSize: '12px',
+									fontWeight: 600,
+									cursor: 'pointer',
+									textDecoration: 'none',
+									'&:hover': {
+										color: colors.primaryGold,
+									},
+								}}
+							>
+								{user?.memberType}
 							</Typography>
-							<List className={'sub-section'}>
-								<ListItem className={pathname === 'myArticles' ? 'focus' : ''}>
-									<Link
-										href={{
-											pathname: '/mypage',
-											query: { category: 'myArticles' },
-										}}
-										scroll={false}
-									>
-										<div className={'flex-box'}>
-											{category === 'myArticles' ? (
-												<img className={'com-icon'} src={'/img/icons/discoveryWhite.svg'} alt={'com-icon'} />
-											) : (
-												<img className={'com-icon'} src={'/img/icons/discovery.svg'} alt={'com-icon'} />
-											)}
-
-											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-												Articles
-											</Typography>
-										</div>
-									</Link>
-								</ListItem>
-								<ListItem className={pathname === 'writeArticle' ? 'focus' : ''}>
-									<Link
-										href={{
-											pathname: '/mypage',
-											query: { category: 'writeArticle' },
-										}}
-										scroll={false}
-									>
-										<div className={'flex-box'}>
-											{category === 'writeArticle' ? (
-												<img className={'com-icon'} src={'/img/icons/whiteTab.svg'} alt={'com-icon'} />
-											) : (
-												<img className={'com-icon'} src={'/img/icons/newTab.svg'} alt={'com_icon'} />
-											)}
-											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-												Write Article
-											</Typography>
-										</div>
-									</Link>
-								</ListItem>
-							</List>
-						</div>
-					</Stack>
-					<Stack className={'section'} sx={{ marginTop: '30px' }}>
-						<Typography className="title" variant={'h5'}>
-							MANAGE ACCOUNT
+						</a>
+					) : (
+						<Typography
+							sx={{
+								color: colors.primaryGold,
+								fontSize: '12px',
+								fontWeight: 600,
+								textTransform: 'uppercase',
+								letterSpacing: '1px',
+							}}
+						>
+							{user?.memberType}
 						</Typography>
-						<List className={'sub-section'}>
-							<ListItem className={pathname === 'myProfile' ? 'focus' : ''}>
-								<Link
-									href={{
-										pathname: '/mypage',
-										query: { category: 'myProfile' },
-									}}
-									scroll={false}
-								>
-									<div className={'flex-box'}>
-										{category === 'myProfile' ? (
-											<img className={'com-icon'} src={'/img/icons/userWhite.svg'} alt={'com-icon'} />
-										) : (
-											<img className={'com-icon'} src={'/img/icons/user.svg'} alt={'com-icon'} />
-										)}
-										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Profile
-										</Typography>
-									</div>
-								</Link>
-							</ListItem>
-							<ListItem onClick={logoutHandler}>
-								<div className={'flex-box'}>
-									<img className={'com-icon'} src={'/img/icons/logout.svg'} alt={'com-icon'} />
-									<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-										Logout
-									</Typography>
-								</div>
-							</ListItem>
-						</List>
-					</Stack>
+					)}
 				</Stack>
 			</Stack>
-		);
-	}
+
+			{/* Menu Sections */}
+			<Stack sx={{ gap: '16px' }}>
+				{menuSections.map((section, sectionIndex) => {
+					// Filter out empty sections
+					if (section.items.length === 0) return null;
+					
+					return (
+						<Stack key={sectionIndex}>
+							<Typography
+								sx={{
+									color: colors.primaryGold,
+									fontSize: '11px',
+									fontWeight: 700,
+									textTransform: 'uppercase',
+									letterSpacing: '1.5px',
+									marginBottom: '12px',
+									paddingBottom: '6px',
+									borderBottom: `1px solid ${colors.borderLight}`,
+								}}
+							>
+								{section.title}
+							</Typography>
+							<List sx={{ padding: 0, gap: '2px', display: 'flex', flexDirection: 'column' }}>
+								{section.items.map((item) => {
+									const isActive = pathname === item.key;
+									
+									return (
+										<ListItem
+											key={item.key}
+											sx={{
+												padding: 0,
+												marginBottom: '2px',
+											}}
+										>
+											<Link
+												href={{
+													pathname: '/mypage',
+													query: { category: item.key },
+												}}
+												scroll={false}
+												style={{ textDecoration: 'none', width: '100%' }}
+											>
+												<Box
+													sx={{
+														display: 'flex',
+														alignItems: 'center',
+														padding: '10px 14px',
+														borderRadius: '20px',
+														cursor: 'pointer',
+														transition: 'all 0.3s ease',
+														background: isActive 
+															? `linear-gradient(135deg, ${colors.primaryGold} 0%, ${colors.secondaryGold} 100%)`
+															: 'transparent',
+														color: isActive ? colors.primaryDark : colors.textSecondary,
+														boxShadow: isActive ? `0px 4px 12px ${colors.shadowGold}` : 'none',
+														'&:hover': {
+															background: isActive 
+																? `linear-gradient(135deg, ${colors.primaryGold} 0%, ${colors.secondaryGold} 100%)`
+																: `rgba(212, 175, 55, 0.1)`,
+															color: isActive ? colors.primaryDark : colors.textPrimary,
+														},
+													}}
+												>
+													{item.customIcon ? (
+														<FollowerIcon 
+															isActive={isActive} 
+															type={item.key}
+														/>
+													) : (
+														<img
+															src={isActive ? item.activeIcon : item.icon}
+															alt="icon"
+															style={{
+																width: '16px',
+																height: '16px',
+																marginRight: '10px',
+																filter: !isActive ? 'brightness(0) invert(1)' : 'none',
+															}}
+														/>
+													)}
+													<Typography
+														sx={{
+															fontSize: '13px',
+															fontWeight: isActive ? 600 : 500,
+															flex: 1,
+														}}
+													>
+														{item.label}
+													</Typography>
+												</Box>
+											</Link>
+										</ListItem>
+									);
+								})}
+							</List>
+						</Stack>
+					);
+				})}
+
+				{/* Logout Section */}
+				<Stack sx={{ marginTop: '-10px' }}>
+					<ListItem sx={{ padding: 0 }}>
+						<Box
+							onClick={logoutHandler}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								padding: '10px 14px',
+								borderRadius: '20px',
+								cursor: 'pointer',
+								transition: 'all 0.3s ease',
+								background: 'transparent',
+								color: colors.textMuted,
+								width: '100%',
+								border: `1px solid ${colors.borderDark}`,
+								'&:hover': {
+									background: 'rgba(231, 76, 60, 0.1)',
+									color: '#e74c3c',
+									borderColor: 'rgba(231, 76, 60, 0.3)',
+								},
+							}}
+						>
+							<img
+								src="/img/icons/logout.svg"
+								alt="logout"
+								style={{
+									width: '16px',
+									height: '16px',
+									marginRight: '10px',
+									filter: 'brightness(0) invert(1)',
+								}}
+							/>
+							<Typography
+								sx={{
+									fontSize: '13px',
+									fontWeight: 500,
+								}}
+							>
+								Logout
+							</Typography>
+						</Box>
+					</ListItem>
+				</Stack>
+			</Stack>
+		</Stack>
+	);
 };
 
 export default MyMenu;

@@ -1,81 +1,115 @@
-import { Stack } from '@mui/material';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
-const Category = () => {
-  const router = useRouter();
+const WatchCollection = () => {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
-  const handleNavigate = (category: string) => {
-    const input = {
-      page: 1,
-      limit: 9,
-      sort: 'createdAt',
-      direction: 'DESC',
-      search: {
-        pricesRange: { start: 0, end: 20000 },
-        propertyCategory: [category],
-      },
-    };
+  const categories = [
+    {
+      id: 1,
+      title: 'Crafted Precision',
+      subtitle: "Explore Men's Signature Watch",
+      buttonText: 'SHOP COLLECTION',
+      detailLink: '/property/detail?id=6826114365bfa1a9fc1aecb9',
+      image: '/img/watches/1.jpeg',
+      products: [
+        {
+          id: '6826114365bfa1a9fc1aecb9',
+          name: 'Sea-Dweller',
+          price: 9425.00,
+          image: '/img/watches/new23.webp'
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: 'Luxury Hers Alone',
+      subtitle: 'Elegant Timepieces for Women',
+      buttonText: 'SHOP NOW',
+      detailLink: '/property/detail?id=68249cc665bfa1a9fc1ae9ba',
+      image: '/img/watches/omega.avif',
+      products: [
+        {
+          id: '68249cc665bfa1a9fc1ae9ba',
+          name: 'Omega De Prestige',
+          price: 5100.00,
+          image: '/img/watches/new19.webp'
+        }
+      ]
+    },
+    {
+      id: 3,
+      title: 'Elegance For Every Wrist',
+      subtitle: 'Timeless Unisex Designs',
+      buttonText: 'SHOP NOW',
+      detailLink: '/property/detail?id=68209c76cafa27a47cb34f0c',
+      image: '/img/watches/jaegar.jpg',
+      products: [
+        {
+          id: '68209c76cafa27a47cb34f0c',
+          name: 'Jaeger-LeCoultre',
+          price: 13500.00,
+          image: '/img/watches/new13.webp'
+        }
+      ]
+    }
+  ];
 
-    const encodedInput = encodeURIComponent(JSON.stringify(input));
-    router.push(`/property?input=${encodedInput}`);
+  const handleShopClick = () => {
+    window.location.href = '/property';
+  };
+
+  const handleDetailClick = (link: string) => {
+    window.location.href = link;
+  };
+
+  const toggleCard = (id: number) => {
+    setActiveCard(activeCard === id ? null : id);
   };
 
   return (
-    <Stack className={"category-frame"}>
-      <section className="product-category">
-        <div className="left" onClick={() => handleNavigate('MALE')}>
-          <Image
-            src="/img/watches/bentley.jpg"
-            alt="watch"
-            fill
-            className="image"
-          />
-          <div className="content">
-          <h3>Crafted Precision:<br />Explore Men's<br />Signature Watches</h3>
-            <button onClick={(e) => {
-              e.stopPropagation();
-              handleNavigate('MALE');
-            }}>SHOP COLLECTION</button>
-          </div>
-        </div>
-
-        <div className="right">
-          <div className="top" onClick={() => handleNavigate('FEMALE')}>
-            <Image
-              src="/img/watches/lady.jpg"
-              alt="watch"
-              fill
-              className="image"
-            />
-            <div className="content">
-            <h3>Luxury <br /> Hers Alone</h3>
-              <button onClick={(e) => {
-                e.stopPropagation();
-                handleNavigate('FEMALE');
-              }}>SHOP NOW</button>
+    <div className="watch-collection">
+      {categories.map((category) => (
+        <div key={category.id} className="watch-card">
+          <div 
+            className="watch-image-container"
+            style={{ backgroundImage: `url(${category.image})` }}
+          >
+            <div 
+              className="plus-button" 
+              onClick={() => toggleCard(category.id)}
+            >
+              {activeCard === category.id ? '×' : '+'}
             </div>
           </div>
-
-          <div className="bottom" onClick={() => handleNavigate('UNISEX')}>
-            <Image
-              src="/img/watches/unisex.jpg"
-              alt="watch"
-              fill
-              className="image"
-            />
-            <div className="content">
-            <h3>Elegance For <br />Every Wrist</h3>
-              <button onClick={(e) => {
-                e.stopPropagation();
-                handleNavigate('UNISEX');
-              }}>SHOP NOW</button>
-            </div>
+          <div className="watch-content">
+            <h2>{category.title}</h2>
+            <p>{category.subtitle}</p>
+            <button className="shop-button" onClick={handleShopClick}>
+              {category.buttonText}
+            </button>
           </div>
+
+          {activeCard === category.id && (
+            <div className="product-detail-card">
+              <div className="product-image-container">
+                <img src={category.products[0].image} alt={category.products[0].name} />
+              </div>
+              <div className="product-info">
+                <h3>{category.products[0].name}</h3>
+                <p className="price">${category.products[0].price.toLocaleString()}</p>
+                <button 
+                  className="view-detail-button"
+                  onClick={() => handleDetailClick(category.detailLink)}
+                >
+                  VIEW DETAILS
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      </section>
-    </Stack>
+      ))}
+    </div>
   );
 };
 
-export default Category;
+export default WatchCollection;

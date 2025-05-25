@@ -8,7 +8,7 @@ import { userVar } from '../../../apollo/store';
 import { T } from '../../types/common';
 import { Blog } from '../../types/blog/blog';
 import { LIKE_TARGET_BLOG } from '../../../apollo/user/mutation';
-import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
+import { GET_BLOGS } from '../../../apollo/user/query';
 import { Messages } from '../../config';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
@@ -29,16 +29,16 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 		loading: boardArticlesLoading,
 		data: boardArticlesData,
 		error: getBoardArticlesError,
-		refetch: boardArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
+		refetch: getBlogsRefetch,
+	} = useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
 		variables: {
 			input: searchCommunity,
 		},
 		notifyOnNetworkStatusChange: true,
 		onCompleted(data) {
-			setBoardArticles(data?.getBoardArticles?.list);
-			setTotalCount(data?.getBoardArticles?.metaCounter?.[0]?.total);
+			setBoardArticles(data?.getBlogs?.list);
+			setTotalCount(data?.getBlogs?.metaCounter?.[0]?.total);
 		},
 	});
 	/** HANDLERS **/
@@ -54,18 +54,18 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 
 			await likeTargetBoardArticle({
 				variables: {
-					input: id , 
+					input: id,
 				},
 			});
 
-			await boardArticlesRefetch({ input: searchCommunity });
+			await getBlogsRefetch({ input: searchCommunity });
 
 			await sweetTopSmallSuccessAlert('Success!', 750);
 		} catch (err: any) {
 			console.log('ERROR, likeBoArticleHandler:', err.message);
 			await sweetMixinErrorAlert(err.message);
 		}
-	}
+	};
 
 	if (device === 'mobile') {
 		return <>ARTICLE PAGE MOBILE</>;
@@ -74,7 +74,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 			<div id="my-articles-page">
 				<Stack className="main-title-box">
 					<Stack className="right-box">
-						<Typography className="main-title">Article</Typography>
+						<Typography className="main-title">Blogs</Typography>
 						<Typography className="sub-title">We are glad to see you again!</Typography>
 					</Stack>
 				</Stack>
@@ -83,7 +83,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 						boardArticles?.map((boardArticle: Blog) => {
 							return (
 								<CommunityCard
-									boardArticle={boardArticle}
+									blog={boardArticle}
 									key={boardArticle?._id}
 									size={'small'}
 									likeArticleHandler={likeBoArticleHandler}
@@ -102,15 +102,22 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 					<Stack className="pagination-conf">
 						<Stack className="pagination-box">
 							<Pagination
-								count={Math.ceil(totalCount / searchCommunity.limit)}
 								page={searchCommunity.page}
-								shape="circular"
-								color="primary"
+								count={Math.ceil(searchCommunity.limit)}
 								onChange={paginationHandler}
+								size="large"
+								showFirstButton
+								showLastButton
+								sx={{
+									'& .MuiPaginationItem-root': {
+										fontWeight: 600,
+										color: '#fff',
+									},
+								}}
 							/>
 						</Stack>
 						<Stack className="total">
-							<Typography>Total {totalCount ?? 0} article(s) available</Typography>
+							<Typography>Total {totalCount ?? 0} blog(s) available</Typography>
 						</Stack>
 					</Stack>
 				)}
@@ -121,7 +128,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 MyArticles.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 6,
+		limit: 2,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {},

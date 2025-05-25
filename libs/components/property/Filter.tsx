@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	Stack,
 	Typography,
 	Checkbox,
 	Button,
 	OutlinedInput,
-	FormControl,
-	InputLabel,
 	Select,
 	MenuItem,
 	Tooltip,
@@ -30,10 +28,9 @@ import {
 import { PropertiesInquiry } from '../../types/property/property.input';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { propertySquare } from '../../config';
+import { debounce } from 'lodash';
 import RefreshIcon from '@mui/icons-material/Refresh';
-
-
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 const TagButton = styled(Button)({
 	borderRadius: '16px',
@@ -99,7 +96,6 @@ const Filter = (props: FilterType) => {
 			delete searchFilter.search.locationList;
 			setShowMore(false);
 
-			// Reset to initial input for locationList if it becomes empty
 			const updatedFilter = {
 				...searchFilter,
 				search: {
@@ -343,24 +339,36 @@ const Filter = (props: FilterType) => {
 	);
 
 	const watchGenderSelectHandler = useCallback(
-		async (gender: WatchGender) => {
+		async (gender: WatchGender | null) => {
 			try {
-				let updatedPropertyCategory: WatchGender[] = [];
+				let updatedSearchFilter;
 
-				if (searchFilter?.search?.propertyCategory?.includes(gender)) {
-					updatedPropertyCategory =
-						searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender) || [];
+				if (gender === null) {
+					updatedSearchFilter = {
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							propertyCategory: undefined,
+						},
+					};
 				} else {
-					updatedPropertyCategory = [...(searchFilter?.search?.propertyCategory || []), gender];
-				}
+					let updatedPropertyCategory: WatchGender[] = [];
 
-				const updatedSearchFilter = {
-					...searchFilter,
-					search: {
-						...searchFilter.search,
-						propertyCategory: updatedPropertyCategory,
-					},
-				};
+					if (searchFilter?.search?.propertyCategory?.includes(gender)) {
+						updatedPropertyCategory =
+							searchFilter?.search?.propertyCategory?.filter((item: WatchGender) => item !== gender) || [];
+					} else {
+						updatedPropertyCategory = [...(searchFilter?.search?.propertyCategory || []), gender];
+					}
+
+					updatedSearchFilter = {
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							propertyCategory: updatedPropertyCategory.length > 0 ? updatedPropertyCategory : undefined,
+						},
+					};
+				}
 
 				await router.push(
 					`/property?input=${JSON.stringify(updatedSearchFilter)}`,
@@ -377,56 +385,49 @@ const Filter = (props: FilterType) => {
 	);
 
 	const watchConditionSelectHandler = useCallback(
-		async (condition: WatchCondition) => {
+		async (condition: WatchCondition | null) => {
 			try {
-				if (searchFilter?.search?.propertyCondition?.includes(condition)) {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								propertyCondition: searchFilter?.search?.propertyCondition?.filter(
-									(item: WatchCondition) => item !== condition,
-								),
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								propertyCondition: searchFilter?.search?.propertyCondition?.filter(
-									(item: WatchCondition) => item !== condition,
-								),
-							},
-						})}`,
-						{ scroll: false },
-					);
+				let updatedSearchFilter;
+
+				if (condition === null) {
+					updatedSearchFilter = {
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							propertyCondition: undefined,
+						},
+					};
 				} else {
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								propertyCondition: [...(searchFilter?.search?.propertyCondition || []), condition],
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								propertyCondition: [...(searchFilter?.search?.propertyCondition || []), condition],
-							},
-						})}`,
-						{ scroll: false },
-					);
+					let updatedPropertyCondition: WatchCondition[] = [];
+
+					if (searchFilter?.search?.propertyCondition?.includes(condition)) {
+						updatedPropertyCondition =
+							searchFilter?.search?.propertyCondition?.filter((item: WatchCondition) => item !== condition) || [];
+					} else {
+						updatedPropertyCondition = [...(searchFilter?.search?.propertyCondition || []), condition];
+					}
+
+					updatedSearchFilter = {
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+							propertyCondition: updatedPropertyCondition.length > 0 ? updatedPropertyCondition : undefined,
+						},
+					};
 				}
+
+				await router.push(
+					`/property?input=${JSON.stringify(updatedSearchFilter)}`,
+					`/property?input=${JSON.stringify(updatedSearchFilter)}`,
+					{ scroll: false },
+				);
 
 				console.log('watchConditionSelectHandler:', condition);
 			} catch (err: any) {
 				console.log('ERROR, watchConditionSelectHandler:', err);
 			}
 		},
-		[searchFilter],
+		[searchFilter, router],
 	);
 
 	const watchMaterialHandler = useCallback(
@@ -577,167 +578,167 @@ const Filter = (props: FilterType) => {
 		}
 	};
 
+	const debouncedSearch = useMemo(
+		() =>
+			debounce((searchValue: any) => {
+				setSearchFilter({
+					...searchFilter,
+					search: { ...searchFilter.search, text: searchValue },
+				});
+			}, 300),
+		[searchFilter],
+	);
+
+	useEffect(() => {
+		return () => {
+			debouncedSearch.cancel();
+		};
+	}, [debouncedSearch]);
+
 	if (device === 'mobile') {
 		return <div>WATCHES FILTER</div>;
 	} else {
 		return (
 			<Stack className={'filter-main'}>
-<Stack className="find-your-home" mb="32px">
-  <Typography
-    className="title-main"
-    sx={{
-      mb: 1.5,
-      position: 'relative',
-      '&:after': {
-        content: '""',
-        position: 'absolute',
-        bottom: -8,
-        left: 0,
-        width: '40px',
-        height: '2px',
-        backgroundColor: '#ceae3b',
-      },
-    }}
-  >
-    Find Your Watch
-  </Typography>
+				<Stack className="find-your-home" mb="32px">
+					<Typography
+						className="title-main"
+						sx={{
+							mb: 1.5,
+							position: 'relative',
+							'&:after': {
+								content: '""',
+								position: 'absolute',
+								bottom: -8,
+								left: 0,
+								width: '40px',
+								height: '2px',
+								backgroundColor: '#ceae3b',
+							},
+						}}
+					>
+						Find Your Watch
+					</Typography>
 
-  <Stack
-    direction="row"
-    alignItems="center"
-    spacing={0.5}
-    sx={{
-      backgroundColor: 'rgba(0,0,0,0.08)',
-      borderRadius: '12px',
-      px: 2.5,
-      py: 0.5,
-      boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-      border: '1px solid #e8e8e8',
-      transition: 'all 0.3s ease',
-      height: '48px',
-      '&:hover': {
-        boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
-        borderColor: '#d4af37',
-      },
-      '&:focus-within': {
-        borderColor: '#d4af37',
-        boxShadow: '0 6px 24px rgba(212, 175, 55, 0.2)',
-      },
-    }}
-  >
-    <img
-      src="/img/icons/search_icon.png"
-      alt="Search"
-      style={{
-        width: '16px',
-        height: '16px',
-        opacity: 0.7,
-        transition: 'all 0.3s ease',
-      }}
-      className="search-icon"
-    />
+					<Stack
+						direction="row"
+						alignItems="center"
+						spacing={0.5}
+						sx={{
+							backgroundColor: 'rgba(0,0,0,0.08)',
+							borderRadius: '12px',
+							px: 2.5,
+							py: 0.5,
+							boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+							border: '1px solid #e8e8e8',
+							transition: 'all 0.3s ease',
+							height: '48px',
+							'&:hover': {
+								boxShadow: '0 6px 24px rgba(0,0,0,0.12)',
+								borderColor: '#d4af37',
+							},
+							'&:focus-within': {
+								borderColor: '#d4af37',
+								boxShadow: '0 6px 24px rgba(212, 175, 55, 0.2)',
+							},
+						}}
+					>
+						<SearchRoundedIcon
+							sx={{
+								width: 20,
+								height: 20,
+								opacity: 0.7,
+								transition: 'all 0.3s ease',
+							}}
+							className="search-icon"
+						/>
 
-    <OutlinedInput
-      value={searchText}
-      type="text"
-      placeholder="Search luxury watches..."
-      onChange={(e: any) => setSearchText(e.target.value)}
-      onKeyDown={(event: any) => {
-        if (event.key === 'Enter') {
-          setSearchFilter({
-            ...searchFilter,
-            search: { ...searchFilter.search, text: searchText },
-          });
-        }
-      }}
-      sx={{
-        flex: 1,
-        fontSize: '14px',
-        background: 'transparent',
-        border: 'none',
-        '& fieldset': { border: 'none' },
-        '& input': {
-          padding: '8px 12px',
-          fontWeight: 500,
-          color: '#1a1a1a',
-          '&::placeholder': {
-            color: '#999',
-          },
-        },
-        '&.Mui-focused': {
-          '& + .search-icon': {
-            opacity: 1,
-            transform: 'scale(1.1)',
-          },
-        },
-      }}
-      endAdornment={
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          {searchText && (
-            <Tooltip title="Clear">
-              <IconButton
-                onClick={() => {
-                  setSearchText('');
-                  setSearchFilter({
-                    ...searchFilter,
-                    search: { ...searchFilter.search, text: '' },
-                  });
-                }}
-                sx={{
-                  p: 0.5,
-                  color: '#888',
-                  transition: 'all 0.3s',
-                  '&:hover': {
-                    color: '#d4af37',
-                    transform: 'scale(1.1)',
-                  },
-                }}
-              >
-                <CancelRoundedIcon sx={{ fontSize: 18 }} />
-              </IconButton>
-            </Tooltip>
-          )}
+						<OutlinedInput
+							value={searchText}
+							type="text"
+							placeholder="Search luxury watches..."
+							onChange={(e) => {
+								const value = e.target.value;
+								setSearchText(value);
+								debouncedSearch(value);
+							}}
+							onKeyDown={(event) => {
+								if (event.key === 'Enter') {
+									setSearchFilter({
+										...searchFilter,
+										search: { ...searchFilter.search, text: searchText },
+									});
+								}
+							}}
+							sx={{
+								flex: 1,
+								fontSize: '14px',
+								background: 'transparent',
+								border: 'none',
+								'& fieldset': { border: 'none' },
+								'& input': {
+									padding: '8px 12px',
+									fontWeight: 500,
+									color: '#fff',
+									'&::placeholder': {
+										color: '#fff',
+									},
+								},
+								'&.Mui-focused': {
+									'& + .search-icon': {
+										opacity: 1,
+										transform: 'scale(1.1)',
+									},
+								},
+							}}
+							endAdornment={
+								<Stack direction="row" alignItems="center" spacing={0.5}>
+									{searchText && (
+										<Tooltip title="Clear">
+											<IconButton
+												onClick={() => {
+													setSearchText('');
+													setSearchFilter({
+														...searchFilter,
+														search: { ...searchFilter.search, text: '' },
+													});
+												}}
+												sx={{
+													p: 0.5,
+													color: '#888',
+													transition: 'all 0.3s',
+													'&:hover': {
+														color: '#d4af37',
+														transform: 'scale(1.1)',
+													},
+												}}
+											>
+												<CancelRoundedIcon sx={{ fontSize: 18 }} />
+											</IconButton>
+										</Tooltip>
+									)}
 
-          <Tooltip title="Reset filters">
-            <IconButton
-              onClick={refreshHandler}
-              sx={{
-                p: 0.5,
-                color: '#888',
-                transition: 'all 0.3s',
-                '&:hover': {
-                  color: '#d4af37',
-                  transform: 'rotate(90deg)',
-                },
-              }}
-            >
-              <RefreshIcon sx={{ fontSize: 18 }} />
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      }
-    />
-  </Stack>
-
-  {searchText && (
-    <Typography
-      variant="caption"
-      sx={{
-        mt: 1,
-        color: '#d4af37',
-        fontSize: '12px',
-        display: 'flex',
-        alignItems: 'center',
-        '&:before': {
-          content: '"↳"',
-          mr: 0.5,
-        },
-      }}
-    >
-      Searching for: {searchText}
-    </Typography>
-  )}
-</Stack>
+									<Tooltip title="Reset filters">
+										<IconButton
+											onClick={refreshHandler}
+											sx={{
+												p: 0.5,
+												color: '#888',
+												transition: 'all 0.3s',
+												'&:hover': {
+													color: '#d4af37',
+													transform: 'rotate(90deg)',
+												},
+											}}
+										>
+											<RefreshIcon sx={{ fontSize: 18 }} />
+										</IconButton>
+									</Tooltip>
+								</Stack>
+							}
+						/>
+					</Stack>
+				</Stack>
 
 				<Typography
 					sx={{
@@ -992,8 +993,28 @@ const Filter = (props: FilterType) => {
 					<Stack className="button-group">
 						<Button
 							sx={{
-								borderRadius: '12px 0 0 12px',
+								borderRadius: '12px 0 0 0',
 								border: '1px solid #3a3a3a',
+								color: '#fff',
+								// Highlight "All" when no propertyCategory is selected or it's empty
+								...(!searchFilter?.search?.propertyCategory || searchFilter?.search?.propertyCategory?.length === 0
+									? {
+											border: '1.5px solid #d4af37',
+											boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+											color: '#d4af37',
+									  }
+									: {}),
+							}}
+							onClick={() => watchGenderSelectHandler(null)}
+						>
+							Mixed
+						</Button>
+
+						<Button
+							sx={{
+								borderRadius: 0,
+								border: '1px solid #3a3a3a',
+								borderLeft: 'none',
 								color: '#fff',
 								...(searchFilter?.search?.propertyCategory?.includes(WatchGender.MALE) && {
 									border: '1.5px solid #d4af37',
@@ -1046,8 +1067,28 @@ const Filter = (props: FilterType) => {
 					<Stack className="button-group">
 						<Button
 							sx={{
-								borderRadius: '12px 0 0 12px',
+								borderRadius: '12px 0 0 0',
 								border: '1px solid #3a3a3a',
+								color: '#fff',
+								// Highlight "All" when no propertyCondition is selected or it's empty
+								...(!searchFilter?.search?.propertyCondition || searchFilter?.search?.propertyCondition?.length === 0
+									? {
+											border: '1.5px solid #d4af37',
+											boxShadow: '0 0 4px rgba(212, 175, 55, 0.3)',
+											color: '#d4af37',
+									  }
+									: {}),
+							}}
+							onClick={() => watchConditionSelectHandler(null)}
+						>
+							All
+						</Button>
+
+						<Button
+							sx={{
+								borderRadius: 0,
+								border: '1px solid #3a3a3a',
+								borderLeft: 'none',
 								color: '#fff',
 								...(searchFilter?.search?.propertyCondition?.includes(WatchCondition.NEW) && {
 									border: '1.5px solid #d4af37',

@@ -27,7 +27,7 @@ export interface Property {
 	propertyViews: number;
 	propertyLikes: number;
 	propertyRank: number;
-	propertyComments: number;
+	propertyComments: number[];
 	propertyImages: string[];
 	propertyDesc?: string;
 	memberId: string;

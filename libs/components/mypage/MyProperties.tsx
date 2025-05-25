@@ -51,7 +51,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 
 	const deletePropertyHandler = async (id: string) => {
 		try {
-			if (await sweetConfirmAlert("Are you sure to delete this property?")) {
+			if (await sweetConfirmAlert('Are you sure to delete this property?')) {
 				await updateProperty({
 					variables: {
 						input: {
@@ -69,7 +69,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 
 	const updatePropertyHandler = async (status: string, id: string) => {
 		try {
-			if (await sweetConfirmAlert(`Are you sure to change to ${status} status?`)) { 
+			if (await sweetConfirmAlert(`Are you sure to change to ${status} status?`)) {
 				await updateProperty({
 					variables: {
 						input: {
@@ -79,7 +79,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 					},
 				});
 			}
-			await getAgentPropertiesRefetch({ input: searchFilter }); 
+			await getAgentPropertiesRefetch({ input: searchFilter });
 		} catch (err: any) {
 			await sweetErrorHandling(err);
 		}
@@ -96,8 +96,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 			<div id="my-property-page">
 				<Stack className="main-title-box">
 					<Stack className="right-box">
-						<Typography className="main-title">My Properties</Typography>
-						<Typography className="sub-title">We are glad to see you again!</Typography>
+						<Typography className="main-title">My watches</Typography>
 					</Stack>
 				</Stack>
 				<Stack className="property-list-box">
@@ -110,18 +109,20 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 						</Typography>
 						<Typography
 							onClick={() => changeStatusHandler(WatchStatus.SOLD)}
-							className={searchFilter.search.propertyStatus === 'SOLD' ? 'active-tab-name' : 'tab-name'}
+							className={searchFilter.search.propertyStatus === 'DELETE' ? 'active-tab-name' : 'tab-name'}
 						>
 							On Sold
 						</Typography>
 					</Stack>
 					<Stack className="list-box">
 						<Stack className="listing-title-box">
-							<Typography className="title-text">Listing title</Typography>
-							<Typography className="title-text">Date Published</Typography>
+							<Typography className="title-text">Watch</Typography>
+							<Typography className="title-text">Produced in</Typography>
 							<Typography className="title-text">Status</Typography>
 							<Typography className="title-text">View</Typography>
-							{searchFilter.search.propertyStatus === 'AVAILABLE' && <Typography className="title-text">Action</Typography> }
+							{searchFilter.search.propertyStatus === 'AVAILABLE' && (
+								<Typography className="title-text">Action</Typography>
+							)}
 						</Stack>
 
 						{agentProperties?.length === 0 ? (
@@ -145,15 +146,22 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 							<Stack className="pagination-config">
 								<Stack className="pagination-box">
 									<Pagination
-										count={Math.ceil(total / searchFilter.limit)}
 										page={searchFilter.page}
-										shape="circular"
-										color="primary"
+										count={Math.ceil(total / searchFilter.limit)}
 										onChange={paginationHandler}
+										size="large"
+										showFirstButton
+										showLastButton
+										sx={{
+											'& .MuiPaginationItem-root': {
+												fontWeight: 600,
+												color: '#fff',
+											},
+										}}
 									/>
 								</Stack>
 								<Stack className="total-result">
-									<Typography>{total} property available</Typography>
+									<Typography>{total} watches available</Typography>
 								</Stack>
 							</Stack>
 						)}
