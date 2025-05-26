@@ -5,10 +5,15 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Property } from '../../types/property/property';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { REACT_APP_API_URL } from '../../config';
 import { useRouter } from 'next/router';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 interface SpecialOfferCardProps {
 	property: Property;
@@ -21,141 +26,64 @@ const SpecialOfferCard = (props: SpecialOfferCardProps) => {
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 
+	// Calculate 10% discount
+	const originalPrice = property.propertyPrice;
+	const discountedPrice = Math.round(originalPrice * 0.9);
+
 	/** HANDLERS **/
 	const pushDetailHandler = async (propertyId: string) => {
 		console.log('ID', propertyId);
 		await router.push({ pathname: '/property/detail', query: { id: propertyId } });
 	};
 
-	if (device === 'mobile') {
-		return (
-			<Stack className="trend-card-box" key={property._id}>
-				<Box
-					component={'div'}
-					className={'card-img'}
-					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => pushDetailHandler(property._id)}
-				>
-					<div>${property.propertyPrice}</div>
+	return (
+		<Box className="deal-card">
+			<Box className="deal-card-image" onClick={() => pushDetailHandler(property._id)}>
+				<div className="discount-badge">-10%</div>
+				<img
+					src={`${process.env.REACT_APP_API_URL}/${property?.propertyImages[0]}`}
+					alt={property.propertyModel}
+					className="product-image"
+				/>
+				{property?.propertyImages[1] && (
+					<img
+						src={`${process.env.REACT_APP_API_URL}/${property?.propertyImages[1]}`}
+						alt="Hover"
+						className="hover-image"
+					/>
+				)}
+			</Box>
+
+			<Box className="deal-card-content">
+				<Box className="top-line">
+					<Box className="title-brand">
+						<h3 className="product-title">{property.propertyModel}</h3>
+						<p className="product-brand">{property.propertyBrand}</p>
+					</Box>
+					<Box className="price-stack">
+						<span className="current-price">${discountedPrice}</span>
+						<span className="original-price">${originalPrice}</span>
+					</Box>
 				</Box>
-				<Box component={'div'} className={'info'}>
-					<strong className={'title'} onClick={() => pushDetailHandler(property._id)}>
-						{property.propertyModel}
-					</strong>
-					<p className={'desc'}>{property.propertyDesc ?? 'no description'}</p>
-					<div className={'options'}>
-						<div>
-							<span>📍 {property.propertyAddress} </span>
-						</div>
-						<div>
-							<span>⌚️ {property.propertyCategory}</span>
-						</div>
-						<div>
-							<span>{property.propertyCondition}</span>
-						</div>
-					</div>
-					<Divider sx={{ mt: '15px', mb: '17px' }} />
-					<div className={'bott'}>
-						
-						<div className="view-like-box">
-							<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyViews}</Typography>
-							<IconButton color={'default'}>
-								{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-									<FavoriteIcon style={{ color: 'red' }} />
-								) : (
-									<FavoriteIcon />
-								)}
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyLikes}</Typography>
-						</div>
-					</div>
-				</Box>
-			</Stack>
-		);
-	} else {
-		return (
-			<Stack className="trend-card-box" key={property._id}>
-				<Box
-					component="div"
-					className="card-img"
-					onClick={() => {
-						pushDetailHandler(property._id);
+			</Box>
+
+			<Box className="card-actions">
+				<IconButton
+					className="like-button"
+					onClick={(e: any) => {
+						e.stopPropagation();
+						likePropertyHandler(user, property._id);
 					}}
 				>
-					<img
-						src={`${process.env.REACT_APP_API_URL}/${property?.propertyImages[0]}`}
-						alt="Main"
-						className="main-img"
-					/>
-					{property?.propertyImages[1] && (
-						<img
-							src={`${process.env.REACT_APP_API_URL}/${property?.propertyImages[1]}`}
-							alt="Hover"
-							className="hover-img"
-						/>
+					{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+						<BookmarkIcon className="liked-icon" />
+					) : (
+						<BookmarkBorderIcon className="like-icon" />
 					)}
-
-					<div className="view-like-box">
-						<IconButton
-							color={'default'}
-							size="small"
-							onClick={(e: any) => {
-								e.stopPropagation();
-							}}
-						>
-							<RemoveRedEyeIcon fontSize="small" />
-						</IconButton>
-						<Typography className="view-cnt">{property?.propertyViews||0}</Typography>
-						<IconButton
-							color={'default'}
-							size="small"
-							onClick={(e: any) => {
-								e.stopPropagation();
-								likePropertyHandler(user, property?._id);
-							}}
-						>
-							{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-								<FavoriteIcon style={{ color: 'red' }} fontSize="small" />
-							) : (
-								<FavoriteIcon fontSize="small" />
-							)}
-						</IconButton>
-						<Typography className="view-cnt">{property?.propertyLikes || 0}</Typography>
-					</div>
-				</Box>
-
-				<Box component={'div'} className={'info'}>
-					<div className="model-price">
-						<div style={{ display: 'flex', flexDirection: 'column' }}>
-							<p className={'title'}>{property.propertyModel}</p>
-							<p
-								style={{
-									marginTop: '5px',
-									fontSize: '0.70rem',
-									fontFamily: 'sans-serif',
-									fontWeight: 'normal',
-									textTransform: 'none',
-									color: '#999',
-								}}
-							>
-								{property.propertyBrand}
-							</p>
-						</div>
-						<p className={'desc'}>${property.propertyPrice}</p>
-					</div>
-					{/* <div className={'bott'}>
-						<p>
-							{property.propertyRent ? 'Rent' : ''} {property.propertyRent && property.propertyBarter && '/'}{' '}
-							{property.propertyBarter ? 'Barter' : ''}
-						</p>
-					</div> */}
-				</Box>
-			</Stack>
-		);
-	}
+				</IconButton>
+			</Box>
+		</Box>
+	);
 };
 
 export default SpecialOfferCard;

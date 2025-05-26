@@ -9,7 +9,7 @@ import { Blog } from '../../types/blog/blog';
 import { BlogsInquiry } from '../../types/blog/blog.input';
 import { useMutation, useQuery } from '@apollo/client';
 import { LIKE_TARGET_BLOG } from '../../../apollo/user/mutation';
-import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
+import { GET_BLOGS } from '../../../apollo/user/query';
 import { Messages } from '../../config';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
@@ -29,15 +29,15 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 		data: boardArticles,
 		error: getBoardArticlesError,
 		refetch: boardArticlesFetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
+	} = useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
 		variables: {
 			input: searchFilter,
 		},
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: any) => {
-			setMemberBoArticles(data?.getBoardArticles?.list);
-			setTotal(data?.getBoardArticles?.metaCounter[0]?.total || 0);
+			setMemberBoArticles(data?.getBlogs?.list);
+			setTotal(data?.getBlogs?.metaCounter[0]?.total || 0);
 		},
 	});
 
@@ -94,7 +94,7 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 					{memberBoArticles?.map((boardArticle: Blog) => {
 						return (
 							<CommunityCard
-								boardArticle={boardArticle}
+								blog={boardArticle}
 								likeArticleHandler={likeArticleHandler}
 								key={boardArticle?._id}
 								size={'small'}
@@ -106,15 +106,19 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 					<Stack className="pagination-config">
 						<Stack className="pagination-box">
 							<Pagination
-								count={Math.ceil(total / searchFilter.limit) || 1}
 								page={searchFilter.page}
-								shape="circular"
-								color="primary"
+								count={Math.ceil(total / searchFilter.limit)}
 								onChange={paginationHandler}
+								size="large"
+								showFirstButton
+								showLastButton
+								sx={{
+									'& .MuiPaginationItem-root': {
+										fontWeight: 600,
+										color: '#fff',
+									},
+								}}
 							/>
-						</Stack>
-						<Stack className="total-result">
-							<Typography>{total} property available</Typography>
 						</Stack>
 					</Stack>
 				)}

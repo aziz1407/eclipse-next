@@ -51,7 +51,7 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 				const diff = end - now;
 
 				if (diff <= 0) {
-					setTimeLeft('Discount ended!');
+					setTimeLeft('00 : 00 : 00 : 00');
 					return;
 				}
 
@@ -60,7 +60,8 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 				const minutes = Math.floor((diff / (1000 * 60)) % 60);
 				const seconds = Math.floor((diff / 1000) % 60);
 
-				setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+				const formatNumber = (num: number) => num.toString().padStart(2, '0');
+				setTimeLeft(`${formatNumber(days)} : ${formatNumber(hours)} : ${formatNumber(minutes)} : ${formatNumber(seconds)}`);
 			};
 
 			updateTimer();
@@ -69,11 +70,15 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 			return () => clearInterval(interval);
 		}, [endDate]);
 
-		return <p style={{ color: '#cecccc', fontWeight: 500, marginTop: '5px' }}>{timeLeft}</p>;
+		return (
+			<div className="countdown-timer">
+				<span className="timer-label">Ends in:</span>
+				<span className="timer-display">{timeLeft}</span>
+			</div>
+		);
 	};
 
 	/** HANDLERS **/
-
 	const likePropertyHandler = async (user: T, id: string) => {
 		try {
 			if (!id) return;
@@ -95,85 +100,102 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'trend-properties'}>
-				<Stack className={'container'}>
-					<Stack className={'info-box'}>
-						<span>Trend Properties</span>
-					</Stack>
-					<Stack className={'card-box'}>
+			<Box className="deals-section">
+				<Box className="deals-container">
+					<Box className="deals-header">
+						<h2 className="deals-title">Today's Deals</h2>
+						<CountdownTimer endDate="2025-05-31T23:59:59Z" />
+					</Box>
+					
+					<Box className="deals-content">
 						{trendProperties.length === 0 ? (
-							<Box component={'div'} className={'empty-list'}>
-								Trends Empty
+							<Box className="empty-deals">
+								Deals Empty
 							</Box>
 						) : (
 							<Swiper
-								className={'trend-property-swiper'}
-								slidesPerView={'auto'}
-								centeredSlides={true}
-								spaceBetween={15}
+								className="deals-swiper"
+								slidesPerView="auto"
+								spaceBetween={20}
 								modules={[Autoplay]}
+								autoplay={{
+									delay: 3000,
+									disableOnInteraction: false,
+								}}
 							>
-								{trendProperties.map((property: Property) => {
-									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<SpecialOfferCard property={property} likePropertyHandler={likePropertyHandler} />
-										</SwiperSlide>
-									);
-								})}
+								{trendProperties.map((property: Property) => (
+									<SwiperSlide key={property._id} className="deal-slide">
+										<SpecialOfferCard 
+											property={property} 
+											likePropertyHandler={likePropertyHandler} 
+										/>
+									</SwiperSlide>
+								))}
 							</Swiper>
 						)}
-					</Stack>
-				</Stack>
-			</Stack>
+					</Box>
+				</Box>
+			</Box>
 		);
 	} else {
 		return (
-			<Stack className={'trend-properties'}>
-				<Stack className={'container'}>
-					<Stack className={'info-box'}>
-						<Box component={'div'} className={'left'}>
-							<span style={{ color: '#ffffff' }}>Special Offers</span>
-							<CountdownTimer endDate="2025-05-31T23:59:59Z" />
+			<Box className="deals-section">
+				<Box className="deals-container">
+					<Box className="deals-header">
+						<Box className="header-left">
+							<h2 className="deals-title">Today's Deals</h2>
+							<CountdownTimer endDate="2025-06-06T23:59:59Z" />
 						</Box>
-						<Box component={'div'} className={'right'}>
-							<div className={'pagination-box'}>
-								<WestIcon className={'swiper-trend-prev'} />
-								<div className={'swiper-trend-pagination'}></div>
-								<EastIcon className={'swiper-trend-next'} />
-							</div>
+						<Box className="header-right">
+							<Box className="navigation-controls">
+								<button className="nav-btn prev-btn">
+									<WestIcon />
+								</button>
+								<div className="pagination-dots"></div>
+								<button className="nav-btn next-btn">
+									<EastIcon />
+								</button>
+							</Box>
 						</Box>
-					</Stack>
-					<Stack className={'card-box'}>
+					</Box>
+					
+					<Box className="deals-content">
 						{trendProperties.length === 0 ? (
-							<Box component={'div'} className={'empty-list'}>
-								Trends Empty
+							<Box className="empty-deals">
+								Deals Empty
 							</Box>
 						) : (
 							<Swiper
-								className={'trend-property-swiper'}
-								slidesPerView={'auto'}
-								spaceBetween={14}
-								modules={[Autoplay, Navigation, Pagination]}
+								className="deals-swiper"
+								slidesPerView={4}
+								spaceBetween={20}
+								modules={[Navigation, Pagination, Autoplay]}
 								navigation={{
-									nextEl: '.swiper-trend-next',
-									prevEl: '.swiper-trend-prev',
+									nextEl: '.next-btn',
+									prevEl: '.prev-btn',
 								}}
-								pagination={{
-									el: '.swiper-trend-pagination',
+
+								autoplay={{
+									delay: 4000,
+									disableOnInteraction: false,
+								}}
+								breakpoints={{
+									
 								}}
 							>
-								{trendProperties.map((property: Property) => {
-									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<SpecialOfferCard property={property} likePropertyHandler={likePropertyHandler} />
-										</SwiperSlide>
-									);
-								})}
+								{trendProperties.map((property: Property) => (
+									<SwiperSlide key={property._id} className="deal-slide">
+										<SpecialOfferCard 
+											property={property} 
+											likePropertyHandler={likePropertyHandler} 
+										/>
+									</SwiperSlide>
+								))}
 							</Swiper>
 						)}
-					</Stack>
-				</Stack>
-			</Stack>
+					</Box>
+				</Box>
+			</Box>
 		);
 	}
 };

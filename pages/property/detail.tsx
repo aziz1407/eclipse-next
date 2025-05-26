@@ -256,7 +256,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 						<Stack className={'property-info-config'}>
 							<Stack className={'info'}>
 								<Stack className={'left-box'}>
-									<Typography className={'title-main'}>{property?.propertyModel}</Typography>
+									<Typography className={'title-main'} sx={{marginTop: "25px"}}>{property?.propertyModel}</Typography>
 									<Stack className={'top-box'}>
 										<Typography className={'brand'}>{property?.propertyBrand}</Typography>
 										<Stack className={'divider'}></Stack>

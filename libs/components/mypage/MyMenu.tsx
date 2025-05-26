@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
 import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import WatchIcon from '@mui/icons-material/Watch';
 
 const MyMenu = () => {
 	const device = useDeviceDetect();

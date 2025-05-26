@@ -31,12 +31,12 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: any) => {
 			setAgentProperties(data?.getProperties?.list);
-			setTotal(data?.getProperties?.metaCounter[0]?.total ?? 0)
+			setTotal(data?.getProperties?.metaCounter[0]?.total ?? 0);
 		},
 	});
 	/** LIFECYCLES **/
 	useEffect(() => {
-		getPropertiesRefetch().then()
+		getPropertiesRefetch().then();
 	}, [searchFilter]);
 
 	useEffect(() => {
@@ -56,7 +56,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 			<div id="member-properties-page">
 				<Stack className="main-title-box">
 					<Stack className="right-box">
-						<Typography className="main-title">Properties</Typography>
+						<Typography className="main-title">Watches</Typography>
 					</Stack>
 				</Stack>
 				<Stack className="properties-list-box">
@@ -72,7 +72,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 						{agentProperties?.length === 0 && (
 							<div className={'no-data'}>
 								<img src="/img/icons/icoAlert.svg" alt="" />
-								<p>No Property found!</p>
+								<p>No Watch found!</p>
 							</div>
 						)}
 						{agentProperties?.map((property: Property) => {
@@ -83,15 +83,22 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 							<Stack className="pagination-config">
 								<Stack className="pagination-box">
 									<Pagination
-										count={Math.ceil(total / searchFilter.limit)}
 										page={searchFilter.page}
-										shape="circular"
-										color="primary"
+										count={Math.ceil(total / searchFilter.limit)}
 										onChange={paginationHandler}
+										size="large"
+										showFirstButton
+										showLastButton
+										sx={{
+											'& .MuiPaginationItem-root': {
+												fontWeight: 600,
+												color: '#fff',
+											},
+										}}
 									/>
 								</Stack>
 								<Stack className="total-result">
-									<Typography>{total} property available</Typography>
+									<Typography>{total} watches available</Typography>
 								</Stack>
 							</Stack>
 						)}
