@@ -11,7 +11,7 @@ import TablePagination from '@mui/material/TablePagination';
 import { PropertyPanelList } from '../../../libs/components/admin/properties/PropertyList';
 import { AllPropertiesInquiry } from '../../../libs/types/property/property.input';
 import { Property } from '../../../libs/types/property/property';
-import { PropertyLocation, PropertyStatus } from '../../../libs/enums/property.enum';
+import { WatchCountry, WatchStatus } from '../../../libs/enums/property.enum';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
 import { PropertyUpdate } from '../../../libs/types/property/property.update';
 import { REMOVE_PROPERTY_BY_ADMIN, UPDATE_PROPERTY_BY_ADMIN } from '../../../apollo/admin/mutation';
@@ -81,14 +81,14 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 		setPropertiesInquiry({ ...propertiesInquiry, page: 1, sort: 'createdAt' });
 
 		switch (newValue) {
-			case 'ACTIVE':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.ACTIVE } });
+			case 'AVAILABLE':
+				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: WatchStatus.AVAILABLE } });
 				break;
 			case 'SOLD':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.SOLD } });
+				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: WatchStatus.SOLD } });
 				break;
 			case 'DELETE':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.DELETE } });
+				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: WatchStatus.DELETE } });
 				break;
 			default:
 				delete propertiesInquiry?.search?.propertyStatus;
@@ -125,7 +125,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 					sort: 'createdAt',
 					search: {
 						...propertiesInquiry.search,
-						propertyLocationList: [newValue as PropertyLocation],
+						propertyLocationList: [newValue as WatchCountry],
 					},
 				});
 			} else {
@@ -171,11 +171,11 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 									All
 								</ListItem>
 								<ListItem
-									onClick={(e: any) => tabChangeHandler(e, 'ACTIVE')}
-									value="ACTIVE"
-									className={value === 'ACTIVE' ? 'li on' : 'li'}
+									onClick={(e: any) => tabChangeHandler(e, 'AVAILABLE')}
+									value="AVAILABLE"
+									className={value === 'AVAILABLE' ? 'li on' : 'li'}
 								>
-									Active
+									Available
 								</ListItem>
 								<ListItem
 									onClick={(e: any) => tabChangeHandler(e, 'SOLD')}
@@ -198,9 +198,9 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 									<MenuItem value={'ALL'} onClick={() => searchTypeHandler('ALL')}>
 										ALL
 									</MenuItem>
-									{Object.values(PropertyLocation).map((location: string) => (
-										<MenuItem value={location} onClick={() => searchTypeHandler(location)} key={location}>
-											{location}
+									{Object.values(WatchCountry).map((country: string) => (
+										<MenuItem value={country} onClick={() => searchTypeHandler(country)} key={country}>
+											{country}
 										</MenuItem>
 									))}
 								</Select>

@@ -18,7 +18,7 @@ import { Property } from '../../../types/property/property';
 import { REACT_APP_API_URL } from '../../../config';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
-import { PropertyStatus } from '../../../enums/property.enum';
+import { WatchStatus } from '../../../enums/property.enum';
 
 interface Data {
 	id: string;
@@ -62,13 +62,13 @@ const headCells: readonly HeadCell[] = [
 		id: 'agent',
 		numeric: false,
 		disablePadding: false,
-		label: 'AGENT',
+		label: 'DEALER',
 	},
 	{
 		id: 'location',
 		numeric: false,
 		disablePadding: false,
-		label: 'LOCATION',
+		label: 'COUNTRY',
 	},
 	{
 		id: 'type',
@@ -155,7 +155,7 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 									<TableRow hover key={property?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 										<TableCell align="left">{property._id}</TableCell>
 										<TableCell align="left" className={'name'}>
-											{property.propertyStatus === PropertyStatus.ACTIVE ? (
+											{property.propertyStatus === WatchStatus.AVAILABLE ? (
 												<Stack direction={'row'}>
 													<Link href={`/property/detail?id=${property?._id}`}>
 														<div>
@@ -163,7 +163,7 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 														</div>
 													</Link>
 													<Link href={`/property/detail?id=${property?._id}`}>
-														<div>{property.propertyTitle}</div>
+														<div>{property.propertyModel}</div>
 													</Link>
 												</Stack>
 											) : (
@@ -171,16 +171,16 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 														<div>
 															<Avatar alt="Remy Sharp" src={propertyImage} sx={{ ml: '2px', mr: '10px' }} />
 														</div>
-														<div style={{marginTop: "10px"}}>{property.propertyTitle}</div>
+														<div style={{marginTop: "10px"}}>{property.propertyModel}</div>
 												</Stack>
 											)}
 										</TableCell>
 										<TableCell align="center">{property.propertyPrice}</TableCell>
 										<TableCell align="center">{property.memberData?.memberNick}</TableCell>
-										<TableCell align="center">{property.propertyLocation}</TableCell>
-										<TableCell align="center">{property.propertyType}</TableCell>
+										<TableCell align="center">{property.propertyCountry}</TableCell>
+										<TableCell align="center">{property.propertyBrand}</TableCell>
 										<TableCell align="center">
-											{property.propertyStatus === PropertyStatus.DELETE && (
+											{property.propertyStatus === WatchStatus.DELETE && (
 												<Button
 													variant="outlined"
 													sx={{ p: '3px', border: 'none', ':hover': { border: '1px solid #000000' } }}
@@ -190,11 +190,11 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 												</Button>
 											)}
 
-											{property.propertyStatus === PropertyStatus.SOLD && (
+											{property.propertyStatus === WatchStatus.SOLD && (
 												<Button className={'badge warning'}>{property.propertyStatus}</Button>
 											)}
 
-											{property.propertyStatus === PropertyStatus.ACTIVE && (
+											{property.propertyStatus === WatchStatus.AVAILABLE && (
 												<>
 													<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
 														{property.propertyStatus}
@@ -211,7 +211,7 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 														TransitionComponent={Fade}
 														sx={{ p: 1 }}
 													>
-														{Object.values(PropertyStatus)
+														{Object.values(WatchStatus)
 															.filter((ele) => ele !== property.propertyStatus)
 															.map((status: string) => (
 																<MenuItem

@@ -144,7 +144,7 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 					<Box className="deals-header">
 						<Box className="header-left">
 							<h2 className="deals-title">Today's Deals</h2>
-							<CountdownTimer endDate="2025-06-06T23:59:59Z" />
+							<CountdownTimer endDate="2025-06-06T23:59:59Z"/>
 						</Box>
 						<Box className="header-right">
 							<Box className="navigation-controls">

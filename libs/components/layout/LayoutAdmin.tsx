@@ -106,7 +106,7 @@ const withAdminLayout = (Component: ComponentType) => {
 										width: '200px',
 									}}
 								>
-									<Stack sx={{ px: '20px', my: '12px' }}>
+									<Stack sx={{ px: '20px', my: '12px', }}>
 										<Typography variant={'h6'} component={'h6'} sx={{ mb: '4px' }}>
 											{user?.memberNick}
 										</Typography>
@@ -142,7 +142,7 @@ const withAdminLayout = (Component: ComponentType) => {
 					>
 						<Toolbar sx={{ flexDirection: 'column', alignItems: 'flexStart' }}>
 							<Stack className={'logo-box'}>
-								<img src={'/img/logo/logoText.svg'} alt={'logo'} />
+								{/* <img src={'/img/logo/logoText.svg'} alt={'logo'} /> */}
 							</Stack>
 
 							<Stack

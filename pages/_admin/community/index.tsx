@@ -11,12 +11,12 @@ import TablePagination from '@mui/material/TablePagination';
 import CommunityArticleList from '../../../libs/components/admin/community/CommunityArticleList';
 import { AllBoardArticlesInquiry } from '../../../libs/types/blog/blog.input';
 import { Blog } from '../../../libs/types/blog/blog';
-import { BoardArticleCategory, BoardArticleStatus } from '../../../libs/enums/blog.enum';
+import { BlogCategory, BlogStatus } from '../../../libs/enums/blog.enum';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
-import { BoardArticleUpdate } from '../../../libs/types/blog/blog.update';
-import { REMOVE_BOARD_ARTICLE_BY_ADMIN, UPDATE_BOARD_ARTICLE_BY_ADMIN } from '../../../apollo/admin/mutation';
+import { BlogUpdate } from '../../../libs/types/blog/blog.update';
+import { REMOVE_BLOG_BY_ADMIN, UPDATE_BLOG_BY_ADMIN } from '../../../apollo/admin/mutation';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_ALL_BOARD_ARTICLES_BY_ADMIN } from '../../../apollo/admin/query';
+import { GET_ALL_BLOGS_BY_ADMIN } from '../../../apollo/admin/query';
 import { T } from '../../../libs/types/common';
 
 const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
@@ -25,45 +25,45 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [articles, setArticles] = useState<Blog[]>([]);
 	const [articleTotal, setArticleTotal] = useState<number>(0);
 	const [value, setValue] = useState(
-		communityInquiry?.search?.articleStatus ? communityInquiry?.search?.articleStatus : 'ALL',
+		communityInquiry?.search?.blogStatus ? communityInquiry?.search?.blogStatus : 'ALL',
 	);
 	const [searchType, setSearchType] = useState('ALL');
 
 	/** APOLLO REQUESTS **/
-	const [updateBoardArticleByAdmin] = useMutation(UPDATE_BOARD_ARTICLE_BY_ADMIN);
-	const [removeBoardArticleByAdmin] = useMutation(REMOVE_BOARD_ARTICLE_BY_ADMIN);
+	const [updateBoardArticleByAdmin] = useMutation(UPDATE_BLOG_BY_ADMIN);
+	const [removeBoardArticleByAdmin] = useMutation(REMOVE_BLOG_BY_ADMIN);
 
 	const {
-		loading: getAllBoardArticlesByAdminLoading,
-		data: getAllBoardArticlesByAdminData,
-		error: getAllBoardArticlesByAdminError,
-		refetch: getAllBoardArticleByAdminRefetch,
-	} = useQuery(GET_ALL_BOARD_ARTICLES_BY_ADMIN, {
+		loading: getAllBlogsByAdminLoading,
+		data: getAllBlogsByAdminData,
+		error: getAllBlogssByAdminError,
+		refetch: getAllBlogsByAdminRefetch,
+	} = useQuery(GET_ALL_BLOGS_BY_ADMIN, {
 		fetchPolicy: 'network-only',
 		variables: { input: communityInquiry },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setArticles(data?.getAllBoardArticlesByAdmin?.list);
-			setArticleTotal(data?.getAllBoardArticlesByAdmin?.metaCounter[0]?.total ?? 0);
+			setArticles(data?.getAllBlogsByAdmin?.list);
+			setArticleTotal(data?.getAllBlogsByAdmin?.metaCounter[0]?.total ?? 0);
 		},
 	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		getAllBoardArticleByAdminRefetch({ input: communityInquiry }).then();
+		getAllBlogsByAdminRefetch({ input: communityInquiry }).then();
 	}, [communityInquiry]);
 
 	/** HANDLERS **/
 	const changePageHandler = async (event: unknown, newPage: number) => {
 		communityInquiry.page = newPage + 1;
-		await getAllBoardArticleByAdminRefetch({ input: communityInquiry });
+		await getAllBlogsByAdminRefetch({ input: communityInquiry });
 		setCommunityInquiry({ ...communityInquiry });
 	};
 
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		communityInquiry.limit = parseInt(event.target.value, 10);
 		communityInquiry.page = 1;
-		await getAllBoardArticleByAdminRefetch({ input: communityInquiry });
+		await getAllBlogsByAdminRefetch({ input: communityInquiry });
 		setCommunityInquiry({ ...communityInquiry });
 	};
 
@@ -84,13 +84,13 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 
 		switch (newValue) {
 			case 'ACTIVE':
-				setCommunityInquiry({ ...communityInquiry, search: { articleStatus: BoardArticleStatus.ACTIVE } });
+				setCommunityInquiry({ ...communityInquiry, search: { blogStatus: BlogStatus.ACTIVE } });
 				break;
 			case 'DELETE':
-				setCommunityInquiry({ ...communityInquiry, search: { articleStatus: BoardArticleStatus.DELETE } });
+				setCommunityInquiry({ ...communityInquiry, search: { blogStatus: BlogStatus.DELETE } });
 				break;
 			default:
-				delete communityInquiry?.search?.articleStatus;
+				delete communityInquiry?.search?.blogStatus;
 				setCommunityInquiry({ ...communityInquiry });
 				break;
 		}
@@ -107,7 +107,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 					sort: 'createdAt',
 					search: {
 						...communityInquiry.search,
-						articleCategory: newValue as BoardArticleCategory,
+						articleCategory: newValue as BlogCategory,
 					},
 				});
 			} else {
@@ -119,7 +119,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 		}
 	};
 
-	const updateArticleHandler = async (updateData: BoardArticleUpdate) => {
+	const updateArticleHandler = async (updateData: BlogUpdate) => {
 		try {
 			console.log('+updateData: ', updateData);
 			await updateBoardArticleByAdmin({
@@ -127,7 +127,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 					input: updateData,
 				},
 			});
-			await getAllBoardArticleByAdminRefetch({ input: communityInquiry });
+			await getAllBlogsByAdminRefetch({ input: communityInquiry });
 			menuIconCloseHandler();
 		} catch (err: any) {
 			menuIconCloseHandler();
@@ -142,7 +142,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 					input: id,
 				}
 			});
-			await getAllBoardArticleByAdminRefetch({ input: communityInquiry });
+			await getAllBlogsByAdminRefetch({ input: communityInquiry });
 			if (await sweetConfirmAlert('are you sure to remove?')) {
 			}
 		} catch (err: any) {
@@ -191,7 +191,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 									<MenuItem value={'ALL'} onClick={() => searchTypeHandler('ALL')}>
 										ALL
 									</MenuItem>
-									{Object.values(BoardArticleCategory).map((category: string) => (
+									{Object.values(BlogCategory).map((category: string) => (
 										<MenuItem value={category} onClick={() => searchTypeHandler(category)} key={category}>
 											{category}
 										</MenuItem>

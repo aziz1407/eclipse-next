@@ -13,19 +13,22 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 				memberStatus
 				memberAuthType
 				memberPhone
+				memberEmail
 				memberNick
 				memberFullName
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
 				memberProperties
-				memberRank
-				memberArticles
+				memberBlogs
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
 				deletedAt
 				createdAt
 				updatedAt
@@ -47,21 +50,22 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 		getAllPropertiesByAdmin(input: $input) {
 			list {
 				_id
-				propertyType
+				propertyBrand
 				propertyStatus
-				propertyLocation
+				propertyCountry
 				propertyAddress
-				propertyTitle
+				propertyModel
+				propertyCategory
+				propertyMaterial
 				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
+				propertyYear
+				propertyMovement
 				propertyLikes
+				propertyRank
+				propertyViews
+				propertyCondition
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
 				memberId
 				soldAt
 				deletedAt
@@ -74,18 +78,22 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 					memberStatus
 					memberAuthType
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
 					memberProperties
-					memberRank
+					memberBlogs
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
 					deletedAt
 					createdAt
 					updatedAt
@@ -103,18 +111,19 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
  *      BOARD-ARTICLE     *
  *************************/
 
-export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
-	query GetAllBoardArticlesByAdmin($input: AllBoardArticlesInquiry!) {
-		getAllBoardArticlesByAdmin(input: $input) {
+export const GET_ALL_BLOGS_BY_ADMIN = gql`
+	query GetAllBlogsByAdmin($input: AllBlogsInquiry!) {
+		getAllBlogsByAdmin(input: $input) {
 			list {
 				_id
-				articleCategory
-				articleStatus
-				articleTitle
-				articleContent
-				articleImage
-				articleViews
-				articleLikes
+				blogCategory
+				blogStatus
+				blogTitle
+				blogContent
+				blogImage
+				blogViews
+				blogLikes
+				blogComments
 				memberId
 				createdAt
 				updatedAt
@@ -124,18 +133,22 @@ export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
 					memberStatus
 					memberAuthType
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
 					memberProperties
-					memberRank
+					memberBlogs
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
 					deletedAt
 					createdAt
 					updatedAt
@@ -171,18 +184,22 @@ export const GET_COMMENTS = gql`
 					memberStatus
 					memberAuthType
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
 					memberProperties
-					memberRank
+					memberBlogs
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
 					deletedAt
 					createdAt
 					updatedAt

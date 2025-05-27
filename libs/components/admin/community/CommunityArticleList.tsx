@@ -23,7 +23,7 @@ import { Blog } from '../../../types/blog/blog';
 import { REACT_APP_API_URL } from '../../../config';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
-import { BoardArticleStatus } from '../../../enums/blog.enum';
+import { BlogStatus } from '../../../enums/blog.enum';
 
 interface Data {
 	category: string;
@@ -48,7 +48,7 @@ const headCells: readonly HeadCell[] = [
 		id: 'article_id',
 		numeric: true,
 		disablePadding: false,
-		label: 'ARTICLE ID',
+		label: 'BLOG ID',
 	},
 	{
 		id: 'title',
@@ -153,22 +153,22 @@ const CommunityArticleList = (props: CommunityArticleListProps) => {
 									<TableCell align="left">{article._id}</TableCell>
 									<TableCell align="left">
 										<Box component={'div'}>
-											{article.articleTitle}
-											{article.articleStatus === BoardArticleStatus.ACTIVE && (
+											{article.blogTitle}
+											{article.blogStatus === BlogStatus.ACTIVE && (
 												<Link
-												href={`/community/detail?articleCategory=${article.articleCategory}&id=${article._id}`}
+												href={`/community/detail?articleCategory=${article.blogCategory}&id=${article._id}`}
 												className={'img_box'}
 											>
 												<IconButton className="btn_window">
 													<Tooltip title={'Open window'}>
-														<OpenInBrowserRoundedIcon />
+														<OpenInBrowserRoundedIcon sx={{color: "goldenrod"}} />
 													</Tooltip>
 												</IconButton>
 											</Link>
 											)}
 										</Box>
 									</TableCell>
-									<TableCell align="left">{article.articleCategory}</TableCell>
+									<TableCell align="left">{article.blogCategory}</TableCell>
 									<TableCell align="left" className={'name'}>
 										<Link href={`/member?memberId=${article?.memberData?._id}`}>
 											<Avatar
@@ -183,13 +183,13 @@ const CommunityArticleList = (props: CommunityArticleListProps) => {
 											{article?.memberData?.memberNick}
 										</Link>
 									</TableCell>
-									<TableCell align="center">{article?.articleViews}</TableCell>
-									<TableCell align="center">{article?.articleLikes}</TableCell>
+									<TableCell align="center">{article?.blogViews}</TableCell>
+									<TableCell align="center">{article?.blogLikes}</TableCell>
 									<TableCell align="left">
 										<Moment format={'DD.MM.YY HH:mm'}>{article?.createdAt}</Moment>
 									</TableCell>
 									<TableCell align="center">
-										{article.articleStatus === BoardArticleStatus.DELETE ? (
+										{article.blogStatus === BlogStatus.DELETE ? (
 											<Button
 												variant="outlined"
 												sx={{ p: '3px', border: 'none', ':hover': { border: '1px solid #000000' } }}
@@ -200,7 +200,7 @@ const CommunityArticleList = (props: CommunityArticleListProps) => {
 										) : (
 											<>
 												<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
-													{article.articleStatus}
+													{article.blogStatus}
 												</Button>
 
 												<Menu
@@ -214,8 +214,8 @@ const CommunityArticleList = (props: CommunityArticleListProps) => {
 													TransitionComponent={Fade}
 													sx={{ p: 1 }}
 												>
-													{Object.values(BoardArticleStatus)
-														.filter((ele) => ele !== article.articleStatus)
+													{Object.values(BlogStatus)
+														.filter((ele) => ele !== article.blogStatus)
 														.map((status: string) => (
 															<MenuItem
 																onClick={() => updateArticleHandler({ _id: article._id, articleStatus: status })}

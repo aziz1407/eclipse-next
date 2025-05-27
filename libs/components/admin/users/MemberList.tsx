@@ -27,7 +27,7 @@ interface Data {
 	type: string;
 	state: string;
 	warning: string;
-	block: string;
+	point: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -87,10 +87,10 @@ const headCells: readonly HeadCell[] = [
 		label: 'WARNING',
 	},
 	{
-		id: 'block',
+		id: 'point',
 		numeric: false,
 		disablePadding: false,
-		label: 'BLOCK CRIMES',
+		label: 'POINTS',
 	},
 	{
 		id: 'state',
@@ -212,7 +212,7 @@ export const MemberPanelList = (props: MemberPanelListType) => {
 										</TableCell>
 
 										<TableCell align="center">{member.memberWarnings}</TableCell>
-										<TableCell align="center">{member.memberBlocks}</TableCell>
+										<TableCell align="center">{member.memberPoints}</TableCell>
 										<TableCell align="center">
 											<Button onClick={(e: any) => menuIconClickHandler(e, member._id)} className={'badge success'}>
 												{member.memberStatus}
