@@ -14,15 +14,16 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import HeaderFilter from '../homepage/HeaderFilter';
 import { useRouter } from 'next/router';
+import { toast } from 'sonner';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
 		const user = useReactiveVar(userVar);
 		const [currentSlide, setCurrentSlide] = useState(0);
+		const [hasShownWelcome, setHasShownWelcome] = useState(false);
 		const router = useRouter();
 
-		// Slider data matching your images
 		const slides = [
 			{
 				id: 1,
@@ -42,7 +43,7 @@ const withLayoutMain = (Component: any) => {
 			},
 			{
 				id: 3,
-				backgroundImage: '/img/watches/header22.jpg',
+				backgroundImage: '/img/watches/header26.jpg',
 				brand: 'PREMIUM SERIES',
 				title: 'Pure Class',
 				subtitle: 'Posh Picks',
@@ -55,6 +56,59 @@ const withLayoutMain = (Component: any) => {
 			const jwt = getJwtToken();
 			if (jwt) updateUserInfo(jwt);
 		}, []);
+
+		// Show welcome notification with Sonner
+		useEffect(() => {
+			if (!hasShownWelcome) {
+				const timer = setTimeout(() => {
+					const isSignedIn = user && user._id;
+					
+					if (isSignedIn) {
+						toast(`Welcome Back, ${user.memberNick || 'Distinguished Guest'}!`, {
+							description: 'Your luxury timepiece collection awaits. Discover our latest exquisite arrivals.',
+							duration: Infinity,
+							position: 'bottom-left',
+							style: {
+								background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+								border: '1px solid #DAA520',
+								color: '#DAA520',
+								position: 'relative',
+								paddingRight: '10px',
+							},
+							action: {
+								label: 'Shop Now',
+								onClick: () => router.push('/property')
+							},
+							dismissible: true,
+							closeButton: true
+						});
+					} else {
+						toast('Welcome to Eclipse', {
+							description: 'Discover our premium collection of luxury watches. Time redefined.',
+							duration: Infinity,
+							position: 'bottom-left',
+							style: {
+								background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+								border: '1px solid #DAA520',
+								color: '#DAA520',
+								position: 'relative',
+								paddingRight: '50px',
+							},
+							action: {
+								label: 'Explore',
+								onClick: () => router.push('/property')
+							},
+							dismissible: true,
+							closeButton: true
+						});
+					}
+					
+					setHasShownWelcome(true);
+				}, 1000);
+
+				return () => clearTimeout(timer);
+			}
+		}, [user, hasShownWelcome, router]);
 
 		// Auto-slide every 10 seconds
 		useEffect(() => {
@@ -77,6 +131,8 @@ const withLayoutMain = (Component: any) => {
 		const handleShopNow = () => {
 			router.push('/property');
 		};
+
+		// Welcome Notification Component - removed since using Sonner now
 
 		if (device == 'mobile') {
 			return (

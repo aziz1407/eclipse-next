@@ -272,7 +272,7 @@ body::-webkit-scrollbar {
 		}
 
 		.slide-brand {
-			font-family: 'Montserrat', sans-serif;
+			font-family: $font;
 			font-size: 14px;
 			font-weight: 600;
 			letter-spacing: 2px;
@@ -295,7 +295,7 @@ body::-webkit-scrollbar {
 		}
 
 		.slide-title {
-			font-family: 'Montserrat', sans-serif;
+			font-family: $font;
 			font-size: 4rem;
 			font-weight: 300;
 			line-height: 1.1;
