@@ -6,9 +6,15 @@ import { light } from '../scss/MaterialTheme';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../apollo/client';
 import { appWithTranslation } from 'next-i18next';
+import dynamic from 'next/dynamic';
 import '../scss/app.scss';
 import '../scss/pc/main.scss';
 import '../scss/mobile/main.scss';
+
+const Toaster = dynamic(
+	() => import('sonner').then((mod) => mod.Toaster),
+	{ ssr: false }
+);
 
 const App = ({ Component, pageProps }: AppProps) => {
 	// @ts-ignore
@@ -20,6 +26,13 @@ const App = ({ Component, pageProps }: AppProps) => {
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<Component {...pageProps} />
+				<Toaster 
+					position="bottom-right"
+					richColors
+					closeButton={false}
+					expand={true}
+					visibleToasts={5}
+				/>
 			</ThemeProvider>
 		</ApolloProvider>
 	);

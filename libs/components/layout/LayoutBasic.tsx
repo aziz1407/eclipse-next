@@ -24,55 +24,37 @@ const withLayoutBasic = (Component: any) => {
 
 		const memoizedValues = useMemo(() => {
 			let title = '',
-				desc = '',
-				bgImage = '';
+				desc = '';
+			const bgImage = '/img/banner/eclipse.png'; // Unified background image
 
 			switch (router.pathname) {
 				case '/property':
 					title = 'Property Search';
-					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/properties.jpg';
 					break;
 				case '/agent':
 					title = 'Agents';
-					desc = 'Home';
-					bgImage = '/img/banner/dealer.jpg';
 					break;
 				case '/agent/detail':
 					title = 'Agent Page';
-					desc = 'Home';
-					bgImage = '/img/banner/dealer.jpg';
 					break;
 				case '/mypage':
 					title = 'my page';
-					desc = 'Home';
-					bgImage = '/img/banner/mypage.jpg';
 					break;
 				case '/community':
 					title = 'Community';
-					desc = 'Home';
-					bgImage = '/img/banner/other.jpg';
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
-					desc = 'Home';
-					bgImage = '/img/banner/other.jpg';
 					break;
 				case '/cs':
 					title = 'CS';
-					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/other.jpg';
 					break;
 				case '/account/join':
 					title = 'Login/Signup';
-					desc = 'Authentication Process';
-					bgImage = '/img/banner/other.jpg';
 					setAuthHeader(true);
 					break;
 				case '/member':
 					title = 'Member Page';
-					desc = 'Home';
-					bgImage = '/img/banner/mypage.jpg';
 					break;
 				default:
 					break;
@@ -81,13 +63,10 @@ const withLayoutBasic = (Component: any) => {
 			return { title, desc, bgImage };
 		}, [router.pathname]);
 
-		/** LIFECYCLES **/
 		useEffect(() => {
 			const jwt = getJwtToken();
 			if (jwt) updateUserInfo(jwt);
 		}, []);
-
-		/** HANDLERS **/
 
 		if (device == 'mobile') {
 			return (
@@ -128,6 +107,7 @@ const withLayoutBasic = (Component: any) => {
 							style={{
 								backgroundImage: `url(${memoizedValues.bgImage})`,
 								backgroundSize: 'cover',
+								backgroundPosition: 'center top -40px', // shifts image slightly upward
 								boxShadow: 'inset 10px 40px 150px 40px rgb(24 22 36)',
 							}}
 						>
