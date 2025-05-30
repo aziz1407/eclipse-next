@@ -68,7 +68,7 @@ const SpecialOfferCard = (props: SpecialOfferCardProps) => {
 			</Box>
 
 			<Box className="card-actions">
-				<IconButton
+				{/* <IconButton
 					className="like-button"
 					onClick={(e: any) => {
 						e.stopPropagation();
@@ -80,7 +80,7 @@ const SpecialOfferCard = (props: SpecialOfferCardProps) => {
 					) : (
 						<BookmarkBorderIcon className="like-icon" />
 					)}
-				</IconButton>
+				</IconButton> */}
 			</Box>
 		</Box>
 	);

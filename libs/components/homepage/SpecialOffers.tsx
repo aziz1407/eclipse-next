@@ -203,7 +203,7 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 SpecialOffers.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 10,
+		limit: 1,
 		sort: 'propertyPrice',
 		direction: 'ASC',
 		search: {},

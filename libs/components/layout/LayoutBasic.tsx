@@ -29,32 +29,32 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/property':
-					title = 'Property Search';
+					title = '';
 					break;
 				case '/agent':
-					title = 'Agents';
+					title = '';
 					break;
 				case '/agent/detail':
-					title = 'Agent Page';
+					title = '';
 					break;
 				case '/mypage':
-					title = 'my page';
+					title = '';
 					break;
 				case '/community':
-					title = 'Community';
+					title = '';
 					break;
 				case '/community/detail':
-					title = 'Community Detail';
+					title = '';
 					break;
 				case '/cs':
-					title = 'CS';
+					title = '';
 					break;
 				case '/account/join':
-					title = 'Login/Signup';
+					title = '';
 					setAuthHeader(true);
 					break;
 				case '/member':
-					title = 'Member Page';
+					title = '';
 					break;
 				default:
 					break;

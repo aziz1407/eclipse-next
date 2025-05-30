@@ -74,11 +74,11 @@ const EclipseFaq: React.FC = () => {
         subject: 'Can I consign my timepiece through Eclipse?',
         content: 'We offer premium consignment services with competitive rates and global reach to maximize your timepiece\'s value.',
       },
-      {
-        id: 'panel10',
-        subject: 'Do you provide horological expertise and appraisals?',
-        content: 'Our certified specialists offer professional appraisals, condition reports, and horological consultations.',
-      },
+    //   {
+    //     id: 'panel10',
+    //     subject: 'Do you provide horological expertise and appraisals?',
+    //     content: 'Our certified specialists offer professional appraisals, condition reports, and horological consultations.',
+    //   },
     ],
     authentication: [
       {
@@ -195,16 +195,16 @@ const EclipseFaq: React.FC = () => {
         subject: 'What are red flags when collecting vintage watches?',
         content: 'Avoid pieces with replaced dials, incorrect parts, poor service history, or questionable provenance without proper disclosure.',
       },
-      {
-        id: 'coll7',
-        subject: 'Do you provide collection management services?',
-        content: 'Yes, we offer comprehensive collection management including storage, insurance coordination, and portfolio optimization.',
-      },
-      {
-        id: 'coll7',
-        subject: 'Do you provide collection management services?',
-        content: 'Yes, we offer comprehensive collection management including storage, insurance coordination, and portfolio optimization.',
-      },
+    //   {
+    //     id: 'coll7',
+    //     subject: 'Do you provide collection management services?',
+    //     content: 'Yes, we offer comprehensive collection management including storage, insurance coordination, and portfolio optimization.',
+    //   },
+    //   {
+    //     id: 'coll7',
+    //     subject: 'Do you provide collection management services?',
+    //     content: 'Yes, we offer comprehensive collection management including storage, insurance coordination, and portfolio optimization.',
+    //   },
       {
         id: 'coll8',
         subject: 'How do I store and maintain my luxury timepieces?',
