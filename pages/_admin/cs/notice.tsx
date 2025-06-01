@@ -13,12 +13,12 @@ import TablePagination from '@mui/material/TablePagination';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { NoticeList } from '../../../libs/components/admin/cs/NoticeList';
+import { NoticeCreate } from '../../../libs/components/admin/cs/NoticeCreate';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_NOTICES } from '../../../apollo/user/query';
-import { NoticeStatus } from '../../../libs/enums/notice.enum';
+import { NoticeStatus, NoticeCategory } from '../../../libs/enums/notice.enum';
 import { typeNotice } from '../../../libs/types/notice/notice';
-import { NoticeCreate } from '../../../libs/components/admin/cs/NoticeCreate';
 
 const AdminNotice: NextPage = () => {
 	const router = useRouter();
@@ -35,6 +35,7 @@ const AdminNotice: NextPage = () => {
 		variables: {
 			input: {
 				limit: 1,
+				noticeCategory: NoticeCategory.NOTICE,
 			},
 		},
 	});
@@ -73,14 +74,21 @@ const AdminNotice: NextPage = () => {
 			<Box component={'div'} className={'title flex_space'}>
 				<Typography variant={'h2'}>Notice Management</Typography>
 				{!showCreateForm && (
-					<Button className="btn_add" variant={'contained'} size={'medium'} onClick={() => setShowCreateForm(true)}>
+					<Button className="btn_add" variant={'contained'} size={'medium'} onClick={() => setShowCreateForm(true)} sx={{background: "goldenrod"}}>
 						<AddRoundedIcon sx={{ mr: '8px' }} />
-						ADD
+						ADD NOTICE
 					</Button>
 				)}
 			</Box>
 
-			{showCreateForm && <NoticeCreate onClose={handleCloseForm} editNotice={editingNotice} />}
+			{showCreateForm && (
+				<NoticeCreate
+					onClose={handleCloseForm}
+					editNotice={editingNotice}
+					defaultCategory={NoticeCategory.NOTICE}
+					disableCategory
+				/>
+			)}
 
 			<Box component={'div'} className={'table-wrap'}>
 				<Box component={'div'} sx={{ width: '100%', typography: 'body1' }}>

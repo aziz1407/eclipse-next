@@ -12,7 +12,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import TablePagination from '@mui/material/TablePagination';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { FaqList } from '../../../libs/components/admin/cs/FaqList';
+import { TermsList } from '../../../libs/components/admin/cs/TermsList';
 import { NoticeCreate } from '../../../libs/components/admin/cs/NoticeCreate';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
@@ -20,7 +20,7 @@ import { GET_ALL_NOTICES } from '../../../apollo/user/query';
 import { NoticeStatus, NoticeCategory } from '../../../libs/enums/notice.enum';
 import { typeNotice } from '../../../libs/types/notice/notice';
 
-const AdminFaq: NextPage = () => {
+const AdminTerms: NextPage = () => {
 	const router = useRouter();
 	const [currentTab, setCurrentTab] = useState<string>('all');
 	const [searchCategory, setSearchCategory] = useState<string>('title');
@@ -35,7 +35,7 @@ const AdminFaq: NextPage = () => {
 		variables: {
 			input: {
 				limit: 1,
-				noticeCategory: NoticeCategory.FAQ,
+				noticeCategory: NoticeCategory.TERMS,
 			},
 		},
 	});
@@ -72,11 +72,11 @@ const AdminFaq: NextPage = () => {
 	return (
 		<Box component={'div'} className={'content'}>
 			<Box component={'div'} className={'title flex_space'}>
-				<Typography variant={'h2'}>FAQ Management</Typography>
+				<Typography variant={'h2'}>Terms Management</Typography>
 				{!showCreateForm && (
 					<Button className="btn_add" variant={'contained'} size={'medium'} onClick={() => setShowCreateForm(true)} sx={{background: "goldenrod"}}>
 						<AddRoundedIcon sx={{ mr: '8px' }} />
-						ADD FAQ
+						ADD TERMS
 					</Button>
 				)}
 			</Box>
@@ -85,7 +85,7 @@ const AdminFaq: NextPage = () => {
 				<NoticeCreate
 					onClose={handleCloseForm}
 					editNotice={editingNotice}
-					defaultCategory={NoticeCategory.FAQ}
+					defaultCategory={NoticeCategory.TERMS}
 					disableCategory
 				/>
 			)}
@@ -140,7 +140,7 @@ const AdminFaq: NextPage = () => {
 									onChange={(e) => handleSearchInput(e.target.value)}
 									sx={{ width: '100%' }}
 									className={'search'}
-									placeholder={`Search FAQs by ${searchCategory}`}
+									placeholder={`Search terms by ${searchCategory}`}
 									endAdornment={
 										<>
 											{searchInput && (
@@ -155,7 +155,7 @@ const AdminFaq: NextPage = () => {
 							</Stack>
 							<Divider />
 						</Box>
-						<FaqList
+						<TermsList
 							dense={false}
 							searchInput={searchInput}
 							searchCategory={searchCategory}
@@ -181,4 +181,4 @@ const AdminFaq: NextPage = () => {
 	);
 };
 
-export default withAdminLayout(AdminFaq);
+export default withAdminLayout(AdminTerms);

@@ -44,6 +44,7 @@ export const NoticeList = (props: NoticeListType) => {
 				limit: rowsPerPage,
 				search: searchInput || undefined,
 				noticeStatus: currentTab === 'all' ? undefined : currentTab?.toUpperCase(),
+				noticeCategory: 'NOTICE',
 			},
 		},
 	});
@@ -58,6 +59,7 @@ export const NoticeList = (props: NoticeListType) => {
 						limit: rowsPerPage,
 						search: searchInput || undefined,
 						noticeStatus: currentTab === 'all' ? undefined : currentTab?.toUpperCase(),
+						noticeCategory: 'NOTICE',
 					},
 				},
 			},
@@ -74,6 +76,7 @@ export const NoticeList = (props: NoticeListType) => {
 						limit: rowsPerPage,
 						search: searchInput || undefined,
 						noticeStatus: currentTab === 'all' ? undefined : currentTab?.toUpperCase(),
+						noticeCategory: 'NOTICE',
 					},
 				},
 			},
@@ -205,12 +208,12 @@ export const NoticeList = (props: NoticeListType) => {
 								>
 									<Tooltip title={'delete'}>
 										<IconButton size="small" onClick={() => handleDelete(notice._id)}>
-											<DeleteRoundedIcon fontSize="small" />
+											<DeleteRoundedIcon fontSize="small" sx={{ color: 'goldenrod' }}/>
 										</IconButton>
 									</Tooltip>
 									<Tooltip title="edit">
 										<IconButton size="small" onClick={() => onEdit(notice)}>
-											<NotePencil size={20} weight="fill" />
+											<NotePencil size={20} weight="fill" color="goldenrod"/>
 										</IconButton>
 									</Tooltip>
 								</TableCell>

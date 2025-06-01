@@ -40,14 +40,12 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 				return;
 			}
 
-			// Validate file type
 			const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 			if (!allowedTypes.includes(image.type)) {
 				throw new Error('Please select a valid image file (JPG, JPEG, or PNG)');
 			}
 
-			// Validate file size (e.g., max 5MB)
-			const maxSize = 5 * 1024 * 1024; // 5MB
+			const maxSize = 5 * 1024 * 1024; 
 			if (image.size > maxSize) {
 				throw new Error('Image file is too large. Please select a file smaller than 5MB');
 			}
@@ -58,7 +56,6 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 
 			const formData = new FormData();
 			
-			// Standard GraphQL multipart request format
 			formData.append(
 				'operations',
 				JSON.stringify({

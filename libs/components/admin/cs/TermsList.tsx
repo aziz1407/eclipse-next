@@ -22,8 +22,7 @@ import { NoticeStatus } from '../../../enums/notice.enum';
 import { format } from 'date-fns';
 import { sweetConfirmAlert } from '../../../sweetAlert';
 
-
-interface FaqListType {
+interface TermsListType {
 	dense?: boolean;
 	searchInput?: string;
 	searchCategory: string;
@@ -31,7 +30,7 @@ interface FaqListType {
 	onEdit: (notice: typeNotice) => void;
 }
 
-export const FaqList = (props: FaqListType) => {
+export const TermsList = (props: TermsListType) => {
 	const { dense, searchInput, searchCategory, currentTab, onEdit } = props;
 	const router = useRouter();
 	const [page, setPage] = React.useState(0);
@@ -45,7 +44,7 @@ export const FaqList = (props: FaqListType) => {
 				limit: rowsPerPage,
 				search: searchInput || undefined,
 				noticeStatus: currentTab === 'all' ? undefined : currentTab?.toUpperCase(),
-				noticeCategory: 'FAQ',
+				noticeCategory: 'TERMS',
 			},
 		},
 	});
@@ -60,7 +59,7 @@ export const FaqList = (props: FaqListType) => {
 						limit: rowsPerPage,
 						search: searchInput || undefined,
 						noticeStatus: currentTab === 'all' ? undefined : currentTab?.toUpperCase(),
-						noticeCategory: 'FAQ',
+						noticeCategory: 'TERMS',
 					},
 				},
 			},
@@ -77,7 +76,7 @@ export const FaqList = (props: FaqListType) => {
 						limit: rowsPerPage,
 						search: searchInput || undefined,
 						noticeStatus: currentTab === 'all' ? undefined : currentTab?.toUpperCase(),
-						noticeCategory: 'FAQ',
+						noticeCategory: 'TERMS',
 					},
 				},
 			},
@@ -85,7 +84,7 @@ export const FaqList = (props: FaqListType) => {
 	});
 
 	const handleDelete = async (noticeId: string) => {
-		if (await sweetConfirmAlert('Do you want to delete this FAQ?')) {
+		if (await sweetConfirmAlert('Do you want to delete this terms?')) {
 			try {
 				await removeNotice({
 					variables: {
@@ -93,7 +92,7 @@ export const FaqList = (props: FaqListType) => {
 					},
 				});
 			} catch (error) {
-				console.error('Error deleting FAQ:', error);
+				console.error('Error deleting terms:', error);
 			}
 		}
 	};
@@ -101,7 +100,7 @@ export const FaqList = (props: FaqListType) => {
 	const handleStatusChange = async (notice: typeNotice, newStatus: NoticeStatus) => {
 		const confirmMessage =
 			newStatus === NoticeStatus.DELETE
-				? 'Do you want to delete this FAQ?'
+				? 'Do you want to delete this terms?'
 				: `Do you want to change the status to ${newStatus}?`;
 
 		if (await sweetConfirmAlert(confirmMessage)) {
@@ -126,7 +125,7 @@ export const FaqList = (props: FaqListType) => {
 					});
 				}
 			} catch (error) {
-				console.error('Error updating FAQ status:', error);
+				console.error('Error updating terms status:', error);
 			}
 		}
 	};
@@ -209,7 +208,7 @@ export const FaqList = (props: FaqListType) => {
 								>
 									<Tooltip title={'delete'}>
 										<IconButton size="small" onClick={() => handleDelete(notice._id)}>
-											<DeleteRoundedIcon fontSize="small" sx={{ color: 'goldenrod' }} />
+											<DeleteRoundedIcon fontSize="small" sx={{color: "goldenrod"}}/>
 										</IconButton>
 									</Tooltip>
 									<Tooltip title="edit">
