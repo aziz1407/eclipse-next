@@ -34,55 +34,115 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 	const uploadImage = async (e: any) => {
 		try {
 			const image = e.target.files[0];
+			
+			if (!image) {
+				console.log('No image selected');
+				return;
+			}
+
+			// Validate file type
+			const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+			if (!allowedTypes.includes(image.type)) {
+				throw new Error('Please select a valid image file (JPG, JPEG, or PNG)');
+			}
+
+			// Validate file size (e.g., max 5MB)
+			const maxSize = 5 * 1024 * 1024; // 5MB
+			if (image.size > maxSize) {
+				throw new Error('Image file is too large. Please select a file smaller than 5MB');
+			}
+			
 			console.log('+image:', image);
+			console.log('File type:', image.type);
+			console.log('File size:', image.size);
 
 			const formData = new FormData();
+			
+			// Standard GraphQL multipart request format
 			formData.append(
 				'operations',
 				JSON.stringify({
 					query: `mutation ImageUploader($file: Upload!, $target: String!) {
-						imageUploader(file: $file, target: $target) 
-				  }`,
+						imageUploader(file: $file, target: $target)
+					}`,
 					variables: {
 						file: null,
-						target: 'member',
+						target: 'members',
 					},
 				}),
 			);
+			
 			formData.append(
 				'map',
 				JSON.stringify({
 					'0': ['variables.file'],
 				}),
 			);
+			
 			formData.append('0', image);
 
-			const response = await axios.post(`${process.env.REACT_APP_API_GRAPHQL_URL}`, formData, {
+			// Use the correct API URL - try both possibilities
+			const apiUrl = process.env.REACT_APP_API_GRAPHQL_URL || `${REACT_APP_API_URL}/graphql`;
+			
+			console.log('Uploading to:', apiUrl);
+
+			const response = await axios.post(apiUrl, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 					'apollo-require-preflight': true,
 					Authorization: `Bearer ${token}`,
 				},
+				timeout: 30000, // 30 second timeout
 			});
+
+			console.log('Full response:', response.data);
+
+			// Check if response has the expected structure
+			if (!response.data || !response.data.data) {
+				console.error('Unexpected response structure:', response.data);
+				throw new Error('Invalid response from server');
+			}
+
+			if (response.data.errors) {
+				console.error('GraphQL errors:', response.data.errors);
+				throw new Error(response.data.errors[0]?.message || 'GraphQL error occurred');
+			}
 
 			const responseImage = response.data.data.imageUploader;
 			console.log('+responseImage: ', responseImage);
-			updateData.memberImage = responseImage;
-			setUpdateData({ ...updateData });
+
+			if (!responseImage) {
+				throw new Error('No image URL returned from server');
+			}
+			
+			// Update state properly with functional update
+			setUpdateData(prevData => ({
+				...prevData,
+				memberImage: responseImage
+			}));
 
 			return `${REACT_APP_API_URL}/${responseImage}`;
-		} catch (err) {
+		} catch (err: any) {
 			console.log('Error, uploadImage:', err);
+			console.log('Error response:', err.response?.data);
+			// Show error to user
+			if (err.response?.data?.errors) {
+				console.log('GraphQL errors:', err.response.data.errors);
+			}
+			// You might want to show an error message to the user here
+			sweetErrorHandling(err).then();
 		}
 	};
 
 	const updateMemberHandler = useCallback(async () => {
 		try {
 			if (!user._id) throw new Error(Messages.error2);
-			updateData._id = user._id;
+			
+			const dataToUpdate = { ...updateData, _id: user._id };
+			
 			const result = await updateMember({
 				variables: {
-					input: updateData,
+					input: dataToUpdate,
 				},
 			});
 
@@ -94,7 +154,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
-	}, [updateData]);
+	}, [updateData, user._id, updateMember]);
 
 	const doDisabledCheck = () => {
 		if (
@@ -105,6 +165,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 		) {
 			return true;
 		}
+		return false;
 	};
 
 	console.log('+updateData', updateData);
@@ -154,7 +215,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 							<input
 								type="text"
 								placeholder="Your username"
-								value={updateData.memberNick}
+								value={updateData.memberNick || ''}
 								onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberNick: value })}
 							/>
 						</Stack>
@@ -163,7 +224,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 							<input
 								type="text"
 								placeholder="Your Phone"
-								value={updateData.memberPhone}
+								value={updateData.memberPhone || ''}
 								onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberPhone: value })}
 							/>
 						</Stack>
@@ -173,7 +234,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 						<input
 							type="text"
 							placeholder="Your address"
-							value={updateData.memberAddress}
+							value={updateData.memberAddress || ''}
 							onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberAddress: value })}
 						/>
 					</Stack>

@@ -62,15 +62,14 @@ const Join: NextPage = () => {
   };
 
   const doLogin = useCallback(async () => {
-    try {
-      // Use either nick or email as login id
-      const loginId = input.nick !== '' ? input.nick : input.email;
-      await logIn(loginId, input.password);
-      await router.push(`${router.query.referrer ?? '/'}`);
-    } catch (err: any) {
-      await sweetMixinErrorAlert(err.message);
-    }
-  }, [input, router]);
+  console.warn(input);
+  try {
+   await logIn(input.nick, input.password);
+   window.location.href = router.query.referrer?.toString() ?? '/';
+  } catch (err: any) {
+   await sweetMixinErrorAlert(err.message);
+  }
+ }, [input]);
 
   const doSignUp = useCallback(async () => {
     try {

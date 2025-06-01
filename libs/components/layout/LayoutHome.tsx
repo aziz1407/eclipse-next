@@ -111,13 +111,13 @@ const withLayoutMain = (Component: any) => {
 		}, [user, hasShownWelcome, router]);
 
 		// Auto-slide every 10 seconds
-		useEffect(() => {
-			const interval = setInterval(() => {
-				setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-			}, 10000);
+		// useEffect(() => {
+		// 	const interval = setInterval(() => {
+		// 		setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+		// 	}, 10000);
 
-			return () => clearInterval(interval);
-		}, [slides.length]);
+		// 	return () => clearInterval(interval);
+		// }, [slides.length]);
 
 		/** HANDLERS **/
 		const handlePrevSlide = () => {

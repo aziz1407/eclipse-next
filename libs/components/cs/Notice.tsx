@@ -1,27 +1,33 @@
 import React from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { GET_ALL_NOTICES, GET_NOTICE } from '../../../apollo/user/query';
+import { useQuery } from '@apollo/client';
+import { AllNoticesInquiry, typeNotice } from '../../types/notice/notice';
 
-const Notice = () => {
+interface NoticeProps {
+	initialInput: AllNoticesInquiry;
+}
+
+const Notice = (props: NoticeProps) => {
 	const device = useDeviceDetect();
+	const { initialInput } = props;
 
 	/** APOLLO REQUESTS **/
+	const {
+			loading: getAllNoticesLoading,
+			data: getAllNoticesData,
+			error: getAllNoticesError,
+			refetch: getAllNoticesRefetch,
+		} = useQuery(GET_ALL_NOTICES, {
+			fetchPolicy: 'cache-and-network',
+			variables: { input: initialInput },
+		});
+
 	/** LIFECYCLES **/
 	/** HANDLERS **/
 
-	const data = [
-		{
-			no: 1,
-			event: true,
-			title: 'Register to use and get discounts',
-			date: '01.03.2024',
-		},
-		{
-			no: 2,
-			title: "It's absolutely free to upload and trade watches",
-			date: '31.03.2024',
-		},
-	];
+	
 
 	if (device === 'mobile') {
 		return <div>NOTICE MOBILE</div>;
@@ -36,11 +42,11 @@ const Notice = () => {
 						<span>date</span>
 					</Box>
 					<Stack className={'bottom'}>
-						{data.map((ele: any) => (
-							<div className={`notice-card ${ele?.event && 'event'}`} key={ele.title}>
-								{ele?.event ? <div>event</div> : <span className={'notice-number'}>{ele.no}</span>}
-								<span className={'notice-title'}>{ele.title}</span>
-								<span className={'notice-date'}>{ele.date}</span>
+						{getAllNoticesData?.getAllNotices?.list?.map((ele: typeNotice) => (
+							<div className={`notice-card ${ele?.noticeCategory && 'event'}`} key={ele._id}>
+								{ele?.noticeCategory ? <div>event</div> : <span className={'notice-number'}></span>}
+								<span className={'notice-title'}>{ele.noticeTitle}</span>
+								{/* <span className={'notice-date'}>{ele.createdAt}</span> */}
 							</div>
 						))}
 					</Stack>
@@ -48,6 +54,14 @@ const Notice = () => {
 			</Stack>
 		);
 	}
+};
+
+
+Notice.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 10,
+	},
 };
 
 export default Notice;
