@@ -6,6 +6,7 @@ import { Member } from '../../types/member/member';
 import { AgentsInquiry } from '../../types/member/member.input';
 import { T } from '../../types/common';
 import { GET_AGENTS } from '../../../apollo/user/query';
+import { useTranslation } from 'next-i18next';
 
 interface TopAgentsProps {
 	initialInput: AgentsInquiry;
@@ -16,6 +17,7 @@ const getDealerImage = (imagePath?: string) => {
 };
 
 const TopAgents = ({ initialInput }: TopAgentsProps) => {
+	const { t } = useTranslation('common');
 	const router = useRouter();
 	const [topAgents, setTopAgents] = useState<Member[]>([]);
 
@@ -53,8 +55,8 @@ const TopAgents = ({ initialInput }: TopAgentsProps) => {
 			<div className="topAgents-container">
 				<div className="topAgents-header">
 					<div className="left">
-						<span>Meet the Elite</span>
-						<p>Exceptional dealers. Unrivaled service.</p>
+						<span>{t('Meet the Elite')}</span>
+						<p>{t('Exceptional dealers. Unrivaled service.')}</p>
 					</div>
 					<div
 						className="right"
@@ -62,7 +64,7 @@ const TopAgents = ({ initialInput }: TopAgentsProps) => {
 							router.push('/agent?input={"page":1,"limit":10,"sort":"createdAt","direction":"DESC","search":{}}')
 						}
 					>
-						<span>See All Dealers...</span>
+						<span>{t('See All Dealers...')}</span>
 					</div>
 				</div>
 
@@ -105,7 +107,7 @@ const TopAgents = ({ initialInput }: TopAgentsProps) => {
 								>
 									{agent.memberNick}
 								</p>
-								<p className="role">DEALER</p>
+								<p className="role">{t('DEALER')}</p>
 							</div>
 						);
 					})}

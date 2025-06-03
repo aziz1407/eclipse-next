@@ -15,12 +15,11 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { REACT_APP_API_URL } from '../../config';
 import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { sweetTopSmallSuccessAlert, sweetMixinErrorAlert } from '../../sweetAlert';
+import { useTranslation } from 'next-i18next';
 
 interface PopularPropertiesProps {
 	initialInput: PropertiesInquiry;
 }
-
-const tabLabels = ['Latest', 'Favorites', 'Bestselling'];
 
 const sortDirections: Record<string, PropertiesInquiry> = {
 	Latest: { page: 1, limit: 6, sort: 'createdAt', direction: Direction.DESC, search: {} },
@@ -29,6 +28,7 @@ const sortDirections: Record<string, PropertiesInquiry> = {
 };
 
 const TabProperties = (props: PopularPropertiesProps) => {
+	const { t } = useTranslation('common');
 	const { initialInput } = props;
 	const device = useDeviceDetect();
 	const [tabIndex, setTabIndex] = useState(0);
@@ -37,7 +37,10 @@ const TabProperties = (props: PopularPropertiesProps) => {
 	const router = useRouter();
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
-	const currentTabLabel = tabLabels[tabIndex];
+	// Use translation keys for tab labels
+	const tabLabels = [t('Latest'), t('Favorites'), t('Bestselling')];
+
+	const currentTabLabel = ['Latest', 'Favorites', 'Bestselling'][tabIndex]; // Keep original keys for sorting
 	const currentSort = sortDirections[currentTabLabel];
 
 	const {
@@ -67,7 +70,7 @@ const TabProperties = (props: PopularPropertiesProps) => {
 			if (!propertyId) return;
 			await likeTargetProperty({ variables: { input: propertyId } });
 			await getPropertiesRefetch({ input: currentSort });
-			await sweetTopSmallSuccessAlert('Liked!', 800);
+			await sweetTopSmallSuccessAlert(t('Liked!'), 800);
 		} catch (err: any) {
 			console.log('ERROR, likePropertyHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
@@ -126,11 +129,11 @@ const TabProperties = (props: PopularPropertiesProps) => {
 												)}
 											</button>
 											<div className="property-stats">
-												{tabLabels[tabIndex] === 'Latest' && (
+												{tabIndex === 0 && (
 													<span>{new Date(property.createdAt).toLocaleDateString()}</span>
 												)}
-												{tabLabels[tabIndex] === 'Favorites' && <span>{property.propertyLikes} likes</span>}
-												{tabLabels[tabIndex] === 'Bestselling' && <span>{property.propertyViews} views</span>}
+												{tabIndex === 1 && <span>{property.propertyLikes} {t('likes')}</span>}
+												{tabIndex === 2 && <span>{property.propertyViews} {t('views')}</span>}
 											</div>
 											<button
 												className="eye-button"
@@ -156,7 +159,7 @@ const TabProperties = (props: PopularPropertiesProps) => {
 
 				<div className="show-more-container">
 					<Link href="/property">
-						<button className="show-more-button">EXPLORE MORE</button>
+						<button className="show-more-button">{t('EXPLORE')}</button>
 					</Link>
 				</div>
 			</Stack>

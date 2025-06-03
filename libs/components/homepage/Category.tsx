@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 const WatchCollection = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
+  const { t } = useTranslation('common');
 
   const categories = [
     {
       id: 1,
-      title: 'Crafted Precision',
-      subtitle: "Explore Men's Signature Watch",
-      buttonText: 'SHOP COLLECTION',
+      title: t('Crafted Precision'),
+      subtitle: t("Explore Men's Signature Watch"),
+      buttonText: t('SHOP COLLECTION'),
       detailLink: '/property/detail?id=6826114365bfa1a9fc1aecb9',
       image: '/img/watches/1.jpeg',
       products: [
@@ -22,9 +24,9 @@ const WatchCollection = () => {
     },
     {
       id: 2,
-      title: 'Luxury Hers Alone',
-      subtitle: 'Elegant Timepieces for Women',
-      buttonText: 'SHOP NOW',
+      title: t('Luxury Hers Alone'),
+      subtitle: t('Elegant Timepieces for Women'),
+      buttonText: t('SHOP NOW'),
       detailLink: '/property/detail?id=68249cc665bfa1a9fc1ae9ba',
       image: '/img/watches/omega.avif',
       products: [
@@ -38,9 +40,9 @@ const WatchCollection = () => {
     },
     {
       id: 3,
-      title: 'Elegance For Every Wrist',
-      subtitle: 'Timeless Unisex Designs',
-      buttonText: 'SHOP NOW',
+      title: t('Elegance For Every Wrist'),
+      subtitle: t('Timeless Unisex Designs'),
+      buttonText: t('SHOP NOW'),
       detailLink: '/property/detail?id=68209c76cafa27a47cb34f0c',
       image: '/img/watches/jaegar.jpg',
       products: [
@@ -101,7 +103,7 @@ const WatchCollection = () => {
                   className="view-detail-button"
                   onClick={() => handleDetailClick(category.detailLink)}
                 >
-                  VIEW DETAILS
+                  {t('VIEW DETAILS')}
                 </button>
               </div>
             </div>

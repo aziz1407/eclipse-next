@@ -7,10 +7,12 @@ import { GET_BLOGS } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { BlogCategory } from '../../enums/blog.enum';
 import { T } from '../../types/common';
-import { Article } from 'phosphor-react';
+import { useTranslation } from 'next-i18next';
 
 const JournalSection = () => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
+
 	const [searchParams] = useState({
 		page: 1,
 		sort: 'blogViews',
@@ -22,7 +24,7 @@ const JournalSection = () => {
 	const [instructiveArticle, setInstructiveArticle] = useState<Blog | null>(null);
 	const [lifestyleArticle, setLifestyleArticle] = useState<Blog | null>(null);
 
-	const { loading: generalLoading, data: generalData } = useQuery(GET_BLOGS, {
+	useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
 		variables: {
 			input: {
@@ -30,7 +32,6 @@ const JournalSection = () => {
 				search: { blogCategory: BlogCategory.GENERAL },
 			},
 		},
-		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			if (data?.getBlogs?.list?.length > 0) {
 				setGeneralArticle(data.getBlogs.list[0]);
@@ -38,7 +39,7 @@ const JournalSection = () => {
 		},
 	});
 
-	const { loading: instructiveLoading, data: instructiveData } = useQuery(GET_BLOGS, {
+	useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
 		variables: {
 			input: {
@@ -46,7 +47,6 @@ const JournalSection = () => {
 				search: { blogCategory: BlogCategory.INSTRUCTIVE },
 			},
 		},
-		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			if (data?.getBlogs?.list?.length > 0) {
 				setInstructiveArticle(data.getBlogs.list[0]);
@@ -54,7 +54,7 @@ const JournalSection = () => {
 		},
 	});
 
-	const { loading: lifestyleLoading, data: lifestyleData } = useQuery(GET_BLOGS, {
+	useQuery(GET_BLOGS, {
 		fetchPolicy: 'network-only',
 		variables: {
 			input: {
@@ -62,7 +62,6 @@ const JournalSection = () => {
 				search: { blogCategory: BlogCategory.LIFESTYLE },
 			},
 		},
-		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			if (data?.getBlogs?.list?.length > 0) {
 				setLifestyleArticle(data.getBlogs.list[0]);
@@ -82,24 +81,14 @@ const JournalSection = () => {
 
 	const getArticleTitle = (article: Blog | null) => {
 		if (!article) return '';
-
-		switch (article.blogCategory) {
-			case BlogCategory.INSTRUCTIVE:
-				return article.blogTitle;
-			case BlogCategory.GENERAL:
-				return article.blogTitle;
-			case BlogCategory.LIFESTYLE:
-				return article.blogTitle;
-			default:
-				return article.blogTitle?.toUpperCase() || '';
-		}
+		return article.blogTitle || '';
 	};
 
 	const renderArticleCard = (article: Blog | null, index: number) => {
 		if (!article) return null;
 
-		const blogImage = article?.blogImage
-			? `${process.env.REACT_APP_API_URL}/${article?.blogImage}`
+		const blogImage = article.blogImage
+			? `${process.env.REACT_APP_API_URL}/${article.blogImage}`
 			: '/img/watches/all.jpg';
 
 		return (
@@ -111,7 +100,7 @@ const JournalSection = () => {
 					<h2 className="journal-title">{getArticleTitle(article)}</h2>
 					<div className="journal-date">{formatDate(article.createdAt)}</div>
 					<div className="journal-meta">
-						<span className="journal-comments">{article.blogComments} comments</span>
+						<span className="journal-comments">{article.blogComments} {t('comments')}</span>
 						<span className="journal-separator"> | </span>
 						<span className="journal-author">{article.memberData?.memberNick}</span>
 					</div>
@@ -128,7 +117,7 @@ const JournalSection = () => {
 								onMouseEnter={(e) => (e.currentTarget.style.color = 'grey')}
 								onMouseLeave={(e) => (e.currentTarget.style.color = '#fafafa')}
 							>
-								Read more...
+								{t('Read more')}...
 							</Link>
 						</p>
 					</p>
@@ -138,15 +127,15 @@ const JournalSection = () => {
 	};
 
 	if (device === 'mobile') {
-		return <div>BLOGS (MOBILE)</div>;
+		return <div>{t('BLOGS')} (MOBILE)</div>;
 	}
 
 	return (
 		<div className="journal-section">
 			<div className="journal-container">
-				<h2 className="journal-heading">BLOGS</h2>
-				<p className="journal-subheading" style={{color: "#fafafa"}}>
-					Discover expert insights, luxury trends, and timeless blogs from the world of Eclipse.
+				<h2 className="journal-heading">{t('BLOGS')}</h2>
+				<p className="journal-subheading" style={{ color: '#fafafa' }}>
+					{t('Discover expert insights, luxury trends, and timeless blogs from the world of Eclipse.')}
 				</p>
 				<div className="journal-grid">
 					{renderArticleCard(instructiveArticle, 0)}
@@ -156,7 +145,7 @@ const JournalSection = () => {
 
 				<div className="journal-view-all">
 					<Link href="/community">
-						<div className="view-all-button">View Blogs</div>
+						<div className="view-all-button">{t('View Blogs')}</div>
 					</Link>
 				</div>
 			</div>

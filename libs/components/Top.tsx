@@ -148,17 +148,17 @@ const Top = () => {
 		}
 	};
 
-		const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
-			setNotificationAnchor(event.currentTarget);
-		};
-	
-		const handleNotificationClose = () => {
-			setNotificationAnchor(null);
-		};
-	
-		const handleUnreadCountChange = (count: number) => {
-			setHasUnreadNotifications(count > 0);
-		};
+	const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
+		setNotificationAnchor(event.currentTarget);
+	};
+
+	const handleNotificationClose = () => {
+		setNotificationAnchor(null);
+	};
+
+	const handleUnreadCountChange = (count: number) => {
+		setHasUnreadNotifications(count > 0);
+	};
 
 	const StyledMenu = styled((props: MenuProps) => (
 		<Menu
@@ -208,13 +208,13 @@ const Top = () => {
 					<div>{t('Home')}</div>
 				</Link>
 				<Link href={'/property'}>
-					<div>{t('Properties')}</div>
+					<div>{t('Watches')}</div>
 				</Link>
 				<Link href={'/agent'}>
-					<div> {t('Agents')} </div>
+					<div> {t('Dealers')} </div>
 				</Link>
 				<Link href={'/community?blogCategory=GENERAL'}>
-					<div> {t('Community')} </div>
+					<div> {t('Blogs')} </div>
 				</Link>
 				<Link href={'/cs'}>
 					<div> {t('CS')} </div>
@@ -226,7 +226,7 @@ const Top = () => {
 			<Stack className={'navbar'}>
 				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
-						<Box component={'div'} className={'left-links'} sx={{fontFamily: "sans-serif"}}>
+						<Box component={'div'} className={'left-links'} sx={{ fontFamily: 'sans-serif' }}>
 							<Link href={'/'}>
 								<div>{t('Home')}</div>
 							</Link>
@@ -253,28 +253,28 @@ const Top = () => {
 							</Link>
 						</Box>
 
-						<Box component={'div'} className={'navbar-icons-right'}>		
+						<Box component={'div'} className={'navbar-icons-right'}>
 							{user?._id ? (
 								<Link href={'/mypage?category=myFavorites'}>
-									<FavoriteBorderIcon sx={{ color: '#eeeeeeed', fontSize: 22, cursor: 'pointer', marginTop: "5px" }} />
+									<FavoriteBorderIcon sx={{ color: '#eeeeeeed', fontSize: 22, cursor: 'pointer', marginTop: '5px' }} />
 								</Link>
 							) : null}
 
 							{user?._id && (
-									<>
-										<IconButton onClick={handleNotificationClick} size="small" sx={{ mr: 2 }}>
-											<Badge color="error" variant="dot" invisible={!hasUnreadNotifications}>
-												<NotificationsOutlinedIcon className={'notification-icon'} />
-											</Badge>
-										</IconButton>
-										<NotificationModal
-											anchorEl={notificationAnchor}
-											open={notificationOpen}
-											onClose={handleNotificationClose}
-											onUnreadCountChange={handleUnreadCountChange}
-										/>
-									</>
-								)}
+								<>
+									<IconButton onClick={handleNotificationClick} size="small" sx={{ mr: 2 }}>
+										<Badge color="error" variant="dot" invisible={!hasUnreadNotifications}>
+											<NotificationsOutlinedIcon className={'notification-icon'} />
+										</Badge>
+									</IconButton>
+									<NotificationModal
+										anchorEl={notificationAnchor}
+										open={notificationOpen}
+										onClose={handleNotificationClose}
+										onUnreadCountChange={handleUnreadCountChange}
+									/>
+								</>
+							)}
 
 							{user?._id ? (
 								<>
@@ -344,7 +344,7 @@ const Top = () => {
 											className="img-flag"
 											src={'/img/flag/langkr.png'}
 											onClick={langChoice}
-											id="uz"
+											id="kr"
 											alt={'koreanFlag'}
 										/>
 										{t('Korean')}
@@ -358,6 +358,26 @@ const Top = () => {
 											alt={'russiaFlag'}
 										/>
 										{t('Russian')}
+									</MenuItem>
+									<MenuItem disableRipple onClick={langChoice} id="uz">
+										<img
+											className="img-flag"
+											src={'/img/flag/languz.png'}
+											onClick={langChoice}
+											id="uz"
+											alt={'uzbekFlag'}
+										/>
+										{t('Uzbek')}
+									</MenuItem>
+									<MenuItem disableRipple onClick={langChoice} id="ar">
+										<img
+											className="img-flag"
+											src={'/img/flag/langar.png'}
+											onClick={langChoice}
+											id="ar"
+											alt={'arabicFlag'}
+										/>
+										{t('Arabic')}
 									</MenuItem>
 								</StyledMenu>
 							</div>

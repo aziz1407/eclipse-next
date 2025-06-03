@@ -7,10 +7,11 @@ import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'next-i18next';
 
 const Footer: React.FC = () => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
-
 	const router = useRouter();
 
 	const handleLinkClick = () => {
@@ -23,7 +24,7 @@ const Footer: React.FC = () => {
 				<Stack className={'main'}>
 					<Stack className={'left'}>
 						<Box component={'div'} className={'footer-box'}>
-							<h3 className={'brand-name'}>Éclipse</h3>
+							<h3 className={'brand-name'}>{t('Éclipse')}</h3>
 						</Box>
 						<Box component={'div'} className={'footer-box social-icons'}>
 							<TwitterIcon />
@@ -35,29 +36,29 @@ const Footer: React.FC = () => {
 					<Stack className={'right'}>
 						<Box component={'div'} className={'bottom'}>
 							<div className="info-column">
-								<strong>INFO</strong>
-								<span onClick={handleLinkClick}>Shipping & Delivery</span>
-								<span onClick={handleLinkClick}>Returns & Exchanges</span>
-								<span onClick={handleLinkClick}>Order Tracking</span>
-								<span onClick={handleLinkClick}>Payment Methods</span>
-								<span onClick={handleLinkClick}>Size Guide</span>
-								<span onClick={handleLinkClick}>Product Care</span>
+								<strong>{t('INFO')}</strong>
+								<span onClick={handleLinkClick}>{t('Shipping & Delivery')}</span>
+								<span onClick={handleLinkClick}>{t('Returns & Exchanges')}</span>
+								<span onClick={handleLinkClick}>{t('Order Tracking')}</span>
+								<span onClick={handleLinkClick}>{t('Payment Methods')}</span>
+								<span onClick={handleLinkClick}>{t('Size Guide')}</span>
+								<span onClick={handleLinkClick}>{t('Product Care')}</span>
 							</div>
 
 							<div className="services-column">
-								<strong>SERVICES</strong>
-								<span onClick={handleLinkClick}>Customer Support</span>
-								<span onClick={handleLinkClick}>Live Chat</span>
-								<span onClick={handleLinkClick}>Account Help</span>
-								<span onClick={handleLinkClick}>Warranty Info</span>
-								<span onClick={handleLinkClick}>How to Order</span>
-								<span onClick={handleLinkClick}>FAQs</span>
+								<strong>{t('SERVICES')}</strong>
+								<span onClick={handleLinkClick}>{t('Customer Support')}</span>
+								<span onClick={handleLinkClick}>{t('Live Chat')}</span>
+								<span onClick={handleLinkClick}>{t('Account Help')}</span>
+								<span onClick={handleLinkClick}>{t('Warranty Info')}</span>
+								<span onClick={handleLinkClick}>{t('How to Order')}</span>
+								<span onClick={handleLinkClick}>{t('FAQs')}</span>
 							</div>
 						</Box>
 					</Stack>
 				</Stack>
 				<Stack className={'second'}>
-					<span>© Copyright 2024 | Éclipse By Aiden. Powered by Shopify.</span>
+					<span>{t('© Copyright 2024 | Éclipse By Aiden. Powered by Shopify.')}</span>
 				</Stack>
 			</Stack>
 		);
@@ -68,7 +69,7 @@ const Footer: React.FC = () => {
 					<Stack className={'main'}>
 						<Stack className={'left'}>
 							<Box component={'div'} className={'footer-box'}>
-								<h3 className={'brand-name'}>Éclipse</h3>
+								<h3 className={'brand-name'}>{t('Éclipse')}</h3>
 							</Box>
 							<Box component={'div'} className={'footer-box social-icons'}>
 								<a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
@@ -87,28 +88,28 @@ const Footer: React.FC = () => {
 						</Stack>
 						<Stack className={'middle'}>
 							<div className="info-column">
-								<strong>DETAILS</strong>
-								<span onClick={handleLinkClick}>Shipping & Delivery</span>
-								<span onClick={handleLinkClick}>Returns & Exchanges</span>
-								<span onClick={handleLinkClick}>Order Tracking</span>
-								<span onClick={handleLinkClick}>Payment Methods</span>
-								<span onClick={handleLinkClick}>Size Guide</span>
-								<span onClick={handleLinkClick}>Product Care</span>
+								<strong>{t('DETAILS')}</strong>
+								<span onClick={handleLinkClick}>{t('Shipping & Delivery')}</span>
+								<span onClick={handleLinkClick}>{t('Returns & Exchanges')}</span>
+								<span onClick={handleLinkClick}>{t('Order Tracking')}</span>
+								<span onClick={handleLinkClick}>{t('Payment Methods')}</span>
+								<span onClick={handleLinkClick}>{t('Size Guide')}</span>
+								<span onClick={handleLinkClick}>{t('Product Care')}</span>
 							</div>
 
 							<div className="services-column">
-								<strong>SERVICES</strong>
-								<span onClick={handleLinkClick}>Customer Support</span>
-								<span onClick={handleLinkClick}>Live Chat</span>
-								<span onClick={handleLinkClick}>Account Help</span>
-								<span onClick={handleLinkClick}>Warranty Info</span>
-								<span onClick={handleLinkClick}>How to Order</span>
-								<span onClick={handleLinkClick}>FAQs</span>
+								<strong>{t('SERVICES')}</strong>
+								<span onClick={handleLinkClick}>{t('Customer Support')}</span>
+								<span onClick={handleLinkClick}>{t('Live Chat')}</span>
+								<span onClick={handleLinkClick}>{t('Account Help')}</span>
+								<span onClick={handleLinkClick}>{t('Warranty Info')}</span>
+								<span onClick={handleLinkClick}>{t('How to Order')}</span>
+								<span onClick={handleLinkClick}>{t('FAQs')}</span>
 							</div>
 						</Stack>
 						<Stack className={'right'}>
 							<Box component={'div'} className={'instagram-container'}>
-								<h3>INSTAGRAM</h3>
+								<h3>{t('INSTAGRAM')}</h3>
 								<div className="instagram-grid">
 									<div className="instagram-image">
 										<a
@@ -116,7 +117,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/all.jpg" alt="Luxury watch" />
+											<img src="/img/watches/all.jpg" alt={t('Luxury watch')} />
 										</a>
 									</div>
 									<div className="instagram-image">
@@ -125,7 +126,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch2.jpg" alt="Luxury watch" />
+											<img src="/img/watches/watch2.jpg" alt={t('Luxury watch')} />
 										</a>
 									</div>
 									<div className="instagram-image">
@@ -134,7 +135,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch3.jpg" alt="Luxury watch" />
+											<img src="/img/watches/watch3.jpg" alt={t('Luxury watch')} />
 										</a>
 									</div>
 									<div className="instagram-image">
@@ -143,7 +144,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch1.jpg" alt="Luxury watch" />
+											<img src="/img/watches/watch1.jpg" alt={t('Luxury watch')} />
 										</a>
 									</div>
 									<div className="instagram-image">
@@ -152,7 +153,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch5.jpg" alt="Luxury watch" />
+											<img src="/img/watches/watch5.jpg" alt={t('Luxury watch')} />
 										</a>
 									</div>
 									<div className="instagram-image">
@@ -161,7 +162,7 @@ const Footer: React.FC = () => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<img src="/img/watches/watch6.jpg" alt="Luxury watch" />
+											<img src="/img/watches/watch6.jpg" alt={t('Luxury watch')} />
 										</a>
 									</div>
 								</div>
@@ -169,7 +170,7 @@ const Footer: React.FC = () => {
 						</Stack>
 					</Stack>
 					<Stack className={'second'}>
-						<span>© Copyright 2025 | Éclipse By Aiden. Powered by Devex.</span>
+						<span>{t('© Copyright 2025 | Éclipse By Aiden. Powered by Devex.')}</span>
 						<div className={'payment-methods'}>
 							<img src="/img/payment/visa.jpg" alt="Visa" />
 							<img src="/img/payment/mastercard.jpg" alt="Mastercard" />
@@ -177,7 +178,7 @@ const Footer: React.FC = () => {
 							<img src="/img/payment/amex.png" alt="American Express" />
 						</div>
 						<a href="https://t.me/Ibrokhimov_1407" target="_blank" rel="noopener noreferrer">
-							<span>Contact Developer</span>
+							<span>{t('Contact Developer')}</span>
 						</a>
 					</Stack>
 				</Stack>

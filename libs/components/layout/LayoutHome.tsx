@@ -15,39 +15,46 @@ import 'swiper/css/navigation';
 import HeaderFilter from '../homepage/HeaderFilter';
 import { useRouter } from 'next/router';
 import { toast } from 'sonner';
+import { useTranslation } from 'next-i18next';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
+		const { t } = useTranslation('common');
 		const device = useDeviceDetect();
 		const user = useReactiveVar(userVar);
 		const [currentSlide, setCurrentSlide] = useState(0);
-		const [hasShownWelcome, setHasShownWelcome] = useState(false);
+		const [hasShownWelcome, setHasShownWelcome] = useState(() => {
+			if (typeof window !== 'undefined') {
+				return sessionStorage.getItem('hasShownWelcome') === 'true';
+			}
+			return false;
+		});
 		const router = useRouter();
 
 		const slides = [
 			{
 				id: 1,
 				backgroundImage: '/img/watches/header8.jpg',
-				brand: 'SPECIAL DAY',
-				title: 'Sleek Style',
-				subtitle: 'Luxury Line',
-				buttonText: 'SHOP NOW',
+				brand: t('SPECIAL DAY'),
+				title: t('Sleek Style'),
+				subtitle: t('Luxury Line'),
+				buttonText: t('SHOP NOW'),
 			},
 			{
 				id: 2,
 				backgroundImage: '/img/watches/header23.jpg',
-				brand: 'ÉCLIPSE STORE',
-				title: 'Smart Luxe',
-				subtitle: 'Elite Series',
-				buttonText: 'SHOP NOW',
+				brand: t('ÉCLIPSE STORE'),
+				title: t('Smart Luxe'),
+				subtitle: t('Elite Series'),
+				buttonText: t('SHOP NOW'),
 			},
 			{
 				id: 3,
 				backgroundImage: '/img/watches/header26.jpg',
-				brand: 'PREMIUM SERIES',
-				title: 'Pure Class',
-				subtitle: 'Posh Picks',
-				buttonText: 'SHOP NOW',
+				brand: t('PREMIUM SERIES'),
+				title: t('Pure Class'),
+				subtitle: t('Posh Picks'),
+				buttonText: t('SHOP NOW'),
 			},
 		];
 
@@ -62,7 +69,7 @@ const withLayoutMain = (Component: any) => {
 			if (!hasShownWelcome) {
 				const timer = setTimeout(() => {
 					const isSignedIn = user && user._id;
-					
+
 					if (isSignedIn) {
 						toast(`Welcome Back, ${user.memberNick || 'Distinguished Guest'}!`, {
 							description: 'Your luxury timepiece collection awaits. Discover our latest exquisite arrivals.',
@@ -77,10 +84,10 @@ const withLayoutMain = (Component: any) => {
 							},
 							action: {
 								label: 'Shop Now',
-								onClick: () => router.push('/property')
+								onClick: () => router.push('/property'),
 							},
 							dismissible: true,
-							closeButton: true
+							closeButton: true,
 						});
 					} else {
 						toast('Welcome to Eclipse', {
@@ -96,14 +103,16 @@ const withLayoutMain = (Component: any) => {
 							},
 							action: {
 								label: 'Explore',
-								onClick: () => router.push('/property')
+								onClick: () => router.push('/property'),
 							},
 							dismissible: true,
-							closeButton: true
+							closeButton: true,
 						});
 					}
-					
+
 					setHasShownWelcome(true);
+					// Store in sessionStorage so it only shows once per browser session
+					sessionStorage.setItem('hasShownWelcome', 'true');
 				}, 1000);
 
 				return () => clearTimeout(timer);
@@ -138,8 +147,8 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Eclipse</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>{t('Eclipse')}</title>
+						<meta name={'title'} content={t('Eclipse')} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
@@ -160,8 +169,8 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Eclipse</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>{t('Eclipse')}</title>
+						<meta name={'title'} content={t('Eclipse')} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
