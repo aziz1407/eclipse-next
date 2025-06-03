@@ -31,6 +31,7 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { debounce } from 'lodash';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { useTranslation } from 'next-i18next';
 
 const TagButton = styled(Button)({
 	borderRadius: '16px',
@@ -78,6 +79,7 @@ const Filter = (props: FilterType) => {
 	const { searchFilter, setSearchFilter, initialInput } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const { t } = useTranslation('common');
 	const [watchCountries, setWatchCountries] = useState<WatchCountry[]>(Object.values(WatchCountry));
 	const [watchBrands, setWatchBrands] = useState<WatchBrand[]>(Object.values(WatchBrand));
 	const [searchText, setSearchText] = useState<string>('');
@@ -617,7 +619,7 @@ const Filter = (props: FilterType) => {
 							},
 						}}
 					>
-						Find Your Watch
+						{t('Find Your Watch')}
 					</Typography>
 
 					<Stack
@@ -656,7 +658,7 @@ const Filter = (props: FilterType) => {
 						<OutlinedInput
 							value={searchText}
 							type="text"
-							placeholder="Search luxury watches..."
+							placeholder={t('Search...')}
 							onChange={(e) => {
 								const value = e.target.value;
 								setSearchText(value);
@@ -760,7 +762,7 @@ const Filter = (props: FilterType) => {
 						},
 					}}
 				>
-					Origin
+					{t('Origin')}
 				</Typography>
 
 				<Stack
@@ -898,7 +900,7 @@ const Filter = (props: FilterType) => {
 							},
 						}}
 					>
-						Brand
+						{t('Brand')}
 					</Typography>
 
 					<Stack
@@ -989,7 +991,8 @@ const Filter = (props: FilterType) => {
 				</Stack>
 
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Gender</Typography>
+					<Typography className={'title'}>{t('Brand')}
+					</Typography>
 					<Stack className="button-group">
 						<Button
 							sx={{
@@ -1007,7 +1010,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchGenderSelectHandler(null)}
 						>
-							Mixed
+							{t('Mixed')}
 						</Button>
 
 						<Button
@@ -1024,7 +1027,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.MALE)}
 						>
-							Men
+							{t('Men')}
 						</Button>
 
 						<Button
@@ -1041,7 +1044,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.FEMALE)}
 						>
-							Women
+							{t('Women')}
 						</Button>
 
 						<Button
@@ -1058,12 +1061,12 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchGenderSelectHandler(WatchGender.UNISEX)}
 						>
-							Unisex
+							{t('Unisex')}
 						</Button>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Condition</Typography>
+					<Typography className={'title'}>{t('Condition')}</Typography>
 					<Stack className="button-group">
 						<Button
 							sx={{
@@ -1081,7 +1084,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchConditionSelectHandler(null)}
 						>
-							All
+							{t('All')}
 						</Button>
 
 						<Button
@@ -1098,7 +1101,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchConditionSelectHandler(WatchCondition.NEW)}
 						>
-							New
+							{t('New')}
 						</Button>
 
 						<Button
@@ -1115,7 +1118,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchConditionSelectHandler(WatchCondition.SECONDHAND)}
 						>
-							Used
+							{t('Used')}
 						</Button>
 
 						<Button
@@ -1132,7 +1135,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => watchConditionSelectHandler(WatchCondition.REFURBISHED)}
 						>
-							Renewed
+							{t('Renewed')}
 						</Button>
 					</Stack>
 				</Stack>
@@ -1158,7 +1161,7 @@ const Filter = (props: FilterType) => {
 							},
 						}}
 					>
-						Functionality
+						{t('Functionality')}
 					</Typography>
 
 					<Select
@@ -1166,7 +1169,7 @@ const Filter = (props: FilterType) => {
 						value={searchFilter?.search?.propertyMovement || ''}
 						onChange={watchMovementHandler}
 						renderValue={(selected) =>
-							selected ? selected : <span style={{ color: '#9e9e9e' }}>Select Movement</span>
+							selected ? selected : <span style={{ color: '#9e9e9e' }}>{t('Select Movement')}</span>
 						}
 						sx={{
 							borderRadius: '12px',
@@ -1191,7 +1194,7 @@ const Filter = (props: FilterType) => {
 						}}
 					>
 						<MenuItem value="clear" sx={{ color: '#999' }}>
-							Clear Selection
+							{t('Clear Selection')}
 						</MenuItem>
 
 						{Object.values(WatchMovement).map((movement: string) => (
@@ -1223,7 +1226,7 @@ const Filter = (props: FilterType) => {
 							},
 						}}
 					>
-						Material
+						{t('Material')}
 					</Typography>
 
 					<Select
@@ -1233,7 +1236,7 @@ const Filter = (props: FilterType) => {
 						}
 						onChange={watchMaterialHandler}
 						renderValue={(selected) =>
-							selected ? selected : <span style={{ color: '#9e9e9e' }}>Select Material</span>
+							selected ? selected : <span style={{ color: '#9e9e9e' }}>{t('Select Material')}</span>
 						}
 						sx={{
 							borderRadius: '12px',
@@ -1258,7 +1261,7 @@ const Filter = (props: FilterType) => {
 						}}
 					>
 						<MenuItem value="clear" sx={{ color: '#999' }}>
-							Clear Selection
+							{t('Clear Selection')}
 						</MenuItem>
 
 						{Object.values(WatchMaterial).map((material: string) => (
@@ -1283,7 +1286,7 @@ const Filter = (props: FilterType) => {
 					}}
 				>
 					<Typography className="title" sx={{ fontWeight: 'bold', mb: 2 }}>
-						Price Range
+						{t('Price Range')}	
 					</Typography>
 
 					<Stack direction="row" justifyContent="space-between" sx={{ px: 1, mb: 1 }}>

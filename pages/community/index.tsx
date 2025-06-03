@@ -7,7 +7,6 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Blog } from '../../libs/types/blog/blog';
 import { T } from '../../libs/types/common';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { BlogsInquiry } from '../../libs/types/blog/blog.input';
 import { BlogCategory } from '../../libs/enums/blog.enum';
 import { GET_BLOGS } from '../../apollo/user/query';
@@ -16,9 +15,9 @@ import { LIKE_TARGET_BLOG } from '../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { Messages, REACT_APP_API_URL } from '../../libs/config';
 import Moment from 'react-moment';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import { userVar } from '../../apollo/store';
 import CommunityCard from '../../libs/components/common/CommunityCard';
 
@@ -32,6 +31,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	const [blogs, setBlogs] = useState<Blog[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	if (blogCategory) initialInput.search.blogCategory = blogCategory;
+	const { t, i18n } = useTranslation('common');
 
 	/** APOLLO REQUESTS **/
 
@@ -115,7 +115,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 							<Stack className="left-config">
 								<Stack className="title-section">
 									<Typography variant="h3" className="categories-title">
-										CATEGORIES
+										{t('CATEGORIES')}
 									</Typography>
 								</Stack>
 
@@ -129,31 +129,31 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 								>
 									<Tab
 										value={'GENERAL'}
-										label={'General'}
+										label={t('General')}
 										className={`tab-button ${searchCommunity.search.blogCategory == 'GENERAL' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'LIFESTYLE'}
-										label={'Lifestyle'}
+										label={t('Lifestyle')}
 										className={`tab-button ${searchCommunity.search.blogCategory == 'LIFESTYLE' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'INSTRUCTIVE'}
-										label={'Instructive'}
+										label={t('Instructive')}
 										className={`tab-button ${searchCommunity.search.blogCategory == 'INSTRUCTIVE' ? 'active' : ''}`}
 									/>
 								</TabList>
 
 								<Stack className="recent-posts">
 									<Typography variant="h4" className="recent-posts-title">
-										RECENT POSTS
+										{t('RECENT POSTS')}
 									</Typography>
 									<div className="recent-post-list">
 										{blogs.slice(0, 4).map((blog, index) => (
 											<div
 												key={index}
 												className="recent-post-item"
-												onClick={() => router.push(`/community/detail?blogCategory${blog._id}`)}
+												onClick={() => router.push(`/community/detail?blogId=${blog._id}`)}
 											>
 												<div className="post-thumbnail">
 													<img
@@ -181,13 +181,13 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 								<Stack className="panel-config">
 									<Stack className="title-box">
 										<Stack className="left">
-											<Typography className="title">WATCH BLOG</Typography>
+											<Typography className="title">{t('WATCH BLOG')}</Typography>
 											<Typography className="sub-title">
-												Discover the latest in horology and timepiece elegance
+												{t('Discover the latest in horology and timepiece elegance')}
 											</Typography>
 										</Stack>
 										<Button
-											onClick={() =>
+											onClick={() =>			
 												router.push({
 													pathname: '/mypage',
 													query: {
@@ -197,7 +197,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											}
 											className="right"
 										>
-											Write
+											{t('Write')}
 										</Button>
 									</Stack>
 
@@ -304,16 +304,22 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	}
 };
 
-Community.defaultProps = {
-	initialInput: {
-		page: 1,
-		limit: 6,
-		sort: 'createdAt',
-		direction: 'ASC',
-		search: {
-			blogCategory: 'GENERAL',
+// CRITICAL: Add this function for translations to work
+export async function getStaticProps({ locale }: { locale: string }) {
+	return {
+		props: {
+			...(await serverSideTranslations(locale, ['common'])),
+			initialInput: {
+				page: 1,
+				limit: 6,
+				sort: 'createdAt',
+				direction: 'ASC',
+				search: {
+					blogCategory: 'GENERAL',
+				},
+			},
 		},
-	},
-};
+	};
+}
 
 export default withLayoutBasic(Community);

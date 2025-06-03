@@ -8,7 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import SupportIcon from '@mui/icons-material/Support';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ArticleIcon from '@mui/icons-material/Article';
-import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 import Notice from '../../libs/components/cs/Notice';
 import Terms from '../../libs/components/cs/Terms';
 import Faq from '../../libs/components/cs/Faq';
@@ -23,6 +23,7 @@ const CS: NextPage = (props: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const tab = router.query.tab ?? 'notice';
+	const { t } = useTranslation('common');
 
 	const changeTabHandler = (tab: string) => {
 		router.push(
@@ -45,9 +46,8 @@ const CS: NextPage = (props: any) => {
 				<Stack className={'container'}>
 					<Box className={'cs-main-info'}>
 						<Box className={'info'}>
-							<Typography component="span" style={{ color: 'white' }}>Customer Support</Typography>
+							<Typography component="span" style={{ color: 'white' }}>{t('Customer Support')}</Typography>
 							<Typography component="p" style={{ color: 'white' }}>
-								<Link href="/" style={{ color: 'white' }}>Home</Link> / cs
 							</Typography>
 						</Box>
 
@@ -61,7 +61,7 @@ const CS: NextPage = (props: any) => {
 								}}
 							>
 								<SupportIcon />
-								Notices & Updates
+								{t('Notices & Updates')}
 							</div>
 							<div 
 								className={tab === 'faq' ? 'active' : ''} 
@@ -72,7 +72,7 @@ const CS: NextPage = (props: any) => {
 								}}
 							>
 								<QuestionAnswerIcon />
-								FAQ
+								{t('FAQ')}	
 							</div>
 							<div 
 								className={tab === 'terms' ? 'active' : ''} 
@@ -83,7 +83,7 @@ const CS: NextPage = (props: any) => {
 								}}
 							>
 								<ArticleIcon />
-								Terms & Conditions
+								{t('Terms & Conditions')}
 							</div>
 						</Box>
 					</Box>

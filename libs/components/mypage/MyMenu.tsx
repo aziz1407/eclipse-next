@@ -5,12 +5,11 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
-import PortraitIcon from '@mui/icons-material/Portrait';
-import IconButton from '@mui/material/IconButton';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
-import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
+import { sweetConfirmAlert } from '../../sweetAlert';
 import WatchIcon from '@mui/icons-material/Watch';
+import { useTranslation } from 'next-i18next';
 
 const MyMenu = () => {
 	const device = useDeviceDetect();
@@ -18,6 +17,8 @@ const MyMenu = () => {
 	const pathname = router.query.category ?? 'myProfile';
 	const category = router.query?.category ?? 'myProfile';
 	const user = useReactiveVar(userVar);
+	const { t } = useTranslation('common');
+
 
 	// Luxury color palette
 	const colors = {
@@ -50,72 +51,72 @@ const MyMenu = () => {
 	// Menu items configuration
 	const menuSections = [
 		{
-			title: 'WATCH COLLECTION',
+			title: t('WATCH COLLECTION'),
 			items: user.memberType === 'DEALER' ? [
 				{
 					key: 'addProperty',
-					label: 'Add New Watch',
+					label: t('Add New Watch'),
 					icon: '/img/icons/newTab.svg',
 					activeIcon: '/img/icons/whiteTab.svg',
 				},
 				{
 					key: 'myProperties',
-					label: 'My Watches',
+					label: t('My Watches'),
 					icon: '/img/icons/home.svg',
 					activeIcon: '/img/icons/homeWhite.svg',
 				},
 			] : [],
 		},
 		{
-			title: 'PERSONAL VAULT',
+			title: t('PERSONAL VAULT'),
 			items: [
 				{
 					key: 'myFavorites',
-					label: 'Favorites',
+					label: t('Favorites'),
 					icon: '/img/icons/like.svg',
 					activeIcon: '/img/icons/likeWhite.svg',
 				},
 				{
 					key: 'recentlyVisited',
-					label: 'Recently Viewed',
+					label: t('Recently Visited'),
 					icon: '/img/icons/search.svg',
 					activeIcon: '/img/icons/searchWhite.svg',
 				},
 			],
 		},
 		{
-			title: 'COMMUNITY',
+			title: t('COMMUNITY'),
 			items: [
 				{
 					key: 'followers',
-					label: 'Followers',
+					label: t('Followers'),
 					customIcon: true,
 				},
 				{
 					key: 'followings',
-					label: 'Following',
+					label: t('Following'),
 					customIcon: true,
 				},
 				{
-					key: 'myArticles',
-					label: 'My Articles',
+					key: 'myBlogs',
+					label: t('My Blogs'),
 					icon: '/img/icons/discovery.svg',
 					activeIcon: '/img/icons/discoveryWhite.svg',
 				},
 				{
-					key: 'writeArticle',
-					label: 'Write Article',
+					key: 'writeBlog',
+					label: t('Write Blog'),
 					icon: '/img/icons/newTab.svg',
 					activeIcon: '/img/icons/whiteTab.svg',
 				},
 			],
 		},
 		{
-			title: 'ACCOUNT',
+			title: t('ACCOUNT'),
 			items: [
 				{
 					key: 'myProfile',
-					label: 'Profile',
+					label: t('Profile'),
 					icon: '/img/icons/user.png',
 					activeIcon: '/img/icons/userWhite.svg',
 				},
@@ -428,7 +429,7 @@ const MyMenu = () => {
 									fontWeight: 500,
 								}}
 							>
-								Logout
+								{t("Logout")}
 							</Typography>
 						</Box>
 					</ListItem>
