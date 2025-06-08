@@ -18,7 +18,6 @@ import { socketVar, userVar } from '../../apollo/store';
 import { Logout, Search, ShoppingBag } from '@mui/icons-material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { REACT_APP_API_URL } from '../config';
-import member from '../../pages/member';
 import NotificationModal from './common/NotificationModal';
 
 const Top = () => {

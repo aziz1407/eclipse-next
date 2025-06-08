@@ -228,7 +228,7 @@ const NotificationModal = ({
 				}}
 			>
 				<Stack direction="row" alignItems="center" spacing={1}>
-					<Typography variant="h6" sx={{ fontWeight: 600 }}>
+					<Typography variant="h5" sx={{ fontWeight: 500, color: "grey" }}>
 						Notifications
 					</Typography>
 					{unreadCount > 0 && (
@@ -242,7 +242,7 @@ const NotificationModal = ({
 			<ScrollableFeed>
 				<Stack sx={{ maxHeight: '400px', overflow: 'auto' }}>
 					{notifications.length === 0 ? (
-						<Box sx={{ p: 3, textAlign: 'center' }}>
+						<Box sx={{ p: 3, textAlign: 'center', color: "grey" }}>
 							<Typography color="text.secondary">No notifications yet</Typography>
 						</Box>
 					) : (

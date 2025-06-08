@@ -276,11 +276,11 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 					<Stack className={'select-box'}>
 						<Box component={'div'} className={`box ${openCountry ? 'on' : ''}`} onClick={countryStateChangeHandler}>
 							<span>{searchFilter?.search?.locationList ? searchFilter?.search?.locationList[0] : t('Country')} </span>
-							<ExpandMoreIcon />
+							{openCountry ? <CloseIcon /> : <ExpandMoreIcon />}
 						</Box>
 						<Box className={`box ${openBrand ? 'on' : ''}`} onClick={brandStateChangeHandler}>
 							<span> {searchFilter?.search?.typeList ? searchFilter?.search?.typeList[0] : t('Brand')} </span>
-							<ExpandMoreIcon />
+							{openBrand ? <CloseIcon /> : <ExpandMoreIcon />}
 						</Box>
 						<Box className={`box ${openMaterial ? 'on' : ''}`} onClick={genderStateChangeHandler}>
 							<span>
@@ -288,7 +288,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 									? `${searchFilter?.search?.propertyMaterial[0]}`
 									: t('Material')}
 							</span>
-							<ExpandMoreIcon />
+							{openMaterial ? <CloseIcon /> : <ExpandMoreIcon />}
 						</Box>
 
 						<Box className={`box ${openCondition ? 'on' : ''}`} onClick={() => setOpenCondition((prev) => !prev)}>
@@ -297,7 +297,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 									? `${searchFilter?.search?.propertyCondition[0]}`
 									: t('Condition')}
 							</span>
-							<ExpandMoreIcon />
+							{openCondition ? <CloseIcon /> : <ExpandMoreIcon />}
 						</Box>
 					</Stack>
 					<Stack className={'search-box-other'}>

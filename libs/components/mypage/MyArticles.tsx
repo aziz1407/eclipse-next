@@ -92,7 +92,8 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 						})
 					) : (
 						<div className={'no-data'}>
-							<img src="/img/icons/icoAlert.svg" alt="" />
+							<div></div>
+							<img src="/img/icons/icoAlert.svg" alt="" style={{marginLeft: "15px", marginBottom: "10px"}}/>
 							<p>No Blogs found!</p>
 						</div>
 					)}

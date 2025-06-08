@@ -13,6 +13,7 @@ export interface Member {
 	memberFullName?: string;
 	memberImage?: string;
 	memberAddress?: string;
+	memberEmail?: string;
 	memberDesc?: string;
 	memberProperties: number;
 	memberRank: number;

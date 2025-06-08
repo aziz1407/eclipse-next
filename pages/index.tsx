@@ -35,7 +35,6 @@ const Home: NextPage = () => {
 				<Category />
 				<Advertisement />
 				<TabProperties />
-				{/* <TopProperties /> */}
 				<TopAgents />
 				<CommunityBoards />
 			</Stack>

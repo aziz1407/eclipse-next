@@ -98,13 +98,13 @@ const MyMenu = () => {
 					customIcon: true,
 				},
 				{
-					key: 'myBlogs',
+					key: 'myArticles',
 					label: t('My Blogs'),
 					icon: '/img/icons/discovery.svg',
 					activeIcon: '/img/icons/discoveryWhite.svg',
 				},
 				{
-					key: 'writeBlog',
+					key: 'writeArticle',
 					label: t('Write Blog'),
 					icon: '/img/icons/newTab.svg',
 					activeIcon: '/img/icons/whiteTab.svg',

@@ -7,11 +7,13 @@ export interface MemberInput {
 	memberPhone: string;
 	memberType?: MemberType;
 	memberAuthType?: MemberAuthType;
+	memberEmail?: string;
 }
 
 export interface LoginInput {
 	memberNick: string;
 	memberPassword: string;
+	memberEmail?: string;
 }
 
 interface AISearch {
