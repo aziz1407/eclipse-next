@@ -123,26 +123,26 @@ const AdminMenuList = (props: any) => {
 					}}
 				>
 					<ListItemButton
-						onClick={item.on_click}
-						component={'li'}
-						className={clickMenu[0] === item.title ? 'menu on' : 'menu'}
-						style={{
-							minHeight: 48,
-							justifyContent: openMenu ? 'initial' : 'center',
-							paddingLeft: 20,
-							paddingRight: 20,
-							color: '#ffffff',
-							transition: 'all 0.3s ease',
-							borderRadius: '8px',
-							margin: '4px 8px',
-							backgroundColor: clickMenu[0] === item.title ? 'rgba(218, 165, 32, 0.15)' : 'transparent',
-							border: clickMenu[0] === item.title ? '1px solid rgba(218, 165, 32, 0.3)' : 'none',
-							'&:hover': {
-								backgroundColor: 'rgba(218, 165, 32, 0.1)',
-								color: '#daa520'
-							}
-						}}
-					>
+    onClick={item.on_click}
+    component={'li'}
+    className={clickMenu[0] === item.title ? 'menu on' : 'menu'}
+    sx={{
+        minHeight: 48,
+        justifyContent: openMenu ? 'initial' : 'center',
+        paddingLeft: 20,
+        paddingRight: 20,
+        color: '#ffffff',
+        transition: 'all 0.3s ease',
+        borderRadius: '8px',
+        margin: '4px 8px',
+        backgroundColor: clickMenu[0] === item.title ? 'rgba(218, 165, 32, 0.15)' : 'transparent',
+        border: clickMenu[0] === item.title ? '1px solid rgba(218, 165, 32, 0.3)' : 'none',
+        '&:hover': {
+            backgroundColor: 'rgba(218, 165, 32, 0.1)',
+            color: '#daa520'
+        }
+    }}
+>
 						<ListItemIcon
 							style={{
 								minWidth: 0,
@@ -185,24 +185,24 @@ const AdminMenuList = (props: any) => {
 							{sub_menu_set[item.title] &&
 								sub_menu_set[item.title].map((sub: any, i: number) => (
 									<Link href={sub.url} shallow={true} replace={true} key={i}>
-										<ListItemButton
-											component="li"
-											className={clickMenu[0] === item.title && clickSubMenu === sub.title ? 'li on' : 'li'}
-											style={{
-												color: clickMenu[0] === item.title && clickSubMenu === sub.title ? '#daa520' : '#cccccc',
-												transition: 'all 0.3s ease',
-												borderRadius: '6px',
-												margin: '2px 8px',
-												padding: '8px 16px',
-												fontSize: '14px',
-												backgroundColor: clickMenu[0] === item.title && clickSubMenu === sub.title ? 'rgba(218, 165, 32, 0.12)' : 'transparent',
-												borderLeft: clickMenu[0] === item.title && clickSubMenu === sub.title ? '3px solid #daa520' : 'none',
-												'&:hover': {
-													backgroundColor: 'rgba(218, 165, 32, 0.08)',
-													color: '#daa520'
-												}
-											}}
-										>
+									<ListItemButton
+    component="li"
+    className={clickMenu[0] === item.title && clickSubMenu === sub.title ? 'li on' : 'li'}
+    sx={{
+        color: clickMenu[0] === item.title && clickSubMenu === sub.title ? '#daa520' : '#cccccc',
+        transition: 'all 0.3s ease',
+        borderRadius: '6px',
+        margin: '2px 8px',
+        padding: '8px 16px',
+        fontSize: '14px',
+        backgroundColor: clickMenu[0] === item.title && clickSubMenu === sub.title ? 'rgba(218, 165, 32, 0.12)' : 'transparent',
+        borderLeft: clickMenu[0] === item.title && clickSubMenu === sub.title ? '3px solid #daa520' : 'none',
+        '&:hover': {
+            backgroundColor: 'rgba(218, 165, 32, 0.08)',
+            color: '#daa520'
+        }
+    }}
+>
 											<Typography 
 												variant={sub.title} 
 												component={'span'}

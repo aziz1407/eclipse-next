@@ -219,14 +219,14 @@ const NotificationModal = ({
 			}}
 		>
 			<Box
-				sx={{
-					p: 2,
-					borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-				}}
-			>
+    style={{
+        padding: 16,
+        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    }}
+>
 				<Stack direction="row" alignItems="center" spacing={1}>
 					<Typography variant="h5" sx={{ fontWeight: 500, color: "grey" }}>
 						Notifications
