@@ -2,7 +2,7 @@ import React from 'react';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import TelegramIcon from '@mui/icons-material/Telegram';
-import YoutubeIcon from '@mui/icons-material/Youtube';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import moment from 'moment';
@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
 						<Box component={'div'} className={'footer-box social-icons'}>
 							<TwitterIcon />
 							<FacebookOutlinedIcon />
-							<YoutubeIcon />
+							<YouTubeIcon />
 							<TelegramIcon />
 						</Box>
 					</Stack>
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
 									<FacebookOutlinedIcon />
 								</a>
 								<a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-									<YoutubeIcon />
+									<YouTubeIcon />
 								</a>
 								<a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer">
 									<TelegramIcon />
