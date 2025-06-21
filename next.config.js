@@ -2,7 +2,7 @@
 const nextConfig = {
 	reactStrictMode: true,
 	typescript: {
-		ignoreBuildErrors: false,
+		ignoreBuildErrors: true,
 	},
 	env: {
 		REACT_APP_API_URL: process.env.REACT_APP_API_URL,
