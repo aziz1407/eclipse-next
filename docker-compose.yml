@@ -1,3 +1,4 @@
+
 services:
   eclipse_next:
     container_name: eclipse_next
@@ -7,14 +8,15 @@ services:
       - 4000:3000
     environment: 
       - PORT=3000
-      - API_URL=http://eclipse_api:3007  # Container-to-container communication
     volumes:
       - ./:/usr/src/eclipse-next
     working_dir: /usr/src/eclipse-next
     networks:
-      - monorepo-network  # CHANGE THIS LINE
+      - client-network
+    # FOR PRODUCTION
     command: bash -c "yarn && yarn run build && yarn run start"
 
+
 networks:
-  monorepo-network:  # CHANGE THIS LINE
-    external: true     # Reference existing network
+  client-network:
+    driver: bridge
