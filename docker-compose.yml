@@ -1,7 +1,7 @@
 
 services:
-  eclipse_next:
-    container_name: eclipse_next
+  eclipse-next:
+    container_name: eclipse-next
     restart: always
     image: node:20.10.0
     ports:
