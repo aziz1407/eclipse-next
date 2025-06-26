@@ -137,7 +137,7 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 						<>
 							<Box className="header-left">
 								<h2 className="deals-title">{t("Hot Deals")}</h2>
-								<CountdownTimer endDate="2025-06-10T23:59:59Z" />
+								<CountdownTimer endDate="2025-07-14T23:59:59Z" />
 							</Box>
 							<Box className="header-right">
 								<Box className="navigation-controls">
