@@ -76,7 +76,7 @@ function createIsomorphicLink() {
 
 		// @ts-ignore
 		const link = new createUploadLink({
-			uri: "http://31.97.187.110:4001/graphql",
+			uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 		  });
 
 		/* WEBSOCKET SUBSCRIPTION LINK */
