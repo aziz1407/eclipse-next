@@ -328,7 +328,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 									<div
 										className="brand-banner"
 										style={{
-											backgroundImage: `url(/img/banner/brands/${brand.toLowerCase()}.png)`,
+											backgroundImage: `url(/img/banner/brands/${brand}.png)`,
 										}}
 									></div>
 									<span>{brand}</span>
@@ -344,7 +344,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 									<div
 										className="material-image"
 										style={{
-											backgroundImage: `url(/img/banner/straps/${material.toLowerCase()}.jpg)`,
+											backgroundImage: `url(/img/banner/straps/${material}.jpg)`,
 										}}
 									></div>
 									<span>{material}</span>
