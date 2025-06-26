@@ -131,7 +131,7 @@ const SpecialOffers = (props: SpecialOfferProps) => {
 					{device === 'mobile' ? (
 						<>
 							<h2 className="deals-title">{t("Hot Deals")}</h2>
-							<CountdownTimer endDate="2025-05-31T23:59:59Z" />
+							<CountdownTimer endDate="2025-07-14T23:59:59Z" />
 						</>
 					) : (
 						<>
