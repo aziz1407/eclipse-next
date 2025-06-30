@@ -14,4 +14,12 @@ const nextConfig = {
 const { i18n } = require('./next-i18next.config');
 nextConfig.i18n = i18n;
 
+nextConfig.redirects = async () => [
+	{
+		source: '/kr/:path*',
+		destination: '/ko/:path*',
+		permanent: true,
+	},
+];
+
 module.exports = nextConfig;
